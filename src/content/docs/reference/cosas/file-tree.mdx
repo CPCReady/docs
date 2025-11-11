@@ -1,0 +1,197 @@
+---
+title: Árbol de archivos
+description: Aprende a mostrar la estructura de un directorio con iconos de archivo y subdirectorios colapsables en Starlight.
+---
+
+import { FileTree } from '@astrojs/starlight/components';
+
+Para mostrar la estructura de un directorio con iconos de archivo y subdirectorios colapsables, usa el componente `<FileTree>`.
+
+
+<FileTree>
+
+- astro.config.mjs un archivo **importante**
+- package.json
+- README.md
+- src
+  - components
+    - **Header.astro**
+  - …
+- pages/
+
+</FileTree>
+
+
+## Importación
+
+```tsx
+import { FileTree } from '@astrojs/starlight/components';
+```
+
+## Uso
+
+Muestra un árbol de archivos con iconos de archivo y subdirectorios colapsables usando el componente `<FileTree>`.
+
+Especifica la estructura de tus archivos y directorios con una [lista Markdown no ordenada](https://www.markdownguide.org/basic-syntax/#unordered-lists) dentro de `<FileTree>`.
+Crea un subdirectorio usando una lista anidada o agrega una `/` al final de un elemento de la lista para renderizarlo como un directorio sin contenido específico.
+
+```mdx
+import { FileTree } from '@astrojs/starlight/components';
+
+<FileTree>
+
+- astro.config.mjs
+- package.json
+- src
+  - components
+    - Header.astro
+    - Title.astro
+  - pages/
+
+</FileTree>
+```
+
+```markdoc
+{% filetree %}
+- astro.config.mjs
+- package.json
+- src
+  - components
+    - Header.astro
+    - Title.astro
+  - pages/
+{% /filetree %}
+```
+
+
+<FileTree>
+
+- astro.config.mjs
+- package.json
+- src
+  - components
+    - Header.astro
+    - Title.astro
+  - pages/
+
+</FileTree>
+
+
+### Resaltar entradas
+
+Haz que un archivo o directorio destaque haciendo que su nombre esté en negrita, por ejemplo, `**README.md**`.
+
+```mdx {7}
+import { FileTree } from '@astrojs/starlight/components';
+
+<FileTree>
+
+- src
+  - components
+    - **Header.astro**
+    - Title.astro
+
+</FileTree>
+```
+
+```markdoc {4}
+{% filetree %}
+- src
+  - components
+    - **Header.astro**
+    - Title.astro
+{% /filetree %}
+```
+
+
+<FileTree>
+
+- src
+  - components
+    - **Header.astro**
+    - Title.astro
+
+</FileTree>
+
+
+### Agregar comentarios
+
+Agrega un comentario a un archivo o directorio agregando más texto después del nombre.
+El formateo de Markdown en línea como negritas e itálicas es compatible en los comentarios.
+
+```mdx {7}
+import { FileTree } from '@astrojs/starlight/components';
+
+<FileTree>
+
+- src
+  - components
+    - Header.astro un archivo **importante**
+    - Title.astro
+
+</FileTree>
+```
+
+```markdoc {4}
+{% filetree %}
+- src
+  - components
+    - Header.astro un archivo **importante**
+    - Title.astro
+{% /filetree %}
+```
+
+
+<FileTree>
+
+- src
+  - components
+    - Header.astro un archivo **importante**
+    - Title.astro
+
+</FileTree>
+
+
+### Agregar marcadores de posición
+
+Agrega archivos y directorios de marcador de posición usando `...` o `…` como nombre.
+Esto puede ser útil para indicar a un lector que se espera que una carpeta contenga más elementos sin especificarlos todos explícitamente.
+
+```mdx {8}
+import { FileTree } from '@astrojs/starlight/components';
+
+<FileTree>
+
+- src
+  - components
+    - Header.astro
+    - …
+
+</FileTree>
+```
+
+```markdoc {5}
+{% filetree %}
+- src
+  - components
+    - Header.astro
+    - …
+{% /filetree %}
+```
+
+
+<FileTree>
+
+- src
+  - components
+    - Header.astro
+    - …
+
+</FileTree>
+
+
+## Props de `<FileTree>`
+
+**Implementación:** [`FileTree.astro`](https://github.com/withastro/starlight/blob/main/packages/starlight/user-components/FileTree.astro)
+
+El componente `<FileTree>` no acepta ninguna propiedad.

@@ -1,0 +1,104 @@
+---
+title: Apartados
+description: Aprende a usar apartados en Starlight para mostrar información secundaria junto al contenido principal de una página.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+Para mostrar información secundaria junto al contenido principal de una página, usa el componente `<Aside>`.
+
+<Aside>
+    Incluye información no esencial y complementaria en un `<Aside>`.
+</Aside>
+
+## Importación
+
+```tsx
+import { Aside } from '@astrojs/starlight/components';
+```
+
+## Uso
+
+Muestra un apartado (también conocido como “admoniciones” o “llamadas”) usando el componente `<Aside>`.
+
+Un `<Aside>` también puede tener un atributo opcional [`type`](#type), que controla el color, el icono y el título predeterminado del apartado.
+
+````mdx
+import { Aside } from '@astrojs/starlight/components';
+
+<Aside>Contenido en un apartado.</Aside>
+
+<Aside type="caution">Contenido de precaución.</Aside>
+
+<Aside type="tip">
+
+Otro tipo de contenido también es compatible en los apartados.
+
+```js
+// Por ejemplo, un fragmento de código.
+```
+
+</Aside>
+
+<Aside type="danger">No des tu contraseña a nadie.</Aside>
+````
+
+<Aside>Contenido en un apartado.</Aside>
+
+<Aside type="caution">Contenido de precaución.</Aside>
+
+<Aside type="tip">
+
+Otro tipo de contenido también es compatible en los apartados.
+
+```js
+// Por ejemplo, un fragmento de código.
+```
+
+</Aside>
+
+<Aside type="danger">No des tu contraseña a nadie.</Aside>
+
+Starlight también proporciona una sintaxis personalizada para renderizar apartados en Markdown y MDX como una alternativa al componente `<Aside>`.
+Ver la guía [“Redacción de contenido en Markdown”](/es/guides/authoring-content/#apartados) para obtener detalles de la sintaxis personalizada.
+
+### Usa títulos personalizados
+
+Sobreescribe los títulos predeterminados de los apartados usando el atributo [`title`](#title).
+
+```mdx
+import { Aside } from '@astrojs/starlight/components';
+
+<Aside type="caution" title="¡Cuidado!">
+	Una advertencia *con* un título personalizado.
+</Aside>
+```
+
+<Aside type="caution" title="¡Cuidado!">
+	Una advertencia *con* un título personalizado.
+</Aside>
+
+## Props de `<Aside>`
+
+**Implementación:** [`Aside.astro`](https://github.com/withastro/starlight/blob/main/packages/starlight/user-components/Aside.astro)
+
+El componente `<Aside>` acepta las siguientes propiedades:
+
+### `type`
+
+**tipo:** `'note' | 'tip' | 'caution' | 'danger'`  
+**por defecto:** `'note'`
+
+El tipo de apartado a mostrar:
+
+- apartados `note` (el predeterminado) son azules y muestran un icono de información.
+- apartados `tip` son morados y muestran un icono de cohete.
+- apartados `caution` son amarillos y muestran un icono de advertencia.
+- apartados `danger` son rojos y muestran un icono de advertencia octogonal.
+
+### `title`
+
+**tipo:** `string`
+
+El título del apartado a mostrar.
+Si `title` no está establecido, se usará el título predeterminado para el `type` actual del apartado.

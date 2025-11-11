@@ -1,0 +1,74 @@
+---
+title: Tarjetas
+description: Aprende a usar tarjetas en Starlight para mostrar contenido en una caja.
+sidebar:
+  order: 2
+---
+
+import { Card } from '@astrojs/starlight/components';
+
+Para mostrar contenido en una caja que coincida con los estilos de Starlight, usa el componente `<Card>`.
+
+<Card title="Lunas" icon="moon">
+	Io, Europa, Ganymede
+</Card>
+
+## Importación
+
+```tsx
+import { Card } from '@astrojs/starlight/components';
+```
+
+## Uso
+
+Muestra una tarjeta usando el componente `<Card>` y proporciona un [`title`](#title) para la tarjeta.
+
+```mdx
+import { Card } from '@astrojs/starlight/components';
+
+<Card title="Revisa esto">Contenido interesante que deseas destacar.</Card>
+```
+
+<Card title="Revisa esto">
+	Contenido interesante que deseas destacar.
+</Card>
+
+### Agregar iconos a las tarjetas
+
+Incluye un icono en una tarjeta usando el atributo [`icon`](#icon) establecido en el nombre de [uno de los iconos integrados de Starlight](/es/reference/icons/#todos-los-iconos).
+
+```mdx
+import { Card } from '@astrojs/starlight/components';
+
+<Card title="Estrellas" icon="star">
+	Sirius, Vega, Betelgeuse
+</Card>
+```
+
+<Card title="Estrellas" icon="star">
+	Sirius, Vega, Betelgeuse
+</Card>
+
+### Agrupar tarjetas
+
+Muestra varias tarjetas una al lado de la otra cuando hay suficiente espacio agrupándolas con el componente [`<CardGrid>`](/es/components/card-grids/).
+Consulta la guía [“Agrupar tarjetas”](/es/components/card-grids/#agrupar-tarjetas) para un ejemplo.
+
+## Props de `<Card>`
+
+**Implementación:** [`Card.astro`](https://github.com/withastro/starlight/blob/main/packages/starlight/user-components/Card.astro)
+
+El componente `<Card>` acepta las siguientes propiedades:
+
+### `title`
+
+**requerido**  
+**tipo:** `string`
+
+El título de la tarjeta a mostrar.
+
+### `icon`
+
+**tipo:** `string`
+
+Una tarjeta puede incluir un atributo `icon` establecido en el nombre de [uno de los iconos integrados de Starlight](/es/reference/icons/#todos-los-iconos).

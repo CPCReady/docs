@@ -1,0 +1,97 @@
+---
+title: Insignias
+description: Aprende a usar insignias en Starlight para mostrar información adicional.
+---
+
+import { Badge } from '@astrojs/starlight/components';
+
+Para mostrar pequeñas piezas de información, como un estado o categoría, usa el componente `<Badge>`.
+
+<Badge text="Nuevo" />
+
+## Importación
+
+```tsx
+import { Badge } from '@astrojs/starlight/components';
+```
+
+## Uso
+
+Muestra una insignia usando el componente `<Badge>` y pasa el contenido que deseas mostrar al atributo [`text`](#text) del componente `<Badge>`.
+
+Por defecto, la insignia usará el color de acento del tema de tu sitio.
+Para usar un color de insignia integrado, establece el atributo [`variant`](#variant) en uno de los valores admitidos.
+
+```mdx
+import { Badge } from '@astrojs/starlight/components';
+
+<Badge text="Nota" variant="note" />
+<Badge text="Éxito" variant="success" />
+<Badge text="Consejo" variant="tip" />
+<Badge text="Precaución" variant="caution" />
+<Badge text="Peligro" variant="danger" />
+```
+
+<Badge text="Nota" variant="note" />
+<Badge text="Éxito" variant="success" />
+<Badge text="Consejo" variant="tip" />
+<Badge text="Precaución" variant="caution" />
+<Badge text="Peligro" variant="danger" />
+
+### Usa diferentes tamaños
+
+Usa el atributo [`size`](#size) para controlar el tamaño del texto de la insignia.
+
+```mdx
+import { Badge } from '@astrojs/starlight/components';
+
+<Badge text="Nuevo" size="small" />
+<Badge text="Nuevo y mejorado" size="medium" />
+<Badge text="Nuevo, mejorado y grande" size="large" />
+```
+
+<Badge text="Nuevo" size="small" />
+<Badge text="Nuevo y mejorado" size="medium" />
+<Badge text="Nuevo, mejorado y grande" size="large" />
+
+### Personaliza las insignias
+
+Personaliza las insignias usando cualquier otro atributo `<span>` como `class` o `style` con CSS personalizado.
+
+```mdx
+import { Badge } from '@astrojs/starlight/components';
+
+<Badge text="Personalizado" variant="success" style={{ fontStyle: 'italic' }} />
+```
+
+<Badge
+	text="Personalizado"
+	variant="success"
+	style={{ fontStyle: 'italic' }}
+/>
+
+## Props de `<Badge>`
+
+**Implementación:** [`Badge.astro`](https://github.com/withastro/starlight/blob/main/packages/starlight/user-components/Badge.astro)
+
+El componente `<Badge>` acepta las siguientes propiedades y también cualquier [otro atributo `<span>`](https://developer.mozilla.org/es/docs/Web/HTML/Atributos_globales):
+
+### `text`
+
+**requerido**  
+**tipo:** `string`
+
+El contenido de texto que se mostrará en la insignia.
+
+### `variant`
+
+**tipo:** `'note' | 'danger' | 'success' | 'caution' | 'tip' | 'default'`  
+**por defecto:** `'default'`
+
+El color de la insignia a usar: `note` (azul), `tip` (morado), `danger` (rojo), `caution` (naranja), `success` (verde) o `default` (color de acento del tema).
+
+### `size`
+
+**tipo:** `'small' | 'medium' | 'large'`
+
+Define el tamaño de la insignia a mostrar.

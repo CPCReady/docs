@@ -1,0 +1,79 @@
+---
+title: cat / catcpc
+description: Mostrar el catálogo de una imagen .DSK
+tags: [disc]
+---
+
+import { Badge } from '@astrojs/starlight/components';
+import { Card } from '@astrojs/starlight/components';
+import { Code } from '@astrojs/starlight/components';
+
+<Card>Lista los archivos del disco virtual seleccionado. Sin opciones se usa la unidad por defecto. Usa `-A` o `-B` para especificar la unidad.</Card>
+
+## Uso
+
+```bash
+Usage: cpc cat [OPTIONS]
+
+  List files in the virtual disc. If no option is selected, the selected drive
+  is displayed.
+
+Options:
+  -A, --drive-a  List files in the virtual disc from drive A
+  -B, --drive-b  List files in the virtual disc from drive B
+  --version      Show version and exit
+  --help         Show this message and exit.
+```
+
+```bash
+Usage: catcpc [OPTIONS]
+
+  List files in the virtual disc. If no option is selected, the selected drive
+  is displayed.
+
+Options:
+  -A, --drive-a  List files in the virtual disc from drive A
+  -B, --drive-b  List files in the virtual disc from drive B
+  --version      Show version and exit
+  --help         Show this message and exit.
+```
+
+
+## Ejemplos
+
+```bash
+cpc cat
+cpc cat -A
+cpc cat -B
+               demo_8bp_v41_004.dsk                
+╭────────────┬──────┬───────────┬───────────┬──────╮
+│ File       │ Size │ Load Addr │ Exec Addr │ User │
+├────────────┼──────┼───────────┼───────────┼──────┤
+│ 8BP.BIN    │ 19 K │   &5DC0   │   &6B78   │  0   │
+│ DEMO13.BAS │  2 K │   &0170   │   &0000   │  0   │
+│ DEMO7.BAK  │  2 K │   &0170   │   &0000   │  0   │
+│ DEMO10.BAS │  2 K │   &0170   │   &0000   │  0   │
+│ DEMO5.BAS  │  2 K │   &0170   │   &0000   │  0   │
+│ DEMO3.BAS  │  1 K │   &0170   │   &0000   │  0   │
+│ DEMO1.BAS  │  2 K │   &0170   │   &0000   │  0   │
+│ DEMO2.BAS  │  2 K │   &0170   │   &0000   │  0   │
+│ DEMO4.BAS  │  2 K │   &0170   │   &0000   │  0   │
+│ DEMO8.BAS  │  1 K │   &0170   │   &0000   │  0   │
+│ DEMO6.BAS  │  1 K │   &0170   │   &0000   │  0   │
+│ DEMO9.BAS  │  1 K │   &0170   │   &0000   │  0   │
+│ DEMO11.BAS │  1 K │   &0170   │   &0000   │  0   │
+│ DEMO12.BAS │  3 K │   &0170   │   &0000   │  0   │
+│ DEMO14.BAS │  3 K │   &0170   │   &0000   │  0   │
+│ LOADER.BAK │  1 K │   &0170   │   &0000   │  0   │
+│ CICLO.BIN  │  4 K │   &4E20   │   &0000   │  0   │
+│ DEMO7.BAS  │  2 K │   &0170   │   &0000   │  0   │
+│ LOADER.BAS │  1 K │   &0170   │   &0000   │  0   │
+├────────────┼──────┼───────────┼───────────┼──────┤
+│ 126K free  │      │           │           │      │
+╰────────────┴──────┴───────────┴───────────┴──────╯
+```
+
+## Notas
+
+- Muestra nombre, tipo, tamaño y área de usuario CP/M.
+- Si no hay disco montado se muestra un error.
