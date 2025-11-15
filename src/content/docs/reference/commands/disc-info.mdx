@@ -1,0 +1,65 @@
+---
+title: info
+description: Muestra informacion de la imagen de disco
+tags: [disc]
+---
+
+import { Badge } from '@astrojs/starlight/components';
+import { Card } from '@astrojs/starlight/components';
+import { Code } from '@astrojs/starlight/components';
+import { Aside } from '@astrojs/starlight/components';
+import { CardGrid } from '@astrojs/starlight/components';
+
+
+<Card>Muestra información de la imagen del disco. Si no se utilizan opciones se usa la unidad asignada por defecto. 
+Usa `-A` o `-B` para especificar la unidad.</Card>
+
+#### Información mostrada
+
+<CardGrid>
+  <Card title="Extructura">
+		- Pistas
+		- Tamaño
+		- Cara
+  </Card>
+  <Card title="Formato">
+    Más información que deseas compartir.
+  </Card>
+  <Card title="Formato">
+    Más información que deseas compartir.
+  </Card>
+  <Card title="Formato">
+    Más información que deseas compartir.
+  </Card>
+  <Card title="Formato">
+    Más información que deseas compartir.
+  </Card>
+
+</CardGrid>
+
+## Uso
+
+
+El comando se puede ejecutar de dos formas diferentes utilizando el comando principal <Badge text="cpc" variant="note" />
+pasandole como argumento el subcomando <Badge text="cat" variant="tip" />
+
+```bash
+
+Usage: disc info [OPTIONS] [DISC_NAME]
+
+  Show detailed information about a disc file.
+
+Options:
+  -A, --drive-a  Show info for disc in drive A
+  -B, --drive-b  Show info for disc in drive B
+  --help         Show this message and exit.
+```
+
+
+## Ejemplos
+
+![GIF](/cat.gif)
+
+
+<Aside>Contenido en un apartado.</Aside>
+
