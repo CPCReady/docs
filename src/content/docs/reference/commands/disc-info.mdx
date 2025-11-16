@@ -1,5 +1,5 @@
 ---
-title: info
+title: Info
 description: Muestra informacion de la imagen de disco
 tags: [disc]
 ---
@@ -12,7 +12,7 @@ import { CardGrid } from '@astrojs/starlight/components';
 
 
 <Card>Muestra información de la imagen del disco. Si no se utilizan opciones se usa la unidad asignada por defecto. 
-Usa `-A` o `-B` para especificar la unidad.</Card>
+Usa <Badge text="-A" variant="note" /> o <Badge text="-B" variant="note" /> para especificar la unidad.</Card>
 
 #### Información mostrada
 
@@ -23,16 +23,22 @@ Usa `-A` o `-B` para especificar la unidad.</Card>
 		- Cara
   </Card>
   <Card title="Formato">
-    Más información que deseas compartir.
+		- Tipo de Disco
+		- Sector
   </Card>
-  <Card title="Formato">
-    Más información que deseas compartir.
+  <Card title="Capacidad">
+		- Total
+		- Usado
+		- Libre
   </Card>
-  <Card title="Formato">
-    Más información que deseas compartir.
+  <Card title="Tipos de Archivo">
+		- Basic
+		- Binary
+		- Etc
   </Card>
-  <Card title="Formato">
-    Más información que deseas compartir.
+  <Card title="Bloques">
+		- Usados
+		- Primeros Utilizados
   </Card>
 
 </CardGrid>
@@ -58,7 +64,7 @@ Options:
 
 ## Ejemplos
 
-![GIF](/cat.gif)
+![GIF](/images/cat.gif)
 
 
 <Aside>Contenido en un apartado.</Aside>
