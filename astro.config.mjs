@@ -20,6 +20,7 @@ export default defineConfig({
 						// Each item here is one entry in the navigation menu.
 						{ label: 'Example Guide', slug: 'guides/utilidades'},
 						{ label: 'Instalacion', slug: 'guides/install' },
+						{ label: 'Change Log', slug: 'guides/changelog' },
 					],
 				},
 				{
