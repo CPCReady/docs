@@ -1,0 +1,6 @@
+<AboutAstro title="Presentado por">
+Astro es el framework web todo en uno diseñado para la velocidad. Obtén tu contenido desde cualquier lugar y despliégalo en cualquier parte, todo potenciado por tus componentes y bibliotecas de UI favoritas.
+
+[Aprende sobre Astro](https://astro.build/)
+
+</AboutAstro>

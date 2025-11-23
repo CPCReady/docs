@@ -14,8 +14,8 @@ export default new Map([
 ["src/content/docs/reference/cosas/file-tree.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fdocs%2Freference%2Fcosas%2Ffile-tree.mdx&astroContentModuleFlag=true")],
 ["src/content/docs/reference/cosas/icons.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fdocs%2Freference%2Fcosas%2Ficons.mdx&astroContentModuleFlag=true")],
 ["src/content/docs/reference/cosas/link-buttons.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fdocs%2Freference%2Fcosas%2Flink-buttons.mdx&astroContentModuleFlag=true")],
-["src/content/docs/reference/cosas/link-cards.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fdocs%2Freference%2Fcosas%2Flink-cards.mdx&astroContentModuleFlag=true")],
 ["src/content/docs/reference/cosas/steps.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fdocs%2Freference%2Fcosas%2Fsteps.mdx&astroContentModuleFlag=true")],
+["src/content/docs/reference/cosas/link-cards.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fdocs%2Freference%2Fcosas%2Flink-cards.mdx&astroContentModuleFlag=true")],
 ["src/content/docs/reference/cosas/tabs.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fdocs%2Freference%2Fcosas%2Ftabs.mdx&astroContentModuleFlag=true")],
 ["src/content/docs/reference/cosas/using-components.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fdocs%2Freference%2Fcosas%2Fusing-components.mdx&astroContentModuleFlag=true")]]);
 		
