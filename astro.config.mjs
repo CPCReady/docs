@@ -7,7 +7,7 @@ export default defineConfig({
 	integrations: [
 		starlight({
 			title: 'Documentation Site',
-			tagline: 'v0.1.0',
+			tagline: 'v1.0.0',
 			favicon: '/favicon.png',
 			logo: {
 				src: './src/assets/icon_512x512@2x.png',
@@ -17,10 +17,10 @@ export default defineConfig({
 				{
 					label: 'Guides',
 					items: [
-						// Each item here is one entry in the navigation menu.
-						{ label: 'Example Guide', slug: 'guides/utilidades'},
-						{ label: 'Instalacion', slug: 'guides/install' },
-						{ label: 'Change Log', slug: 'guides/changelog' },
+						{ label: 'Installation', slug: 'guides/install' },
+						{ label: 'Command Reference', slug: 'guides/commands' },
+						{ label: 'Changelog', slug: 'guides/changelog' },
+						{ label: 'Roadmap', slug: 'guides/roadmap' },
 					],
 				},
 				{
