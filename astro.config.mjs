@@ -4,16 +4,15 @@ import starlight from '@astrojs/starlight';
 
 // https://astro.build/config
 export default defineConfig({
-
 	integrations: [
 		starlight({
-			title: 'CPCReady Documentation Site',
+			title: 'Documentation Site',
 			tagline: 'v0.1.0',
 			favicon: '/favicon.png',
 			logo: {
-				src: './src/assets/CPCReady_logo.png',
+				src: './src/assets/icon_512x512@2x.png',
 			},
-			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/CPCReady/cpc2' }],
+			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/CPCReady/cpc' }],
 			sidebar: [
 				{
 					label: 'Guides',
