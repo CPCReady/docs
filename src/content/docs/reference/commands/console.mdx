@@ -1,0 +1,137 @@
+---
+title: console
+description: Consola interactiva con barra de estado
+tags: [interface, console]
+---
+
+import { Badge } from '@astrojs/starlight/components';
+import { Card } from '@astrojs/starlight/components';
+import { Code } from '@astrojs/starlight/components';
+import { Aside } from '@astrojs/starlight/components';
+
+<Card>Lanza una consola interactiva con barra de estado que muestra información en tiempo real del sistema CPC. 
+La consola proporciona acceso completo a todos los comandos de CPCReady con historial y autocompletado.</Card>
+
+## Uso
+
+El comando se ejecuta utilizando el comando principal <Badge text="cpc" variant="note" />
+pasándole como argumento el subcomando <Badge text="console" variant="tip" />
+
+```bash
+Usage: cpc console [OPTIONS]
+
+  Interactive console with bottom status toolbar
+
+Options:
+  --version  Show version and exit
+  --help     Show this message and exit.
+```
+
+## Características
+
+### Barra de Estado Inferior
+
+La consola muestra una barra de estado persistente en la parte inferior con:
+
+- **Logo Amstrad**: Círculos de colores distintivos (●●●)
+- **Modelo CPC**: Muestra el modelo configurado (CPC 464, 664 o 6128)
+- **Estado Drive A**: Nombre del disco montado o "Empty" si está vacío
+- **Estado Drive B**: Nombre del disco montado o "Empty" si está vacío
+- **Emulador**: Emulador configurado (RetroVirtualMachine, etc.)
+- **Modo de Video**: Modo de pantalla actual (0, 1 o 2)
+
+### Prompt Personalizado
+
+El prompt muestra:
+- Nombre de la aplicación: <Badge text="CPCReady" variant="success" />
+- Directorio actual de trabajo
+- Indicador de entrada: <Badge text="~>" variant="tip" />
+
+### Funcionalidades Interactivas
+
+- **Historial de Comandos**: Navega comandos anteriores con ↑ y ↓
+- **Autocompletado**: Presiona Tab para autocompletar comandos y archivos
+- **Persistencia de Estado**: Los drives y configuración se mantienen durante toda la sesión
+- **Acceso Completo**: Todos los comandos `cpc` están disponibles directamente
+
+## Comandos Disponibles
+
+Dentro de la consola puedes ejecutar todos los comandos de CPCReady sin el prefijo `cpc`:
+
+```bash
+CPCReady ~/path ~> cat              # Listar archivos del disco
+CPCReady ~/path ~> list test.bas    # Ver programa BASIC
+CPCReady ~/path ~> save file.bin b 0x4000 0x4000  # Guardar binario
+CPCReady ~/path ~> drive status     # Ver estado de drives
+CPCReady ~/path ~> model 6128       # Cambiar modelo CPC
+CPCReady ~/path ~> exit             # Salir de la consola
+```
+
+## Ejemplos
+
+### Iniciar la Consola
+
+```bash
+cpc console
+```
+
+### Flujo de Trabajo Típico
+
+```bash
+# Iniciar consola
+$ cpc console
+
+# Montar disco en drive A
+CPCReady ~/path ~> drive a test.dsk
+
+# Ver archivos
+CPCReady ~/path ~> cat
+
+# Guardar un archivo
+CPCReady ~/path ~> save game.bas
+
+# Listar programa BASIC
+CPCReady ~/path ~> list game.bas
+
+# Cambiar modelo
+CPCReady ~/path ~> model 6128
+
+# Ejecutar en emulador
+CPCReady ~/path ~> run game.bas
+
+# Salir
+CPCReady ~/path ~> exit
+```
+
+## Teclas de Atajo
+
+<Card>
+| Tecla | Acción |
+|-------|--------|
+| <Badge text="↑" variant="note" /> | Comando anterior en historial |
+| <Badge text="↓" variant="note" /> | Comando siguiente en historial |
+| <Badge text="Tab" variant="note" /> | Autocompletar comando/archivo |
+| <Badge text="Ctrl+C" variant="caution" /> | Cancelar comando actual |
+| <Badge text="Ctrl+D" variant="caution" /> | Salir de la consola |
+| <Badge text="Ctrl+L" variant="note" /> | Limpiar pantalla |
+</Card>
+
+<Aside type="tip" title="Ventajas de la Consola">
+La consola interactiva es ideal para:
+- Trabajo prolongado con múltiples operaciones
+- Visualización constante del estado del sistema
+- Flujo de trabajo más eficiente sin repetir `cpc` en cada comando
+- Experimentación rápida con diferentes configuraciones
+</Aside>
+
+<Aside type="note" title="Estado Persistente">
+Todos los cambios realizados en la consola (montaje de discos, cambio de modelo, etc.) 
+se guardan automáticamente en la configuración y persisten al salir.
+</Aside>
+
+## Ver También
+
+- [drive](/reference/commands/drive) - Gestión de drives A y B
+- [cat](/reference/commands/cat) - Listar archivos del disco
+- [settings](/reference/commands/settings) - Configuración del sistema
+- [model](/reference/commands/model) - Cambiar modelo CPC

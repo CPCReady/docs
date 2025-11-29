@@ -1,0 +1,174 @@
+---
+title: emu
+description: Configure the default emulator to use
+tags: [emulator, configuration]
+---
+
+import { Badge } from '@astrojs/starlight/components';
+import { Card } from '@astrojs/starlight/components';
+import { Code } from '@astrojs/starlight/components';
+import { Aside } from '@astrojs/starlight/components';
+
+<Card>Select the default emulator for running CPC software. Choose between RetroVirtualMachine or M4Board with an interactive menu.</Card>
+
+## Usage
+
+```bash
+Usage: cpc emu [OPTIONS]
+
+  Configure the emulator to use.
+
+  Select between M4Board or RetroVirtualMachine as the default emulator.
+
+Options:
+  --help  Show this message and exit.
+```
+
+## Examples
+
+### Select emulator interactively
+
+```bash
+cpc emu
+```
+
+**Interactive prompt:**
+```
+◉ Current emulator: RetroVirtualMachine
+
+? Select emulator to use: 
+❯ RetroVirtualMachine
+  M4Board
+```
+
+**After selection:**
+```
+◉ Emulator set to: M4Board
+```
+
+### Cancel selection
+
+Press `ESC` or `Ctrl+C` to cancel:
+
+```
+◉ Current emulator: RetroVirtualMachine
+
+? Select emulator to use: 
+❯ RetroVirtualMachine
+  M4Board
+
+◉ Configuration cancelled.
+```
+
+<video controls width="800" autoplay loop muted>
+  <source src="/videos/cat.mp4" type="video/mp4" />
+</video>
+
+## Available Emulators
+
+<Card title="🖥️ RetroVirtualMachine">
+**RetroVirtualMachine** is a multi-platform emulator that provides accurate Amstrad CPC emulation.
+
+- **Platform:** macOS, Windows, Linux
+- **Features:** High accuracy, full peripherals support
+- **Configuration:** Use [`cpc rvm config`](/reference/commands/rvm/) to set path
+- **Validation:** Requires specific version (v2.0 BETA-1 r7)
+</Card>
+
+<Card title="🎮 M4Board">
+**M4Board** is a physical hardware add-on for real Amstrad CPC computers.
+
+- **Platform:** Real CPC hardware with M4 board
+- **Features:** Direct hardware execution, SD card support
+- **Configuration:** Requires M4Board connected to your CPC
+- **Speed:** Native CPC hardware speed
+</Card>
+
+## Configuration Storage
+
+The selected emulator is stored in your configuration file:
+
+**Location:** `~/.config/cpcready/cpcready.toml`
+
+**Format:**
+```toml
+[emulator]
+selected = "RetroVirtualMachine"
+```
+
+Or:
+```toml
+[emulator]
+selected = "M4Board"
+```
+
+## Features
+
+<Card title="🎯 Interactive Selection">
+Uses Questionary for a clean, user-friendly menu interface with keyboard navigation.
+</Card>
+
+<Card title="📍 Current State Display">
+Shows the currently configured emulator before prompting for selection.
+</Card>
+
+<Card title="💾 Persistent Configuration">
+Saves your selection to the TOML configuration file for future sessions.
+</Card>
+
+<Card title="🔄 Easy Switching">
+Quickly switch between emulators without editing configuration files manually.
+</Card>
+
+## How It Works
+
+1. **Display current emulator** - Shows what's currently configured
+2. **Present selection menu** - Interactive list with arrow key navigation
+3. **Highlight default** - Current emulator is pre-selected
+4. **Save choice** - Updates configuration file automatically
+5. **Confirm change** - Shows success message with selected emulator
+
+## Navigation
+
+- **↑/↓ Arrow keys** - Navigate between options
+- **Enter** - Confirm selection
+- **ESC/Ctrl+C** - Cancel without changes
+
+<Aside type="tip">
+The selected emulator is used by the [`run`](/reference/commands/run/) command when launching software.
+</Aside>
+
+<Aside type="note">
+After changing the emulator, make sure it's properly configured:
+- For RetroVirtualMachine: Use `cpc rvm config` to set the path
+- For M4Board: Ensure the board is connected and configured
+</Aside>
+
+## Related Commands
+
+- [`rvm`](/reference/commands/rvm/) - Configure RetroVirtualMachine settings
+- [`run`](/reference/commands/run/) - Launch software with selected emulator
+- [`configweb`](/reference/commands/configweb/) - Web interface for all settings
+- [`settings`](/reference/commands/settings/) - Command-line settings management
+
+## Use Cases
+
+### Development Workflow
+
+Switch to RetroVirtualMachine for quick testing and debugging:
+```bash
+cpc emu  # Select RetroVirtualMachine
+cpc run GAME.BAS
+```
+
+### Real Hardware Testing
+
+Switch to M4Board for final testing on real hardware:
+```bash
+cpc emu  # Select M4Board
+cpc run GAME.BAS
+```
+
+### Multi-Platform Development
+
+Easily test your software on both emulator and real hardware without editing configuration files.
