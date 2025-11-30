@@ -14,8 +14,89 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
 **CPCReady** es una herramienta basada en Python para gestionar imágenes de disco Amstrad CPC. Sigue esta guía para instalarla en tu sistema.
 
 <Aside type="note">
-CPCReady funciona en **macOS**, **Linux** y **Windows** (vía WSL). Python 3.13+
+CPCReady funciona en **macOS**, **Linux** y **Windows**. Python 3.13+ requerido.
 </Aside>
+
+---
+
+## Instalación Rápida
+
+<Tabs>
+  <TabItem label="macOS / Linux">
+  
+  ### Homebrew (Recomendado)
+  
+  ```bash
+  # Agregar el tap de CPCReady
+  brew tap cpcready/cpcready https://github.com/cpcready/homebrew-cpcready
+  
+  # Instalar cpc
+  brew install cpcready/cpcready/cpc
+  
+  # Verificar instalación
+  cpc --version
+  ```
+  
+  <Aside type="tip">
+  Si no tienes Homebrew instalado, sigue las instrucciones en la sección "Instalar Gestores de Paquetes" más abajo.
+  </Aside>
+  
+  </TabItem>
+  
+  <TabItem label="Windows">
+  
+  ### Chocolatey (Recomendado)
+  
+  ```powershell
+  # Instalar cpc
+  choco install cpc
+  
+  # Verificar instalación
+  cpc --version
+  ```
+  
+  <Aside type="tip">
+  Si no tienes Chocolatey instalado, sigue las instrucciones en la sección "Instalar Gestores de Paquetes" más abajo.
+  </Aside>
+  
+  </TabItem>
+</Tabs>
+
+---
+
+## Instalar Gestores de Paquetes
+
+### Homebrew (macOS / Linux)
+
+Si aún no tienes Homebrew instalado:
+
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+**En Linux**, después de la instalación, agrega Homebrew a tu PATH:
+
+```bash
+echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> ~/.bashrc
+source ~/.bashrc
+```
+
+Más información: [brew.sh](https://brew.sh)
+
+### Chocolatey (Windows)
+
+Si aún no tienes Chocolatey instalado:
+
+1. Abre PowerShell como **Administrador**
+2. Ejecuta:
+
+```powershell
+Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+```
+
+3. Cierra y vuelve a abrir PowerShell
+
+Más información: [chocolatey.org](https://chocolatey.org/install)
 
 ---
 
@@ -58,12 +139,20 @@ CPCReady funciona en **macOS**, **Linux** y **Windows** (vía WSL). Python 3.13+
 
 ---
 
-## Métodos de Instalación
+## Métodos de Instalación Alternativos
+
+<Aside type="note">
+Si ya instalaste CPCReady con Homebrew o Chocolatey, puedes saltar esta sección.
+</Aside>
 
 <Tabs>
-  <TabItem label="Desde Código Fuente (Recomendado)">
+  <TabItem label="Desde Código Fuente">
 
 ### Instalar desde Repositorio GitHub
+
+<Aside type="caution">
+Este método requiere tener **Python 3.13+** y **Poetry** instalados previamente.
+</Aside>
 
 <Steps>
 
@@ -103,38 +192,38 @@ Instalar desde código fuente te da las últimas características y te permite c
 
   </TabItem>
   
-  <TabItem label="Desde PyPI (Futuro)">
+  <TabItem label="Con pip (Avanzado)">
 
-### Instalar desde Índice de Paquetes Python
+### Instalar con pip
 
-<Aside type="caution">
-El paquete PyPI aún no está disponible. Usa el método "Desde Código Fuente" por ahora.
-</Aside>
-
-Cuando esté disponible, podrás instalar con:
+Si prefieres usar pip directamente:
 
 ```bash
-pip install cpcready
-```
+# Clonar el repositorio
+git clone https://github.com/CPCReady/cpc.git
+cd cpc
 
-Verificar instalación:
+# Instalar con pip
+pip install .
 
-```bash
+# Verificar instalación
 cpc --version
 ```
 
-Actualizar a la última versión:
-
-```bash
-pip install --upgrade cpcready
-```
+<Aside type="caution">
+Asegúrate de usar Python 3.13+ y tener pip actualizado: `pip install --upgrade pip`
+</Aside>
 
   </TabItem>
 </Tabs>
 
 ---
 
-## Configuración Post-Instalación
+## Herramientas Requeridas para Instalación desde Código
+
+<Aside type="note">
+Solo necesario si instalas desde código fuente. Si usas Homebrew/Chocolatey, estos gestores manejan las dependencias automáticamente.
+</Aside>
 
 ### 1. Configurar CPCReady
 
@@ -213,22 +302,49 @@ Si quieres usar el `cpc run` comando, configura la ruta de tu emulador:
 
 Prueba tu instalación con estos comandos:
 
-```bash
-# Verificar versión
-poetry run cpc --version
-
-# Ver ayuda
-poetry run cpc --help
-
-# Crear un disco de prueba
-poetry run cpc disc new test.dsk
-
-# Montar el disco
-poetry run cpc drive A test.dsk
-
-# Listar archivos (debería estar vacío)
-poetry run cpc cat
-```
+<Tabs>
+  <TabItem label="Homebrew / Chocolatey">
+  
+  ```bash
+  # Verificar versión
+  cpc --version
+  
+  # Ver ayuda
+  cpc --help
+  
+  # Crear un disco de prueba
+  cpc disc new test.dsk
+  
+  # Montar el disco
+  cpc drive A test.dsk
+  
+  # Listar archivos (debería estar vacío)
+  cpc cat
+  ```
+  
+  </TabItem>
+  
+  <TabItem label="Código Fuente">
+  
+  ```bash
+  # Verificar versión
+  poetry run cpc --version
+  
+  # Ver ayuda
+  poetry run cpc --help
+  
+  # Crear un disco de prueba
+  poetry run cpc disc new test.dsk
+  
+  # Montar el disco
+  poetry run cpc drive A test.dsk
+  
+  # Listar archivos (debería estar vacío)
+  poetry run cpc cat
+  ```
+  
+  </TabItem>
+</Tabs>
 
 <Aside type="tip" title="¡Éxito!">
 Si todos los comandos se ejecutan sin errores, CPCReady está correctamente instalado y listo para usar.
@@ -238,49 +354,85 @@ Si todos los comandos se ejecutan sin errores, CPCReady está correctamente inst
 
 ## Actualizar CPCReady
 
-Para actualizar a la última versión:
-
-```bash
-cd /path/to/cpc
-git pull origin main
-poetry install
-```
+<Tabs>
+  <TabItem label="Homebrew">
+  
+  ```bash
+  brew update
+  brew upgrade cpcready/cpcready/cpc
+  ```
+  
+  </TabItem>
+  
+  <TabItem label="Chocolatey">
+  
+  ```powershell
+  choco upgrade cpc
+  ```
+  
+  </TabItem>
+  
+  <TabItem label="Código Fuente">
+  
+  ```bash
+  cd /path/to/cpc
+  git pull origin main
+  poetry install
+  ```
+  
+  </TabItem>
+</Tabs>
 
 ---
 
 ## Solución de Problemas
 
-### Poetry no encontrado
+### Homebrew: comando no encontrado
 
-Si `poetry` no se encuentra, añádelo a tu PATH:
+Después de instalar Homebrew, asegúrate de agregarlo a tu PATH:
 
+**macOS:**
 ```bash
-export PATH="$HOME/.local/bin:$PATH"
+echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zshrc
+source ~/.zshrc
 ```
 
-Añade esta línea a tu `~/.bashrc` o `~/.zshrc` para hacerlo permanente.
+**Linux:**
+```bash
+echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> ~/.bashrc
+source ~/.bashrc
+```
 
-### Problemas con la versión de Python
+### Chocolatey: comando no encontrado
 
-Asegúrate de tener Python 3.13 o superior:
+Después de instalar Chocolatey, reinicia PowerShell o tu terminal.
+
+Si persiste el problema, verifica que Chocolatey esté en tu PATH:
+
+```powershell
+$env:Path
+```
+
+### Python: versión incorrecta
+
+CPCReady requiere Python 3.13+. Verifica tu versión:
 
 ```bash
 python3 --version
 ```
 
-Si es necesario, instala una versión más reciente desde [python.org](https://www.python.org/downloads/).
+Si necesitas actualizar Python:
+- **macOS/Linux con Homebrew**: `brew install python@3.13`
+- **Windows con Chocolatey**: `choco install python --version=3.13.0`
+- **Descarga directa**: [python.org](https://www.python.org/downloads/)
 
-### Errores de permisos
+### Problemas de permisos (macOS/Linux)
 
-En Linux/macOS, puede que necesites ejecutar con los permisos apropiados:
+Si encuentras errores de permisos al instalar con Homebrew:
 
 ```bash
-sudo poetry install
+sudo chown -R $(whoami) $(brew --prefix)/*
 ```
-
-### Problemas específicos de WSL
-
-En Windows con WSL, asegúrate de usar la versión Linux de Python, no la versión Windows.
 
 ---
 
