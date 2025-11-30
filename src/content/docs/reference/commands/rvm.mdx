@@ -1,6 +1,6 @@
 ---
 title: rvm
-description: Manage RetroVirtualMachine emulator configuration and validation
+description: Gestionar RetroVirtualMachine emulator configuration and validation
 tags: [emulator, configuration, validation]
 ---
 
@@ -9,7 +9,7 @@ import { Card } from '@astrojs/starlight/components';
 import { Code } from '@astrojs/starlight/components';
 import { Aside } from '@astrojs/starlight/components';
 
-<Card>Manage RetroVirtualMachine emulator configuration, validate installation and check version compatibility. 
+<Card>Gestionar RetroVirtualMachine emulator configuration, validate installation and check version compatibility. 
 Ensures you're using the correct version of RetroVirtualMachine required by CPCReady.</Card>
 
 ## Subcommands
@@ -19,7 +19,7 @@ Ensures you're using the correct version of RetroVirtualMachine required by CPCR
 Check RetroVirtualMachine installation and version compatibility.
 
 ```bash
-Usage: cpc rvm status [OPTIONS]
+Uso: cpc rvm status [OPTIONS]
 
   Check RetroVirtualMachine installation and version.
 
@@ -28,18 +28,18 @@ Usage: cpc rvm status [OPTIONS]
   - RVM executable exists at the configured path
   - RVM version matches the required version
 
-Options:
-  --help  Show this message and exit.
+Opciones:
+  --help  Mostrar this message and exit.
 ```
 
 ### rvm config
 
-Configure RetroVirtualMachine executable path with interactive prompt and validation.
+Configurar RetroVirtualMachine executable path with interactive prompt and validation.
 
 ```bash
-Usage: cpc rvm config [OPTIONS]
+Uso: cpc rvm config [OPTIONS]
 
-  Configure RetroVirtualMachine executable path.
+  Configurar RetroVirtualMachine executable path.
 
   Interactive prompt to set the path to RetroVirtualMachine.
 
@@ -48,11 +48,11 @@ Usage: cpc rvm config [OPTIONS]
   - The executable is accessible
   - The version matches the required version
 
-Options:
-  --help  Show this message and exit.
+Opciones:
+  --help  Mostrar this message and exit.
 ```
 
-## Examples
+## Ejemplos
 
 ### Check RVM installation status
 ```bash
@@ -84,7 +84,7 @@ cpc rvm status
 ◉   MacOs x64 Build: 6783 - (Tue Jul  9 18:18:12 2019 UTC)
 ```
 
-### Configure RVM path interactively
+### Configurar RVM path interactively
 ```bash
 cpc rvm config
 ```
@@ -117,13 +117,13 @@ CPCReady requires **exactly** this version of RetroVirtualMachine:
 Other versions may not work correctly with CPCReady's automation features.
 </Aside>
 
-## Features
+## Características
 
 <Card title="🔍 Version Validation">
 Automatically validates that the configured RetroVirtualMachine matches the exact required version by executing the emulator with `--help` flag and parsing the output.
 </Card>
 
-<Card title="💾 Safe Configuration">
+<Card title="💾 Safe Configuración">
 The `config` command only saves the path to configuration if validation passes. Invalid versions are rejected before being saved.
 </Card>
 
@@ -135,7 +135,7 @@ Uses Questionary for a user-friendly interactive prompt with path autocompletion
 Automatically resolves relative paths to absolute paths and handles macOS `.app` bundles correctly.
 </Card>
 
-## Platform Support
+## Platform Soporte
 
 ### macOS
 - **Format:** `.app` bundle (e.g., `/Applications/Retro Virtual Machine 2.app`)
@@ -160,8 +160,8 @@ Always run `cpc rvm status` after installation or upgrade to ensure RetroVirtual
 The configuration is stored in `~/.config/cpcready/cpcready.toml` under the `[emulator]` section.
 </Aside>
 
-## Related Commands
+## Related Comandos
 
-- [`run`](/reference/commands/run/) - Launch RetroVirtualMachine with disk
+- [`run`](/reference/commands/run/) - Lanza RetroVirtualMachine with disk
 - [`configweb`](/reference/commands/configweb/) - Web interface for all settings
-- [`settings`](/reference/commands/settings/) - Command-line settings management
+- [`settings`](/reference/commands/settings/) - Comando-line settings management

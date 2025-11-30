@@ -1,6 +1,6 @@
 ---
 title: mode
-description: Set or display CPC video mode
+description: Set or display CPC modo de vídeo
 tags: [config, system, video]
 ---
 
@@ -9,28 +9,28 @@ import { Card } from '@astrojs/starlight/components';
 import { Code } from '@astrojs/starlight/components';
 import { Aside } from '@astrojs/starlight/components';
 
-<Card>Configure or display the CPC video mode. 
-Supports modes <Badge text="0" variant="note" /> (160x200, 16 colors), <Badge text="1" variant="note" /> (320x200, 4 colors), and <Badge text="2" variant="note" /> (640x200, 2 colors).</Card>
+<Card>Configurar or display the CPC modo de vídeo. 
+Soporta modes <Badge text="0" variant="note" /> (160x200, 16 colors), <Badge text="1" variant="note" /> (320x200, 4 colors), and <Badge text="2" variant="note" /> (640x200, 2 colors).</Card>
 
-## Usage
+## Uso
 
 ```bash
-Usage: cpc mode [OPTIONS] [VIDEO_MODE]
+Uso: cpc mode [OPTIONS] [VIDEO_MODE]
 
-  Set or display CPC video mode.
+  Set or display CPC modo de vídeo.
 
-Arguments:
+Argumentos:
   VIDEO_MODE  Video mode: 0 (160x200, 16 colors), 
                           1 (320x200, 4 colors), 
                           2 (640x200, 2 colors)
 
-Options:
-  --help  Show this message and exit.
+Opciones:
+  --help  Mostrar this message and exit.
 ```
 
-## Examples
+## Ejemplos
 
-### Display current video mode
+### Mostrar current modo de vídeo
 ```bash
 cpc mode
 ```
@@ -61,5 +61,5 @@ cpc mode 2
 </Aside>
 
 <Aside type="note">
-Configuration is stored in `~/.config/cpcready/cpcready.toml`.
+Configuración is stored in `~/.config/cpcready/cpcready.toml`.
 </Aside>

@@ -1,6 +1,6 @@
 ---
 title: emu
-description: Configure the default emulator to use
+description: Configurar the default emulator to use
 tags: [emulator, configuration]
 ---
 
@@ -11,20 +11,20 @@ import { Aside } from '@astrojs/starlight/components';
 
 <Card>Select the default emulator for running CPC software. Choose between RetroVirtualMachine or M4Board with an interactive menu.</Card>
 
-## Usage
+## Uso
 
 ```bash
-Usage: cpc emu [OPTIONS]
+Uso: cpc emu [OPTIONS]
 
-  Configure the emulator to use.
+  Configurar the emulator to use.
 
   Select between M4Board or RetroVirtualMachine as the default emulator.
 
-Options:
-  --help  Show this message and exit.
+Opciones:
+  --help  Mostrar this message and exit.
 ```
 
-## Examples
+## Ejemplos
 
 ### Select emulator interactively
 
@@ -57,7 +57,7 @@ Press `ESC` or `Ctrl+C` to cancel:
 ❯ RetroVirtualMachine
   M4Board
 
-◉ Configuration cancelled.
+◉ Configuración cancelled.
 ```
 
 <video controls width="800" autoplay loop muted>
@@ -70,8 +70,8 @@ Press `ESC` or `Ctrl+C` to cancel:
 **RetroVirtualMachine** is a multi-platform emulator that provides accurate Amstrad CPC emulation.
 
 - **Platform:** macOS, Windows, Linux
-- **Features:** High accuracy, full peripherals support
-- **Configuration:** Use [`cpc rvm config`](/reference/commands/rvm/) to set path
+- **Características:** High accuracy, full peripherals soporte
+- **Configuración:** Use [`cpc rvm config`](/reference/commands/rvm/) to set path
 - **Validation:** Requires specific version (v2.0 BETA-1 r7)
 </Card>
 
@@ -79,16 +79,16 @@ Press `ESC` or `Ctrl+C` to cancel:
 **M4Board** is a physical hardware add-on for real Amstrad CPC computers.
 
 - **Platform:** Real CPC hardware with M4 board
-- **Features:** Direct hardware execution, SD card support
-- **Configuration:** Requires M4Board connected to your CPC
+- **Características:** Direct hardware execution, SD card soporte
+- **Configuración:** Requires M4Board connected to your CPC
 - **Speed:** Native CPC hardware speed
 </Card>
 
-## Configuration Storage
+## Configuración Storage
 
 The selected emulator is stored in your configuration file:
 
-**Location:** `~/.config/cpcready/cpcready.toml`
+**Ubicación:** `~/.config/cpcready/cpcready.toml`
 
 **Format:**
 ```toml
@@ -102,17 +102,17 @@ Or:
 selected = "M4Board"
 ```
 
-## Features
+## Características
 
 <Card title="🎯 Interactive Selection">
 Uses Questionary for a clean, user-friendly menu interface with keyboard navigation.
 </Card>
 
-<Card title="📍 Current State Display">
+<Card title="📍 Current State Mostrar">
 Shows the currently configured emulator before prompting for selection.
 </Card>
 
-<Card title="💾 Persistent Configuration">
+<Card title="💾 Persistent Configuración">
 Saves your selection to the TOML configuration file for future sessions.
 </Card>
 
@@ -122,10 +122,10 @@ Quickly switch between emulators without editing configuration files manually.
 
 ## How It Works
 
-1. **Display current emulator** - Shows what's currently configured
+1. **Mostrar current emulator** - Shows what's currently configured
 2. **Present selection menu** - Interactive list with arrow key navigation
 3. **Highlight default** - Current emulator is pre-selected
-4. **Save choice** - Updates configuration file automatically
+4. **Guardar choice** - Updates configuration file automatically
 5. **Confirm change** - Shows success message with selected emulator
 
 ## Navigation
@@ -144,12 +144,12 @@ After changing the emulator, make sure it's properly configured:
 - For M4Board: Ensure the board is connected and configured
 </Aside>
 
-## Related Commands
+## Related Comandos
 
-- [`rvm`](/reference/commands/rvm/) - Configure RetroVirtualMachine settings
-- [`run`](/reference/commands/run/) - Launch software with selected emulator
+- [`rvm`](/reference/commands/rvm/) - Configurar RetroVirtualMachine settings
+- [`run`](/reference/commands/run/) - Lanza software with selected emulator
 - [`configweb`](/reference/commands/configweb/) - Web interface for all settings
-- [`settings`](/reference/commands/settings/) - Command-line settings management
+- [`settings`](/reference/commands/settings/) - Comando-line settings management
 
 ## Use Cases
 

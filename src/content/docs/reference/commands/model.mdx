@@ -9,26 +9,26 @@ import { Card } from '@astrojs/starlight/components';
 import { Code } from '@astrojs/starlight/components';
 import { Aside } from '@astrojs/starlight/components';
 
-<Card>Configure or display the Amstrad CPC model to emulate. 
-Supports <Badge text="464" variant="note" />, <Badge text="664" variant="note" />, and <Badge text="6128" variant="note" /> models.</Card>
+<Card>Configurar or display the Amstrad CPC model to emulate. 
+Soporta <Badge text="464" variant="note" />, <Badge text="664" variant="note" />, and <Badge text="6128" variant="note" /> models.</Card>
 
 ## Uso
 
 ```bash
-Usage: cpc model [OPTIONS] [MODEL_TYPE]
+Uso: cpc model [OPTIONS] [MODEL_TYPE]
 
   Set or display CPC model configuration.
 
-Arguments:
+Argumentos:
   MODEL_TYPE  CPC model: 464, 664, or 6128
 
-Options:
-  --help  Show this message and exit.
+Opciones:
+  --help  Mostrar this message and exit.
 ```
 
-## Examples
+## Ejemplos
 
-### Display current model
+### Mostrar current model
 ```bash
 cpc model
 ```
@@ -57,5 +57,5 @@ The model setting affects emulator launch behavior and determines available memo
 </Aside>
 
 <Aside type="note">
-Configuration is stored in `~/.config/cpcready/cpcready.toml`.
+Configuración is stored in `~/.config/cpcready/cpcready.toml`.
 </Aside>

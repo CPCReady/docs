@@ -1,6 +1,6 @@
 ---
 title: list
-description: Display BASIC file content from DSK
+description: Mostrar BASIC file content from DSK
 tags: [disk, file, basic, view]
 ---
 
@@ -9,33 +9,33 @@ import { Card } from '@astrojs/starlight/components';
 import { Code } from '@astrojs/starlight/components';
 import { Aside } from '@astrojs/starlight/components';
 
-<Card>Display the contents of BASIC files stored on DSK disk images. Supports tokenized and ASCII BASIC formats with syntax highlighting.</Card>
+<Card>Mostrar the contents of BASIC files stored on DSK disk images. Soporta tokenized and ASCII BASIC formats with syntax highlighting.</Card>
 
-## Usage
+## Uso
 
 ```bash
-Usage: cpc list [OPTIONS] FILE_NAME
+Uso: cpc list [OPTIONS] FILE_NAME
 
   List BASIC file from virtual disc.
 
-Arguments:
+Argumentos:
   FILE_NAME  Name of BASIC file to display
 
-Options:
+Opciones:
   -A, --drive-a  Read from drive A (default)
   -B, --drive-b  Read from drive B
-  --help         Show this message and exit.
+  --help         Mostrar this message and exit.
 ```
 
-## Features
+## Características
 
 - **Tokenized BASIC**: Automatically detokenizes Locomotive BASIC files
 - **ASCII BASIC**: Displays plain text BASIC files
-- **Syntax Highlighting**: Rich console output with color coding
+- **Sintaxis Highlighting**: Rich console output with color coding
 - **Format Detection**: Auto-detects BASIC format (tokenized vs ASCII)
 - **Binary Detection**: Warns if file is binary (not BASIC)
 
-## Examples
+## Ejemplos
 
 ### List BASIC file from drive A
 ```bash
@@ -52,7 +52,7 @@ cpc list MENU.BAS -B
 cpclist PROGRAM.BAS
 ```
 
-### Display tokenized BASIC
+### Mostrar tokenized BASIC
 ```bash
 cpc list LOADER.BAS
 ```
@@ -68,7 +68,7 @@ The command automatically detects the BASIC format:
 </Aside>
 
 <Aside type="caution">
-If you try to list a binary file (type 2), the command will display an error message:
+Si you try to list a binary file (type 2), the command will display an error message:
 ```
 Error: FILE.BIN is a BINARY file (type 2), not a BASIC program.
 Use 'cpc filextr' to extract binary files.

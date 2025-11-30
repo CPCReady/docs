@@ -1,6 +1,6 @@
 ---
 title: m4
-description: Manage M4Board hardware for Amstrad CPC
+description: Gestionar M4Board hardware for Amstrad CPC
 tags: [m4board, hardware, transfer, execute]
 ---
 
@@ -11,7 +11,7 @@ import { Aside } from '@astrojs/starlight/components';
 
 <Card>Control and manage M4Board hardware add-on for real Amstrad CPC computers. Upload files, execute programs, and manage the SD card remotely over network.</Card>
 
-## Overview
+## Descripción General
 
 The M4Board is a physical hardware add-on for real Amstrad CPC computers that provides:
 - SD card storage for CPC programs
@@ -26,25 +26,25 @@ The M4Board is a physical hardware add-on for real Amstrad CPC computers that pr
 Check M4Board connection status and verify network connectivity.
 
 ```bash
-Usage: cpc m4 status [OPTIONS]
+Uso: cpc m4 status [OPTIONS]
 
   Check M4Board connection status.
 
-Options:
-  --help  Show this message and exit.
+Opciones:
+  --help  Mostrar this message and exit.
 ```
 
 ### m4 config
 
-Configure M4Board IP address with connection validation.
+Configurar M4Board IP address with connection validation.
 
 ```bash
-Usage: cpc m4 config [OPTIONS]
+Uso: cpc m4 config [OPTIONS]
 
-  Configure M4Board IP address.
+  Configurar M4Board IP address.
 
-Options:
-  --help  Show this message and exit.
+Opciones:
+  --help  Mostrar this message and exit.
 ```
 
 ### m4 push
@@ -52,16 +52,16 @@ Options:
 Upload a file to M4Board SD card.
 
 ```bash
-Usage: cpc m4 push [OPTIONS] FILE_PATH
+Uso: cpc m4 push [OPTIONS] FILE_PATH
 
   Upload a file to M4Board SD card.
 
   FILE_PATH: Local file to upload
 
-Options:
+Opciones:
   -d, --destination TEXT  Destination directory on SD card
   -h, --header            Add AMSDOS header
-  --help                  Show this message and exit.
+  --help                  Mostrar this message and exit.
 ```
 
 ### m4 pull
@@ -69,15 +69,15 @@ Options:
 Download a file from M4Board SD card.
 
 ```bash
-Usage: cpc m4 pull [OPTIONS] CPC_PATH
+Uso: cpc m4 pull [OPTIONS] CPC_PATH
 
   Download a file from M4Board SD card.
 
   CPC_PATH: File path on M4Board SD card
 
-Options:
+Opciones:
   -o, --output TEXT  Local output file path
-  --help             Show this message and exit.
+  --help             Mostrar this message and exit.
 ```
 
 ### m4 exec
@@ -85,14 +85,14 @@ Options:
 Execute a file on the CPC.
 
 ```bash
-Usage: cpc m4 exec [OPTIONS] CPC_FILE
+Uso: cpc m4 exec [OPTIONS] CPC_FILE
 
   Execute a file on CPC.
 
   CPC_FILE: File path on M4Board SD card to execute
 
-Options:
-  --help  Show this message and exit.
+Opciones:
+  --help  Mostrar this message and exit.
 ```
 
 ### m4 run
@@ -100,30 +100,30 @@ Options:
 Upload and execute a file in one command.
 
 ```bash
-Usage: cpc m4 run [OPTIONS] FILE_PATH
+Uso: cpc m4 run [OPTIONS] FILE_PATH
 
   Upload and execute a file on CPC.
 
   FILE_PATH: Local file to upload and execute
 
-Options:
+Opciones:
   -d, --destination TEXT  Destination directory (default: /tmp)
-  --help                  Show this message and exit.
+  --help                  Mostrar this message and exit.
 ```
 
 ### m4 mkdir
 
-Create a directory on the SD card.
+Crear a directory on the SD card.
 
 ```bash
-Usage: cpc m4 mkdir [OPTIONS] FOLDER
+Uso: cpc m4 mkdir [OPTIONS] FOLDER
 
-  Create a directory on M4Board SD card.
+  Crear a directory on M4Board SD card.
 
   FOLDER: Directory path to create
 
-Options:
-  --help  Show this message and exit.
+Opciones:
+  --help  Mostrar this message and exit.
 ```
 
 ### m4 cd
@@ -131,14 +131,14 @@ Options:
 Change current directory on CPC.
 
 ```bash
-Usage: cpc m4 cd [OPTIONS] FOLDER
+Uso: cpc m4 cd [OPTIONS] FOLDER
 
   Change current directory on CPC.
 
   FOLDER: Directory path
 
-Options:
-  --help  Show this message and exit.
+Opciones:
+  --help  Mostrar this message and exit.
 ```
 
 ### m4 ls
@@ -146,29 +146,29 @@ Options:
 List files in a directory.
 
 ```bash
-Usage: cpc m4 ls [OPTIONS] [FOLDER]
+Uso: cpc m4 ls [OPTIONS] [FOLDER]
 
   List files in a directory on CPC.
 
   FOLDER: Directory to list (default: current directory)
 
-Options:
-  --help  Show this message and exit.
+Opciones:
+  --help  Mostrar this message and exit.
 ```
 
 ### m4 rm
 
-Remove a file or empty directory.
+Eliminar a file or empty directory.
 
 ```bash
-Usage: cpc m4 rm [OPTIONS] CPC_FILE
+Uso: cpc m4 rm [OPTIONS] CPC_FILE
 
-  Remove a file or empty directory on CPC.
+  Eliminar a file or empty directory on CPC.
 
   CPC_FILE: File or directory to remove
 
-Options:
-  --help  Show this message and exit.
+Opciones:
+  --help  Mostrar this message and exit.
 ```
 
 ### m4 reset-m4
@@ -176,12 +176,12 @@ Options:
 Reset the M4Board hardware.
 
 ```bash
-Usage: cpc m4 reset-m4 [OPTIONS]
+Uso: cpc m4 reset-m4 [OPTIONS]
 
   Reset M4Board.
 
-Options:
-  --help  Show this message and exit.
+Opciones:
+  --help  Mostrar this message and exit.
 ```
 
 ### m4 reset-cpc
@@ -189,12 +189,12 @@ Options:
 Reset the CPC computer.
 
 ```bash
-Usage: cpc m4 reset-cpc [OPTIONS]
+Uso: cpc m4 reset-cpc [OPTIONS]
 
   Reset CPC.
 
-Options:
-  --help  Show this message and exit.
+Opciones:
+  --help  Mostrar this message and exit.
 ```
 
 ### m4 pause
@@ -202,19 +202,19 @@ Options:
 Pause CPC execution.
 
 ```bash
-Usage: cpc m4 pause [OPTIONS]
+Uso: cpc m4 pause [OPTIONS]
 
   Pause CPC execution.
 
-Options:
-  --help  Show this message and exit.
+Opciones:
+  --help  Mostrar this message and exit.
 ```
 
-## Examples
+## Ejemplos
 
 ### Initial Setup
 
-Configure M4Board IP address:
+Configurar M4Board IP address:
 ```bash
 cpc m4 config
 ```
@@ -265,7 +265,7 @@ cpc m4 run game.bin
 cpc m4 run game.bin -d /games
 ```
 
-### File Management
+### Gestión de Archivos
 
 Upload a file to specific directory:
 ```bash
@@ -284,7 +284,7 @@ cpc m4 exec /games/game.bin
 
 ### Directory Operations
 
-Create a new directory:
+Crear a new directory:
 ```bash
 cpc m4 mkdir /games/arcade
 ```
@@ -299,7 +299,7 @@ Change current directory:
 cpc m4 cd /games
 ```
 
-Remove a file:
+Eliminar a file:
 ```bash
 cpc m4 rm /games/old_game.bin
 ```
@@ -325,11 +325,11 @@ cpc m4 pause
   <source src="/videos/cat.mp4" type="video/mp4" />
 </video>
 
-## Configuration Storage
+## Configuración Storage
 
 M4Board IP address is stored in your configuration file:
 
-**Location:** `~/.config/cpcready/cpcready.toml`
+**Ubicación:** `~/.config/cpcready/cpcready.toml`
 
 **Format:**
 ```toml
@@ -337,14 +337,14 @@ M4Board IP address is stored in your configuration file:
 ip = "192.168.1.100"
 ```
 
-## Features
+## Características
 
 <Card title="🔌 Connection Validation">
-All commands automatically check M4Board connectivity before executing operations. If the board is not reachable, operations are aborted with clear error messages.
+All commands automatically check M4Board connectivity before executing operations. Si the board is not reachable, operations are aborted with clear error messages.
 </Card>
 
 <Card title="📁 File Transfer">
-Upload and download files between your computer and M4Board SD card over the network. Supports custom destination directories and AMSDOS headers.
+Upload and download files between your computer and M4Board SD card over the network. Soporta custom destination directories and AMSDOS headers.
 </Card>
 
 <Card title="⚡ Quick Execution">
@@ -359,7 +359,7 @@ Full directory operations: create, navigate, list, and remove directories on the
 Remote reset capabilities for both M4Board and CPC, plus pause functionality for debugging.
 </Card>
 
-<Card title="🎯 Interactive Configuration">
+<Card title="🎯 Interactive Configuración">
 User-friendly IP configuration with automatic connection testing before saving settings.
 </Card>
 
@@ -368,10 +368,10 @@ User-friendly IP configuration with automatic connection testing before saving s
 ### M4Board Network Setup
 
 1. **Connect M4Board to network** - Ethernet cable from M4Board to router/switch
-2. **Assign static IP** - Configure M4Board with a fixed IP address
+2. **Assign static IP** - Configurar M4Board with a fixed IP address
 3. **Note the IP** - You'll need this for CPCReady configuration
 
-### Firewall Configuration
+### Firewall Configuración
 
 Ensure your firewall allows:
 - **HTTP (port 80)** - For M4Board web interface
@@ -383,11 +383,11 @@ Ensure your firewall allows:
 
 Develop and test on real hardware:
 ```bash
-# 1. Edit your program locally
+# 1. Editar your program locally
 # 2. Upload and run
 cpc m4 run myprogram.bin
 
-# 3. If it crashes, reset and try again
+# 3. Si it crashes, reset and try again
 cpc m4 reset-cpc
 cpc m4 run myprogram.bin
 ```
@@ -396,7 +396,7 @@ cpc m4 run myprogram.bin
 
 Organize files on SD card:
 ```bash
-# Create project structure
+# Crear project structure
 cpc m4 mkdir /projects
 cpc m4 mkdir /projects/game1
 
@@ -429,10 +429,10 @@ The M4Board must be powered on and connected to the same network as your compute
 </Aside>
 
 <Aside type="caution" title="Network Security">
-The M4Board web interface is unencrypted HTTP. Only use on trusted local networks. Do not expose M4Board directly to the internet.
+The M4Board web interface is unencrypted HTTP. Only use on trusted local networks. Do not expose M4Board directamente to the internet.
 </Aside>
 
-## Troubleshooting
+## Solución de Problemas
 
 ### Cannot Connect to M4Board
 
@@ -467,14 +467,14 @@ The M4Board web interface is unencrypted HTTP. Only use on trusted local network
 3. Try with full path: `/games/program.bin`
 4. Reset CPC and try again: `cpc m4 reset-cpc`
 
-## Related Commands
+## Related Comandos
 
 - [`emu`](/reference/commands/emu/) - Select between M4Board and emulator
 - [`run`](/reference/commands/run/) - Execute files (uses selected emulator)
 - [`configweb`](/reference/commands/configweb/) - Web interface for all settings
-- [`settings`](/reference/commands/settings/) - Command-line settings management
+- [`settings`](/reference/commands/settings/) - Comando-line settings management
 
-## Technical Details
+## Detalles Técnicos
 
 ### Communication Protocol
 
@@ -489,14 +489,14 @@ The M4Board web interface is unencrypted HTTP. Only use on trusted local network
 - **Method:** POST multipart/form-data
 - **Max File Size:** Limited by M4Board firmware
 
-### Commands
+### Comandos
 
 All commands use GET requests to `/config.cgi` with specific parameters:
 - `?mres` - Reset M4
 - `?cres` - Reset CPC
 - `?run2=<file>` - Execute file
-- `?mkdir=<path>` - Create directory
+- `?mkdir=<path>` - Crear directory
 - `?cd=<path>` - Change directory
-- `?rm=<file>` - Remove file
+- `?rm=<file>` - Eliminar file
 - `?ls=<path>` - List directory
 - `?chlt=CPC+Pause` - Pause CPC

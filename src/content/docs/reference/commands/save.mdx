@@ -1,6 +1,6 @@
 ---
 title: save
-description: Save files to DSK disk with AMSDOS headers
+description: Guardar files to DSK disk with AMSDOS headers
 tags: [disk, file, save, amsdos]
 ---
 
@@ -9,25 +9,25 @@ import { Card } from '@astrojs/starlight/components';
 import { Code } from '@astrojs/starlight/components';
 import { Aside } from '@astrojs/starlight/components';
 
-<Card>Save files to DSK disk images with automatic or manual AMSDOS header creation. Supports binary, BASIC, and ASCII file types with hex or decimal addresses.</Card>
+<Card>Guardar files to DSK disk images with automatic or manual AMSDOS header creation. Soporta binary, BASIC, and ASCII file types with hex or decimal addresses.</Card>
 
-## Usage
+## Uso
 
 ```bash
-Usage: cpc save [OPTIONS] FILE_NAME [TYPE] [LOAD_ADDR] [EXEC_ADDR]
+Uso: cpc save [OPTIONS] FILE_NAME [TYPE] [LOAD_ADDR] [EXEC_ADDR]
 
-  Save file to virtual disc with AMSDOS header.
+  Guardar file to virtual disc with AMSDOS header.
 
-Arguments:
+Argumentos:
   FILE_NAME   File to save (required)
   TYPE        File type: 'b' (binary), 'p' (program), 'a' (ASCII), 'auto' (default)
-  LOAD_ADDR   Load address in hex (0x5BCC, &5BCC) or decimal (23500)
+  LOAD_ADDR   Cargar address in hex (0x5BCC, &5BCC) or decimal (23500)
   EXEC_ADDR   Execution address in hex or decimal
 
-Options:
-  -A, --drive-a  Save to drive A (default)
-  -B, --drive-b  Save to drive B
-  --help         Show this message and exit.
+Opciones:
+  -A, --drive-a  Guardar to drive A (default)
+  -B, --drive-b  Guardar to drive B
+  --help         Mostrar this message and exit.
 ```
 
 ## File Types
@@ -59,34 +59,34 @@ Addresses can be specified in three formats:
 - **Hexadecimal with &**: `&5BCC`
 - **Decimal**: `23500`
 
-## Examples
+## Ejemplos
 
 ### Auto-detect file type
 ```bash
 cpc save game.bin
 ```
 
-### Save binary with hex addresses
+### Guardar binary with hex addresses
 ```bash
 cpc save 8bp.bin b 0x5BCC 0x4ABF
 ```
 
-### Save binary with decimal addresses
+### Guardar binary with decimal addresses
 ```bash
 cpc save screen.bin b 23500 19119
 ```
 
-### Save binary with & notation
+### Guardar binary with & notation
 ```bash
 cpc save loader.bin b &4000 &4000
 ```
 
-### Save BASIC ASCII file
+### Guardar BASIC ASCII file
 ```bash
 cpc save program.bas a
 ```
 
-### Save to drive B
+### Guardar to drive B
 ```bash
 cpc save data.bin b 0x8000 -B
 ```
@@ -108,7 +108,7 @@ cpcsave myfile.bin b 0x4000
 </Aside>
 
 <Aside type="caution">
-Binary type 'b' requires at least the load address. If execution address is omitted, it defaults to the load address.
+Binary type 'b' requires at least the load address. Si execution address is omitted, it defaults to the load address.
 </Aside>
 
 <Aside type="note">

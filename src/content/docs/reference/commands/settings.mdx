@@ -1,6 +1,6 @@
 ---
 title: settings
-description: Display all CPCReady configuration settings
+description: Mostrar all CPCReady configuration settings
 tags: [config, system]
 ---
 
@@ -9,22 +9,22 @@ import { Card } from '@astrojs/starlight/components';
 import { Code } from '@astrojs/starlight/components';
 import { Aside } from '@astrojs/starlight/components';
 
-<Card>Display all CPCReady configuration settings from TOML file including drive mappings, emulator path, CPC model, and video mode.</Card>
+<Card>Mostrar all CPCReady configuration settings from TOML file including drive mappings, emulator path, CPC model, and modo de vídeo.</Card>
 
-## Usage
+## Uso
 
 ```bash
-Usage: cpc settings [OPTIONS]
+Uso: cpc settings [OPTIONS]
 
-  Display all configuration settings.
+  Mostrar toda la configuración settings.
 
-Options:
-  --help  Show this message and exit.
+Opciones:
+  --help  Mostrar this message and exit.
 ```
 
-## Examples
+## Ejemplos
 
-### Display all settings
+### Mostrar all settings
 ```bash
 cpc settings
 ```
@@ -43,6 +43,6 @@ Use this command to verify your configuration after making changes with `cpc con
 </Aside>
 
 <Aside type="note">
-Configuration file location: `~/.config/cpcready/cpcready.toml`  
-Displays: drive A/B paths, emulator path, CPC model, video mode, and system settings.
+Configuración file location: `~/.config/cpcready/cpcready.toml`  
+Displays: drive A/B paths, emulator path, CPC model, modo de vídeo, y ajustes del sistema.
 </Aside>

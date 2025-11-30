@@ -1,20 +1,20 @@
 ---
 title: CPCReady
-description: Professional command-line toolchain for Amstrad CPC development
+description: Herramienta profesional de línea de comandos para desarrollo en Amstrad CPC
 template: splash 
 hero:
-  tagline: Modern toolchain for vintage computing
+  tagline: Herramientas modernas para computación vintage
   image:
     file: ../../assets/icon_512x512@2x.png
   actions:
-    - text: Get Started
+    - text: Comenzar
       link: guides/install/
       icon: right-arrow
       variant: primary
-    - text: View Commands
+    - text: Ver Comandos
       link: guides/commands/
       icon: open-book
-    - text: View on GitHub
+    - text: Ver en GitHub
       link: https://github.com/CPCReady/cpc
       icon: external
       variant: minimal
@@ -30,93 +30,93 @@ import { Code } from '@astrojs/starlight/components';
 <div style="text-align: center; margin: 2rem 0;">
   <Badge text="Python 3.13+" variant="tip" size="large" />
   <Badge text="Apache 2.0" variant="note" size="large" />
-  <Badge text="Cross-platform" variant="success" size="large" />
+  <Badge text="Multiplataforma" variant="success" size="large" />
 </div>
 
-## What is CPCReady?
+## ¿Qué es CPCReady?
 
-**CPCReady** is a comprehensive command-line toolchain designed for Amstrad CPC enthusiasts and retro computing developers. It provides modern tools to manage disk images, files, and emulator integration from your contemporary development environment.
+**CPCReady** es una herramienta integral de línea de comandos diseñada para entusiastas del Amstrad CPC y desarrolladores de computación retro. Proporciona herramientas modernas para gestionar imágenes de disco, archivos e integración con emuladores desde tu entorno de desarrollo actual.
 
-Built with **Python 3.13+** and powered by **Poetry**, CPCReady brings professional development workflows to vintage computing.
+Construido con **Python 3.13+** y potenciado por **Poetry**, CPCReady trae flujos de trabajo de desarrollo profesional a la computación vintage.
 
-<Aside type="tip" title="Perfect for">
-Retro computing enthusiasts, game developers, BASIC programmers, and anyone working with Amstrad CPC disk images and emulators.
+<Aside type="tip" title="Perfecto para">
+Entusiastas de la computación retro, desarrolladores de juegos, programadores BASIC y cualquiera que trabaje con imágenes de disco Amstrad CPC y emuladores.
 </Aside>
 
 ---
 
-## Core Features
+## Características Principales
 
 <CardGrid stagger>
-  <Card title="Disk Management" icon="document">
-    Create, format, and manage **.DSK** disk images with full CP/M compatibility. Support for 40 tracks, 9 sectors, 180KB standard format.
+  <Card title="Gestión de Discos" icon="document">
+    Crea, formatea y gestiona imágenes de disco **.DSK** con compatibilidad total CP/M. Soporte para 40 pistas, 9 sectores, formato estándar de 180KB.
   </Card>
   
-  <Card title="Virtual Drives" icon="setting">
-    Simulate dual floppy drives (A/B) with instant disk insertion, ejection, and status monitoring. Just like the real hardware.
+  <Card title="Unidades Virtuales" icon="setting">
+    Simula unidades de disquete duales (A/B) con inserción, expulsión y monitoreo de estado instantáneos. Como el hardware real.
   </Card>
   
-  <Card title="File Operations" icon="add-document">
-    Save, extract, rename, delete, and list files on disk images. Full support for AMSDOS headers and file types (BASIC, Binary, ASCII).
+  <Card title="Operaciones de Archivos" icon="add-document">
+    Guarda, extrae, renombra, elimina y lista archivos en imágenes de disco. Soporte completo para cabeceras AMSDOS y tipos de archivo (BASIC, Binario, ASCII).
   </Card>
   
-  <Card title="Emulator Integration" icon="rocket">
-    Launch **RetroVirtualMachine** with automatic configuration. Supports macOS .app bundles, process management, and file execution.
+  <Card title="Integración con Emulador" icon="rocket">
+    Lanza **RetroVirtualMachine** con configuración automática. Soporta paquetes .app de macOS, gestión de procesos y ejecución de archivos.
   </Card>
   
-  <Card title="CP/M User Areas" icon="puzzle">
-    Authentic CP/M user area support (0-15) for organizing files, just like on real CPC systems.
+  <Card title="Áreas de Usuario CP/M" icon="puzzle">
+    Soporte auténtico de áreas de usuario CP/M (0-15) para organizar archivos, como en sistemas CPC reales.
   </Card>
   
-  <Card title="CPC Configuration" icon="laptop">
-    Configure CPC model (464/664/6128), video mode (0/1/2), and system settings.
+  <Card title="Configuración CPC" icon="laptop">
+    Configura modelo CPC (464/664/6128), modo de vídeo (0/1/2) y ajustes del sistema.
   </Card>
 </CardGrid>
 
 ---
 
-## Quick Start
+## Inicio Rápido
 
 <Tabs>
-  <TabItem label="Basic Usage">
+  <TabItem label="Uso Básico">
 
-### Essential Commands
+### Comandos Esenciales
 
 ```bash
-# Drive Status
+# Estado de unidades
 cpc drive status
 
-# List files on current disk
+# Listar archivos en disco actual
 cpc cat
 
-# Save a binary file with addresses
+# Guardar archivo binario con direcciones
 cpc save loader.bin b 0x4000 0x4000
 
-# Extract a file from disk
+# Extraer archivo del disco
 cpc filextr GAME.BAS
 
-# Launch emulator with current disk
+# Lanzar emulador con disco actual
 cpc run "loader.bas"
 ```
 
-### File Types
+### Consejoos de Archivo
 
 <ul>
-  <li><strong><code>b</code></strong> - Binary file (requires load/exec addresses)</li>
-  <li><strong><code>p</code></strong> - Program file (preserves AMSDOS header)</li>
-  <li><strong><code>a</code></strong> - ASCII/text file (no header)</li>
-  <li><strong><code>auto</code></strong> - Automatic detection (default)</li>
+  <li><strong><code>b</code></strong> - Archivo binario (requiere direcciones de carga/ejecución)</li>
+  <li><strong><code>p</code></strong> - Archivo de programa (preserva cabecera AMSDOS)</li>
+  <li><strong><code>a</code></strong> - Archivo ASCII/texto (sin cabecera)</li>
+  <li><strong><code>auto</code></strong> - Detección automática (por defecto)</li>
 </ul>
 
   </TabItem>
   
-  <TabItem label="Configuration">
+  <TabItem label="Configuración">
 
-### Configuration File
+### Archivo de Configuración
 
-CPCReady stores settings in TOML format:
+CPCReady almacena la configuración en formato TOML:
 
-**Location**: `~/.config/cpcready/cpcready.toml`
+**Ubicación**: `~/.config/cpcready/cpcready.toml`
 
 ```toml
 [drive]
@@ -134,9 +134,9 @@ model = "6128"  # CPC model: 464, 664, or 6128
 mode = 1        # Video mode: 0, 1, or 2
 ```
 
-### GUI Configuration
+### Configuración GUI
 
-Launch the graphical configuration tool:
+Lanza la herramienta de configuración gráfica:
 
 ```bash
 cpc configweb
@@ -147,128 +147,128 @@ cpc configweb
 
 ---
 
-## Command Categories
+## Categorías de Comandos
 
 <CardGrid>
-  <Card title="Disk Operations" icon="document">
-    **`disc`** - Create, insert, and inspect disk images
+  <Card title="Operaciones de Disco" icon="document">
+    **`disc`** - Crear, insertar e inspeccionar imágenes de disco
     
-    - `disc new` - Create blank DSK
-    - `disc insert` - Insert DSK into drive
-    - `disc info` - Show disk information
+    - `disc new` - Crear DSK vacío
+    - `disc insert` - Insertar DSK en unidad
+    - `disc info` - Mostrar información del disco
   </Card>
   
-  <Card title="Drive Management" icon="setting">
-    **`drive`** - Manage virtual floppy drives
+  <Card title="Gestión de Unidades" icon="setting">
+    **`drive`** - Gestionar unidades de disquete virtuales
     
-    - `drive A/B` - Mount disk
-    - `drive status` - Show drive status
-    - `drive eject` - Eject disk
+    - `drive A/B` - Montar disco
+    - `drive status` - Mostrar estado de unidades
+    - `drive eject` - Expulsar disco
   </Card>
   
-  <Card title="File Management" icon="add-document">
-    **File operations** on disk images
+  <Card title="Gestión de Archivos" icon="add-document">
+    **Operaciones de archivos** en imágenes de disco
     
-    - `cat` - List all files
-    - `save` - Save file to disk
-    - `filextr` - Extract file
-    - `era` - Delete file
-    - `ren` - Rename file
-    - `list` - Display BASIC program
+    - `cat` - Listar todos los archivos
+    - `save` - Guardar archivo en disco
+    - `filextr` - Extraer archivo
+    - `era` - Eliminar archivo
+    - `ren` - Renombrar archivo
+    - `list` - Mostrar programa BASIC
   </Card>
   
-  <Card title="System & Emulator" icon="rocket">
-    **Configuration and execution**
+  <Card title="Sistema y Emulador" icon="rocket">
+    **Configuración y ejecución**
     
-    - `run` - Launch emulator
-    - `model` - Set CPC model
-    - `mode` - Set video mode
-    - `user` - Set CP/M user area
+    - `run` - Lanzar emulador
+    - `model` - Configurar modelo CPC
+    - `mode` - Configurar modo de vídeo
+    - `user` - Configurar área de usuario CP/M
   </Card>
 </CardGrid>
 
 ---
 
-## Why CPCReady?
+## ¿Por qué CPCReady?
 
-<Aside type="note" title="Modern Tools for Vintage Computing">
-CPCReady bridges the gap between modern development environments and classic Amstrad CPC systems. Whether you're preserving old software, creating new retro games, or exploring vintage computing, CPCReady provides the professional tools you need.
+<Aside type="note" title="Herramientas Modernooas para Computación Vintage">
+CPCReady cierra la brecha entre entornos de desarrollo modernos y sistemas clásicos Amstrad CPC. Ya sea que estés preservando software antiguo, creando nuevos juegos retro o explorando computación vintage, CPCReady proporciona las herramientas profesionales que necesitas.
 </Aside>
 
-### Key Advantages
+### Ventajas Clave
 
-- **🚀 Fast & Efficient**: Command-line interface for rapid workflows
-- **🔧 Flexible**: Works with existing DSK files and emulators
-- **📦 Complete**: All tools in one package.
-- **🎯 Accurate**: Proper AMSDOS header handling and CP/M compatibility
-- **🌐 Cross-platform**: Python-based, runs on macOS, Linux, and Windows
-- **⚡ Modern**: Built with Python 3.13+, type hints, and best practices
+- **🚀 Rápido y Eficiente**: Interfaz de línea de comandos para flujos de trabajo rápidos
+- **🔧 Flexible**: Funciona con archivos DSK y emuladores existentes
+- **📦 Completo**: Todas las herramientas en un solo paquete
+- **🎯 Preciso**: Manejo adecuado de cabeceras AMSDOS y compatibilidad CP/M
+- **🌐 Multiplataforma**: Basado en Python, funciona en macOS, Linux y Windows
+- **⚡ Modernooo**: Construido con Python 3.13+, type hints y mejores prácticas
 
 ---
 
-## Example Workflow
+## Ejemplo de Flujo de Trabajo
 
-Here's a typical development workflow with CPCReady:
+Aquí hay un flujo de trabajo típico de desarrollo con CPCReady:
 
 ```bash
-# 1. Create a new disk
+# 1. Crear un nuevo disco
 cpc disc new myproject.dsk
 
-# 2. Mount it in drive A
+# 2. Montarlo en la unidad A
 cpc drive insert myproject.dsk -A
 
-# 3. Save your BASIC program
+# 3. Guardar tu programa BASIC
 cpc save menu.bas a
 
-# 4. Save a binary loader
+# 4. Guardar un cargador binario
 cpc save loader.bin b 0x4000 0x4000
 
-# 5. List files to verify
+# 5. Listar archivos para verificar
 cpc cat
 
-# 6. Launch in emulator
+# 6. Lanzar en emulador
 cpc run MENU.BAS
 ```
 
 ---
 
-## Open Source
+## Código Abierto
 
-CPCReady is open source software licensed under **Apache License 2.0**.
+CPCReady es software de código abierto licenciado bajo **Apache License 2.0**.
 
 <div style="text-align: center; margin: 2rem 0;">
   <a href="https://github.com/CPCReady/cpc" target="_blank" rel="noopener noreferrer">
-    <Badge text="⭐ Star on GitHub" variant="success" size="large" />
+    <Badge text="⭐ Estrella en GitHub" variant="success" size="large" />
   </a>
   <a href="https://github.com/CPCReady/cpc/releases" target="_blank" rel="noopener noreferrer">
-    <Badge text="📦 Download Release" variant="tip" size="large" />
+    <Badge text="📦 Descargar Release" variant="tip" size="large" />
   </a>
   <a href="guides/changelog/">
-    <Badge text="📋 View Changelog" variant="note" size="large" />
+    <Badge text="📋 Ver Historial de Cambios" variant="note" size="large" />
   </a>
 </div>
 
 ---
 
-## Ready to Start?
+## ¿Listo para Empezar?
 
 <CardGrid>
-  <Card title="📚 Installation Guide" icon="open-book">
-    Follow our comprehensive installation guide to set up CPCReady on your system.
+  <Card title="📚 Guía de Instalación" icon="open-book">
+    Sigue nuestra guía completa de instalación para configurar CPCReady en tu sistema.
     
-    [Get Started →](guides/install/)
+    [Comenzar →](guides/install/)
   </Card>
   
-  <Card title="📖 Command Reference" icon="information">
-    Explore all available commands with detailed examples and options.
+  <Card title="📖 Referencia de Comandos" icon="information">
+    Explora todos los comandos disponibles con ejemplos detallados y opciones.
     
-    [View Commands →](guides/commands/)
+    [Ver Comandos →](guides/commands/)
   </Card>
   
-  <Card title="📋 Changelog" icon="document">
-    View release history and version changes.
+  <Card title="📋 Historial de Cambios" icon="document">
+    Ver historial de versiones y cambios.
     
-    [View Changelog →](guides/changelog/)
+    [Ver Historial de Cambios →](guides/changelog/)
   </Card>
 </CardGrid>
 

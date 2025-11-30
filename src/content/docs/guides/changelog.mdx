@@ -1,6 +1,6 @@
 ---
-title: Changelog
-description: Release history and version changes for CPCReady
+title: Historial de Cambios
+description: Historial de versiones y cambios para CPCReady
 ---
 
 import { Card, CardGrid } from '@astrojs/starlight/components';
@@ -8,160 +8,160 @@ import { Badge } from '@astrojs/starlight/components';
 import { Aside } from '@astrojs/starlight/components';
 
 <div style="text-align: center; margin: 2rem 0;">
-  <Badge text="Current Version: 1.0.0" variant="success" size="large" />
+  <Badge text="Versión Actual: 1.0.0" variant="success" size="large" />
 </div>
 
-All notable changes to **CPCReady** are documented on this page.
+Todos los cambios notables de **CPCReady** are documented on this page.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+El formato está basado en [Keep a Historial de Cambios](https://keepachangelog.com/en/1.0.0/), y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
-## [Unreleased]
+## [No Publicado]
 
 <Aside type="note">
-Features and changes currently in development. Not yet released.
+Características and changes currently in development. Not yet released.
 </Aside>
 
-### Planned for 1.1.0
+### Planificado para 1.1.0
 
 - PyPI package distribution
 - Extended documentation with video tutorials
 - Performance optimizations for disk operations
-- Batch file operations support
+- Batch file operations soporte
 
 ---
 
 ## [1.0.0] - 2025-11-23
 
-<Badge text="Initial Release" variant="tip" />
+<Badge text="Lanzamiento Inicial" variant="tip" />
 
-### Added
+### Añadido
 
 <CardGrid>
-  <Card title="Drive Management" icon="setting">
-    Virtual floppy drive system
+  <Card title="Gestión de Unidades" icon="setting">
+    Sistema de unidad de disquete virtual
     
-    - Dual drive support (A/B)
-    - Disk insertion/ejection
-    - Drive status monitoring
-    - Configuration persistence
+    - Dual drive soporte (A/B)
+    - Inserción/expulsión de disco
+    - Monitoreo de estado de unidad
+    - Configuración persistence
   </Card>
   
-  <Card title="Disk Operations" icon="document">
-    DSK image management
+  <Card title="Operaciones de Disco" icon="document">
+    Gestión de imágenes DSK
     
-    - Create blank disk images
-    - Insert/mount disks
-    - Display disk information
-    - Standard CPC format (40 tracks, 9 sectors)
+    - Crear imágenes de disco vacías
+    - Insertar/montar discos
+    - Mostrar información del disco
+    - Formato CPC estándar (40 tracks, 9 sectors)
   </Card>
   
-  <Card title="File Operations" icon="add-document">
-    Complete file management
+  <Card title="Operaciones de Archivos" icon="add-document">
+    Completo file management
     
-    - Save files with AMSDOS headers
-    - Extract files from disk
-    - Rename files (AMSDOS 8.3 format)
-    - Delete files with wildcards
+    - Guardar archivos con cabeceras AMSDOS
+    - Extraer archivos del disco
+    - Renombrar archivos (AMSDOS 8.3 format)
+    - Eliminar archivos con comodines
     - List BASIC programs (detokenized)
-    - Catalog disk contents
+    - Catálogo de contenidos del disco
   </Card>
   
-  <Card title="System Configuration" icon="laptop">
-    CPC system settings
+  <Card title="System Configuración" icon="laptop">
+    Configuración del sistema CPC
     
-    - CPC model selection (464/664/6128)
-    - Video mode configuration (0/1/2)
-    - CP/M user areas (0-15)
-    - TOML-based configuration
-    - GUI configuration tool (PySide6)
+    - Selección de modelo CPC (464/664/6128)
+    - Configuración de modo de vídeo (0/1/2)
+    - Áreas de usuario CP/M (0-15)
+    - Configuración basada en TOML
+    - Herramienta de configuración GUI (PySide6)
   </Card>
   
-  <Card title="Emulator Integration" icon="rocket">
-    RetroVirtualMachine support
+  <Card title="Integración con Emulador" icon="rocket">
+    RetroVirtualMachine soporte
     
-    - Launch emulator with disk
-    - Auto-load files
-    - Process management
-    - macOS .app bundle support
+    - Lanza emulator with disk
+    - Carga automática de archivos
+    - Gestión de procesos
+    - macOS .app bundle soporte
   </Card>
   
-  <Card title="Developer Tools" icon="puzzle">
-    Professional development workflow
+  <Card title="Herramientas para Desarrolladores" icon="puzzle">
+    Flujo de trabajo de desarrollo profesional
     
-    - Poetry package management
-    - Python 3.13+ support
-    - Apache 2.0 license
-    - GitHub Actions CI/CD
-    - Comprehensive documentation
+    - Gestión de paquetes con Poetry
+    - Python 3.13+ soporte
+    - Licencia Apache 2.0
+    - CI/CD con GitHub Actions
+    - Documentación completa
   </Card>
 </CardGrid>
 
-### Commands Introduced
+### Comandos Introduced
 
-**Disk & Drive Management:**
-- `cpc disc new` - Create blank DSK image
-- `cpc disc insert` - Insert disk into drive
-- `cpc disc info` - Display disk information
-- `cpc drive A/B` - Mount disk in drive
-- `cpc drive status` - Show current drive status
-- `cpc drive eject` - Eject disk from drive
+**Disk & Gestión de Unidades:**
+- `cpc disc new` - Crear imagen DSK vacía
+- `cpc disc insert` - Insertar disco en unidad
+- `cpc disc info` - Mostrar información del disco
+- `cpc drive A/B` - Montar disco en unidad
+- `cpc drive status` - Mostrar estado actual de unidad
+- `cpc drive eject` - Expulsar disco de unidad
 
-**File Management:**
-- `cpc cat` - List all files on disk
-- `cpc save` - Save file to disk (auto/binary/program/ASCII)
-- `cpc filextr` - Extract file from disk
-- `cpc list` - Display BASIC program (detokenized)
-- `cpc era` - Delete file(s) with wildcards
-- `cpc ren` - Rename file on disk
+**Gestión de Archivos:**
+- `cpc cat` - Listar todos los archivos en disco
+- `cpc save` - Guardar archivo en disco (auto/binary/program/ASCII)
+- `cpc filextr` - Extraer archivo del disco
+- `cpc list` - Mostrar BASIC program (detokenized)
+- `cpc era` - Eliminar archivo(s) con comodines
+- `cpc ren` - Renombrar archivo en disco
 
-**System Configuration:**
-- `cpc model` - Set CPC model (464/664/6128)
-- `cpc mode` - Set video mode (0/1/2)
-- `cpc user` - Set CP/M user number (0-15)
-- `cpc settings` - Display all configuration
-- `cpc configweb` - Launch GUI configuration tool
+**System Configuración:**
+- `cpc model` - Configurar modelo CPC (464/664/6128)
+- `cpc mode` - Set modo de vídeo (0/1/2)
+- `cpc user` - Configurar número de usuario CP/M (0-15)
+- `cpc settings` - Mostrar toda la configuración
+- `cpc configweb` - Lanza Herramienta de configuración GUI
 
-**Emulator:**
-- `cpc run` - Launch RetroVirtualMachine with disk
+**Emulador:**
+- `cpc run` - Lanza RetroVirtualMachine with disk
 
-### Technical Details
+### Detalles Técnicos
 
-**Core Technologies:**
+**Tecnologías Principales:**
 - Python 3.13+
-- Poetry for dependency management
-- Click 8.3.0 for CLI framework
-- PySide6 6.10.0 for GUI
-- TOML configuration format
-- Custom DSK format library (pydsk)
+- Poetry para gestión de dependencias
+- Click 8.3.0 para framework CLI
+- PySide6 6.10.0 para GUI
+- TOML formato de configuración
+- Biblioteca personalizada de formato DSK (pydsk)
 
-**File Type Support:**
-- Binary files with AMSDOS headers (type 'b')
+**Soporte de Tipos de Archivo:**
+- Archivos binarios con cabeceras AMSDOS (type 'b')
 - BASIC programs (tokenized and ASCII)
-- ASCII/text files (type 'a')
-- Automatic type detection
-- Hex (0x/&) and decimal address support
+- Archivos ASCII/texto (type 'a')
+- Detección automática de tipo
+- Hex (0x/&) and decimal address soporte
 
-**Configuration System:**
-- Location: `~/.config/cpcready/cpcready.toml`
-- Sections: `[drive]`, `[emulator]`, `[system]`
-- Automatic creation on first run
-- GUI editor with PySide6
+**Configuración System:**
+- Ubicación: `~/.config/cpcready/cpcready.toml`
+- Secciones: `[drive]`, `[emulator]`, `[system]`
+- Creación automática en primera ejecución
+- Editor GUI con PySide6
 
 ### Documentation
 
-- Complete command reference with examples
-- Installation guide for macOS/Linux/Windows
-- Configuration documentation
+- Completo command reference with examples
+- Instalación guide for macOS/Linux/Windows
+- Configuración documentation
 - GitHub repository with README
-- Apache 2.0 license
+- Licencia Apache 2.0
 
 ---
 
 ## Version History
 
-| Version | Date | Description |
+| Version | Date | Descripción |
 |---------|------|-------------|
 | **1.0.0** | 2025-11-23 | Initial release with core functionality |
 
@@ -177,21 +177,21 @@ Features and changes currently in development. Not yet released.
 ---
 
 <CardGrid>
-  <Card title="Installation Guide" icon="rocket">
+  <Card title="Instalación Guide" icon="rocket">
     Get started with CPCReady
     
     [Install Now →](../install/)
   </Card>
   
-  <Card title="Command Reference" icon="open-book">
+  <Card title="Referencia de Comandos" icon="open-book">
     Explore all commands
     
-    [View Commands →](../commands/)
+    [View Comandos →](../commands/)
   </Card>
   
-  <Card title="Roadmap" icon="star">
+  <Card title="Hoja de Ruta" icon="star">
     See what's coming next
     
-    [View Roadmap →](../roadmap/)
+    [View Hoja de Ruta →](../roadmap/)
   </Card>
 </CardGrid>

@@ -9,25 +9,25 @@ import { Card } from '@astrojs/starlight/components';
 import { Code } from '@astrojs/starlight/components';
 import { Aside } from '@astrojs/starlight/components';
 
-<Card>Configure or display the CP/M user number (0-15). User numbers allow organizing files into separate areas on the same disk.</Card>
+<Card>Configurar or display the CP/M user number (0-15). User numbers allow organizing files into separate areas on the same disk.</Card>
 
-## Usage
+## Uso
 
 ```bash
-Usage: cpc user [OPTIONS] [USER_NUMBER]
+Uso: cpc user [OPTIONS] [USER_NUMBER]
 
   Set or display current user number.
 
-Arguments:
+Argumentos:
   USER_NUMBER  User number (0-15)
 
-Options:
-  --help  Show this message and exit.
+Opciones:
+  --help  Mostrar this message and exit.
 ```
 
-## Examples
+## Ejemplos
 
-### Display current user
+### Mostrar current user
 ```bash
 cpc user
 ```
@@ -57,6 +57,6 @@ User 0 is the default area. Use different user numbers to organize files (e.g., 
 
 <Aside type="note">
 Valid range: 0-15  
-Configuration stored in `~/.config/cpcready/cpcready.toml`  
-Commands like `cpc list` and `cpc cat` respect the current user number.
+Configuración stored in `~/.config/cpcready/cpcready.toml`  
+Comandos like `cpc list` and `cpc cat` respect the current user number.
 </Aside>

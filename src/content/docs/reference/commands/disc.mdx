@@ -1,6 +1,6 @@
 ---
 title: disc
-description: Disk image management commands
+description: Comandos de gestión de imágenes de disco
 tags: [disc, disk, dsk]
 ---
 
@@ -10,19 +10,19 @@ import { Code } from '@astrojs/starlight/components';
 import { Aside } from '@astrojs/starlight/components';
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-<Card>Manage DSK disk images: create new disks, insert existing ones, and display detailed information about disk structure and content.</Card>
+<Card>Gestionar DSK disk images: crear nuevos discos, insertar existentes, y mostrar información detallada sobre la estructura y contenido del disco.</Card>
 
-## Usage
+## Uso
 
 ```bash
-Usage: cpc disc [OPTIONS] COMMAND [ARGS]...
+Uso: cpc disc [OPTIONS] COMMAND [ARGS]...
 
-  Disk image management commands.
+  Comandos de gestión de imágenes de disco.
 
-Commands:
-  new     Create a new blank DSK disk image
-  insert  Insert existing DSK into drive A or B
-  info    Show detailed information about disk
+Comandos:
+  new     Crear a new blank DSK disk image
+  insert  Insertar existing DSK into drive A o B
+  info    Mostrar detailed information about disk
 ```
 
 ---
@@ -32,30 +32,30 @@ Commands:
 
 ## disc new
 
-Create a new blank DSK disk image file with standard CPC format (40 tracks, 9 sectors per track, 512 bytes per sector).
+Crear a new blank DSK disk image file with standard CPC format (40 pistas, 9 sectores por pista, 512 bytes por sector).
 
-### Usage
+### Uso
 
 ```bash
-Usage: cpc disc new [OPTIONS] DSK_FILE
+Uso: cpc disc new [OPTIONS] DSK_FILE
 
-  Create a new blank DSK disk image.
+  Crear a new blank DSK disk image.
 
-Arguments:
-  DSK_FILE  Path to the DSK file to create
+Argumentos:
+  DSK_FILE  Ruta al archivo DSK a crear
 
-Options:
-  --help  Show this message and exit.
+Opciones:
+  --help  Mostrar this message and exit.
 ```
 
-### Examples
+### Ejemplos
 
-#### Create blank disk in current directory
+#### Crear blank disk in current directory
 ```bash
 cpc disc new mydisk.dsk
 ```
 
-#### Create disk with full path
+#### Crear disk with full path
 ```bash
 cpc disc new /path/to/newdisk.dsk
 ```
@@ -66,7 +66,7 @@ cpcdisc new blank.dsk
 ```
 
 <Aside type="caution">
-If the DSK file already exists, this command will **overwrite** it without confirmation.
+Si the DSK file already exists, this command will **overwrite** it without confirmation.
 </Aside>
 
 <Aside type="note">
@@ -79,32 +79,32 @@ Creates a standard CPC Data format disk: 40 tracks × 9 sectors × 512 bytes = 1
 
 ## disc insert
 
-Insert an existing DSK file into virtual drive A or B. The command validates file existence and updates drive configuration.
+Insertar an existing DSK file into virtual drive A o B. The command validates file existence and updates drive configuration.
 
-### Usage
+### Uso
 
 ```bash
-Usage: cpc disc insert [OPTIONS] DSK_FILE
+Uso: cpc disc insert [OPTIONS] DSK_FILE
 
-  Insert existing DSK into drive A or B.
+  Insertar existing DSK into drive A o B.
 
-Arguments:
+Argumentos:
   DSK_FILE  Path to the DSK file to insert
 
-Options:
-  -A, --drive-a  Insert into drive A
-  -B, --drive-b  Insert into drive B
-  --help         Show this message and exit.
+Opciones:
+  -A, --drive-a  Insertar into drive A
+  -B, --drive-b  Insertar into drive B
+  --help         Mostrar this message and exit.
 ```
 
-### Examples
+### Ejemplos
 
-#### Insert disk into drive A
+#### Insertararar disco en unidad A
 ```bash
 cpc disc insert game.dsk -A
 ```
 
-#### Insert disk into drive B with relative path
+#### Insertararar disco en unidad B with relative path
 ```bash
 cpc disc insert ../disks/system.dsk -B
 ```
@@ -131,25 +131,25 @@ Use `cpc drive status` after inserting to verify the disk is mounted correctly.
 
 ## disc info
 
-Display detailed information about a disk image including structure, format, capacity, file types, and block usage.
+Mostrar detailed information about a disk image including structure, format, capacity, file types, and block usage.
 
-### Usage
+### Uso
 
 ```bash
-Usage: cpc disc info [OPTIONS] [DSK_FILE]
+Uso: cpc disc info [OPTIONS] [DSK_FILE]
 
-  Show detailed information about a disc file.
+  Mostrar detailed information about a disc file.
 
-Arguments:
+Argumentos:
   DSK_FILE  Path to DSK file (optional if using drive option)
 
-Options:
-  -A, --drive-a  Show info for disc in drive A
-  -B, --drive-b  Show info for disc in drive B
-  --help         Show this message and exit.
+Opciones:
+  -A, --drive-a  Mostrar info for disc in drive A
+  -B, --drive-b  Mostrar info for disc in drive B
+  --help         Mostrar this message and exit.
 ```
 
-### Information Displayed
+### Informaciónrmaciónrmation Displayed
 
 <ul>
   <li><strong>Structure</strong>: Tracks, size, sides</li>
@@ -159,19 +159,19 @@ Options:
   <li><strong>Blocks</strong>: Used blocks, first allocated block</li>
 </ul>
 
-### Examples
+### Ejemplos
 
-#### Show info for disk in drive A
+#### Mostrar info for disk in drive A
 ```bash
 cpc disc info -A
 ```
 
-#### Show info for specific DSK file
+#### Mostrar info for specific DSK file
 ```bash
 cpc disc info mydisk.dsk
 ```
 
-#### Show info for disk in drive B
+#### Mostrar info for disk in drive B
 ```bash
 cpc disc info -B
 ```
