@@ -246,6 +246,42 @@ cpc save --help         # Ayuda para el comando save
 
 ---
 
+## Notificaciones de Actualización
+
+CPCReady incluye un sistema automático de verificación de actualizaciones que funciona de forma transparente con todos los comandos.
+
+### ¿Cómo Funciona?
+
+Cuando ejecutes cualquier comando principal de CPCReady (como `cpc`, `disc`, `cat`, `drive`, etc.), la herramienta verificará automáticamente si hay una nueva versión disponible en PyPI.
+
+### Ejemplo de Notificación
+
+Si hay una actualización disponible, verás un mensaje como este antes de la salida normal del comando:
+
+```bash
+⚠ New version available: v3.1.0 (current: v3.0.1)
+⚠ Update with: pip install --upgrade cpcready
+
+# Seguido de la salida normal del comando
+```
+
+### Características del Sistema
+
+- **Cache inteligente**: Las consultas se almacenan en caché durante 6 horas para evitar solicitudes excesivas
+- **No intrusivo**: Si no hay conexión a internet, falla silenciosamente sin afectar el comando
+- **Timeout rápido**: Máximo 3 segundos de espera para la verificación
+- **Automático**: No requiere configuración adicional
+
+### Desactivar Notificaciones
+
+Las notificaciones de actualización están habilitadas por defecto. Si prefieres desactivarlas temporalmente, puedes usar CPCReady sin conexión a internet o instalar desde el código fuente para desarrollo.
+
+<Aside type="tip">
+Las notificaciones solo aparecen cuando hay una versión más reciente disponible. Si estás ejecutando la última versión, no verás ningún mensaje.
+</Aside>
+
+---
+
 ## Próximos Pasos
 
 <LinkCard
