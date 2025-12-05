@@ -15,110 +15,90 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
 ## Uso
 
 ```bash
-Uso: cpc drive [OPTIONS] COMMAND [ARGS]...
+Uso: cpc drive [OPTIONS] [a|b|eject|status]
 
-  Virtual drive management commands.
+  Manage disc drives.
 
-Comandos:
-  A       Montar DSK file in drive A
-  B       Montar DSK file in drive B
-  status  Mostrar current disk status
-  eject   Expulsar disco de unidad
+  Actions:
+    a       - Select drive A as active drive
+    b       - Select drive B as active drive
+    eject   - Eject disc from drive (use with -A or -B)
+    status  - Show drive status (default if no action specified)
+
+Opciones:
+  -A, --drive-a  Eject disc from drive A (use with eject action)
+  -B, --drive-b  Eject disc from drive B (use with eject action)
+  --help         Show this message and exit.
+```
+
+### Ejemplos
+
+```bash
+cpc drive a              # Select drive A
+cpc drive b              # Select drive B
+cpc drive eject -A       # Eject disc from drive A
+cpc drive eject -B       # Eject disc from drive B
+cpc drive status         # Show drive status
+cpc drive                # Show drive status (default)
 ```
 
 ---
 
 <Tabs>
-<TabItem label="drive A">
+<TabItem label="drive a">
 
-## drive A
+## drive a
 
-Montar a DSK file in virtual drive A. Validates the file path and updates configuration for subsequent operations.
+Select drive A as the active drive. The disc must be already inserted using `cpc disc insert`.
 
 ### Uso
 
 ```bash
-Uso: cpc drive A [OPTIONS] DSK_FILE
-
-  Montar DSK file in drive A.
-
-Argumentos:
-  DSK_FILE  Path to the DSK file to mount
-
-Opciones:
-  --help  Mostrar this message and exit.
+cpc drive a
 ```
 
 ### Ejemplos
 
-#### Montar disk in current directory
+#### Select drive A
 ```bash
-cpc drive A system.dsk
-```
-
-#### Montar disk with absolute path
-```bash
-cpc drive A /Users/user/cpc/games.dsk
-```
-
-#### Montar disk with relative path
-```bash
-cpc drive A ../disks/backup.dsk
+cpc drive a
 ```
 
 <Aside type="caution">
-Si the DSK file doesn't exist, the command will display an error and won't modify the configuration.
+If drive A has no disc inserted, the command will display an error.
 </Aside>
 
 <Aside type="tip">
-Use `cpc drive status` to verify the disk is mounted correctly.
+Use `cpc disc insert -A <file.dsk>` first to insert a disc into drive A.
 </Aside>
 
 </TabItem>
 
-<TabItem label="drive B">
+<TabItem label="drive b">
 
-## drive B
+## drive b
 
-Montar a DSK file in virtual drive B. Validates the file path and updates configuration for subsequent operations.
+Select drive B as the active drive. The disc must be already inserted using `cpc disc insert`.
 
 ### Uso
 
 ```bash
-Uso: cpc drive B [OPTIONS] DSK_FILE
-
-  Montar DSK file in drive B.
-
-Argumentos:
-  DSK_FILE  Path to the DSK file to mount
-
-Opciones:
-  --help  Mostrar this message and exit.
+cpc drive b
 ```
 
 ### Ejemplos
 
-#### Montar disk in current directory
+#### Select drive B
 ```bash
-cpc drive B games.dsk
-```
-
-#### Montar disk with absolute path
-```bash
-cpc drive B /Users/user/cpc/utilities.dsk
-```
-
-#### Montar disk with relative path
-```bash
-cpc drive B ../../oldstuff/archive.dsk
+cpc drive b
 ```
 
 <Aside type="caution">
-Si the DSK file doesn't exist, the command will display an error and won't modify the configuration.
+If drive B has no disc inserted, the command will display an error.
 </Aside>
 
 <Aside type="tip">
-Use `cpc drive status` to verify the disk is mounted correctly.
+Use `cpc disc insert -B <file.dsk>` first to insert a disc into drive B.
 </Aside>
 
 </TabItem>
@@ -132,12 +112,9 @@ Mostrar the current status of both floppy drives, showing which DSK files are mo
 ### Uso
 
 ```bash
-Uso: cpc drive status [OPTIONS]
-
-  Mostrar current disk status for drives A and B.
-
-Opciones:
-  --help  Mostrar this message and exit.
+cpc drive status
+# or simply
+cpc drive
 ```
 
 ### Ejemplos
@@ -147,13 +124,13 @@ Opciones:
 cpc drive status
 ```
 
-#### Alternative command
+#### Default action (no arguments)
 ```bash
-cpcdrivestatus
+cpc drive
 ```
 
 <Aside type="tip">
-Shows which DSK files are currently mounted in drives A and B, along with their full paths.
+Shows which DSK files are currently mounted in drives A and B, along with their full paths and which drive is currently selected.
 </Aside>
 
 <Aside type="note">
@@ -166,19 +143,19 @@ Drive configuration is stored in `~/.config/cpcready/cpcready.toml` under the `[
 
 ## drive eject
 
-Expulsar (unmount) the currently inserted DSK disk from drive A o B, clearing the drive configuration.
+Expulsar (unmount) the currently inserted DSK disk from drive A or B, clearing the drive configuration.
 
 ### Uso
 
 ```bash
-Uso: cpc drive eject [OPTIONS]
+cpc drive eject [OPTIONS]
+```
 
-  Expulsar disco de unidad A o B.
+### Opciones
 
-Opciones:
-  -A, --drive-a  Expulsar from drive A
-  -B, --drive-b  Expulsar from drive B
-  --help         Mostrar this message and exit.
+```
+  -A, --drive-a  Eject disc from drive A
+  -B, --drive-b  Eject disc from drive B
 ```
 
 ### Ejemplos
@@ -191,16 +168,6 @@ cpc drive eject -A
 #### Expulsar from drive B
 ```bash
 cpc drive eject -B
-```
-
-#### Alternative command (drive A)
-```bash
-cpcdriveeject -A
-```
-
-#### Alternative command (drive B)
-```bash
-cpcdriveeject -B
 ```
 
 <Aside type="tip">

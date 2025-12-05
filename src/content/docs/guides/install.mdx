@@ -316,7 +316,10 @@ Prueba tu instalación con estos comandos:
   cpc disc new test.dsk
   
   # Montar el disco
-  cpc drive A test.dsk
+  cpc disc insert -A test.dsk
+  
+  # Seleccionar drive A
+  cpc drive a
   
   # Listar archivos (debería estar vacío)
   cpc cat
@@ -337,7 +340,10 @@ Prueba tu instalación con estos comandos:
   poetry run cpc disc new test.dsk
   
   # Montar el disco
-  poetry run cpc drive A test.dsk
+  poetry run cpc disc insert -A test.dsk
+  
+  # Seleccionar drive A
+  poetry run cpc drive a
   
   # Listar archivos (debería estar vacío)
   poetry run cpc cat
@@ -433,6 +439,33 @@ Si encuentras errores de permisos al instalar con Homebrew:
 ```bash
 sudo chown -R $(whoami) $(brew --prefix)/*
 ```
+
+## Problema común en Windows: scripts no están en el PATH
+
+<Aside type="caution" title="Advertencia de instalación con pip/Poetry">
+Al instalar CPCReady en Windows usando pip o Poetry, puedes ver este mensaje:
+
+```text
+WARNING: The scripts A.exe, B.exe, catcpc.exe, cpc.exe, disc.exe, drive.exe, era.exe, list.exe, save.exe and user.exe are installed in 'C:\Users\<usuario>\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\Scripts' which is not on PATH.
+Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+```
+
+Esto significa que los ejecutables no están en una carpeta incluida en la variable de entorno `PATH`, por lo que no podrás ejecutarlos directamente desde la terminal.
+</Aside>
+
+### Solución: Añadir la carpeta al PATH
+
+1. Copia la ruta indicada en el mensaje de advertencia.
+2. Abre el Panel de Control → Sistema → Configuración avanzada del sistema → Variables de entorno.
+3. Busca la variable `PATH` en "Variables de usuario" y haz clic en "Editar".
+4. Añade la ruta copiada como un nuevo valor y guarda los cambios.
+5. Cierra y abre una nueva terminal para que los cambios tengan efecto.
+
+Ahora podrás ejecutar los comandos de CPCReady desde cualquier terminal en Windows.
+
+<Aside type="note">
+Consulta la [documentación oficial de Python](https://docs.python.org/3/using/windows.html#excursus-setting-environment-variables) para más detalles sobre variables de entorno.
+</Aside>
 
 ---
 
