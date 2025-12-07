@@ -1,0 +1,256 @@
+---
+title: Exceptions
+description: Excepciones personalizadas para PyDSK
+---
+
+import { Code } from '@astrojs/starlight/components';
+import { Aside } from '@astrojs/starlight/components';
+
+## Jerarquía de Excepciones
+
+PyDSK define una jerarquía de excepciones personalizadas para errores específicos de manipulación de DSK:
+
+```
+Exception
+└── DSKError
+    ├── DSKFormatError
+    ├── DSKFileNotFoundError
+    ├── DSKFileExistsError
+    └── DSKNoSpaceError
+```
+
+---
+
+## DSKError
+
+```python
+class DSKError(Exception)
+```
+
+Excepción base para todos los errores de DSK. Hereda de `Exception`.
+
+**Uso:**
+
+Esta es la clase base. Para capturar cualquier error relacionado con DSK, captura esta excepción.
+
+**Ejemplo:**
+
+```python
+from cpcready.pydsk import DSK, DSKError
+
+try:
+    dsk = DSK("disco.dsk")
+    dsk.write_file("archivo.txt")
+except DSKError as e:
+    print(f"Error DSK: {e}")
+```
+
+---
+
+## DSKFormatError
+
+```python
+class DSKFormatError(DSKError)
+```
+
+Error en el formato del archivo DSK. Se lanza cuando:
+- El archivo DSK tiene un formato inválido
+- La cabecera está corrupta
+- El formato no es CPCEMU reconocido
+
+**Hereda de:** `DSKError`
+
+**Ejemplo:**
+
+```python
+from cpcready.pydsk import DSK, DSKFormatError
+
+try:
+    dsk = DSK("archivo_corrupto.dsk")
+except DSKFormatError as e:
+    print(f"Formato inválido: {e}")
+```
+
+<Aside type="caution">
+Esta excepción indica que el archivo no es un DSK válido o está dañado. No intentes escribir en un DSK con formato inválido.
+</Aside>
+
+---
+
+## DSKFileNotFoundError
+
+```python
+class DSKFileNotFoundError(DSKError)
+```
+
+Archivo no encontrado en la imagen DSK. Se lanza cuando:
+- Intentas leer un archivo que no existe en el DSK
+- Intentas eliminar un archivo inexistente
+- Intentas renombrar un archivo que no existe
+
+**Hereda de:** `DSKError`
+
+**Ejemplo:**
+
+```python
+from cpcready.pydsk import DSK, DSKFileNotFoundError
+
+dsk = DSK("disco.dsk")
+
+try:
+    data = dsk.read_file("noexiste.bas")
+except DSKFileNotFoundError as e:
+    print(f"Archivo no encontrado: {e}")
+```
+
+<Aside type="note">
+Esta excepción es específica para archivos **dentro** del DSK, no para el archivo DSK del sistema de archivos (que lanzaría la excepción estándar de Python `FileNotFoundError`).
+</Aside>
+
+---
+
+## DSKFileExistsError
+
+```python
+class DSKFileExistsError(DSKError)
+```
+
+El archivo ya existe en la imagen DSK. Se lanza cuando:
+- Intentas escribir un archivo que ya existe sin usar `force=True`
+- Intentas renombrar a un nombre que ya existe
+
+**Hereda de:** `DSKError`
+
+**Ejemplo:**
+
+```python
+from cpcready.pydsk import DSK, DSKFileExistsError
+
+dsk = DSK("disco.dsk")
+
+try:
+    dsk.write_file("programa.bas")
+    dsk.write_file("programa.bas")  # Error: ya existe
+except DSKFileExistsError as e:
+    print(f"El archivo ya existe: {e}")
+    
+# Solución: usar force=True
+dsk.write_file("programa.bas", force=True)  # OK
+```
+
+---
+
+## DSKNoSpaceError
+
+```python
+class DSKNoSpaceError(DSKError)
+```
+
+No hay espacio suficiente en la imagen DSK. Se lanza cuando:
+- Intentas escribir un archivo y no hay bloques libres
+- El directorio está lleno (64 entradas máximo)
+- El archivo es demasiado grande para el espacio disponible
+
+**Hereda de:** `DSKError`
+
+**Ejemplo:**
+
+```python
+from cpcready.pydsk import DSK, DSKNoSpaceError
+
+dsk = DSK("disco.dsk")
+
+try:
+    dsk.write_file("archivo_grande.bin")
+except DSKNoSpaceError as e:
+    print(f"Sin espacio: {e}")
+    print(f"Espacio libre: {dsk.get_free_space()} bytes")
+```
+
+<Aside type="tip">
+Puedes verificar el espacio libre antes de escribir usando `dsk.get_free_space()`.
+</Aside>
+
+---
+
+## Manejo de Excepciones
+
+### Captura Específica
+
+Captura excepciones específicas para diferentes tipos de error:
+
+```python
+from cpcready.pydsk import (
+    DSK, DSKError, DSKFormatError, 
+    DSKFileNotFoundError, DSKNoSpaceError
+)
+
+try:
+    dsk = DSK("disco.dsk")
+    dsk.write_file("programa.bas")
+    
+except DSKFormatError as e:
+    print(f"Formato inválido: {e}")
+    
+except DSKFileNotFoundError as e:
+    print(f"Archivo no encontrado: {e}")
+    
+except DSKNoSpaceError as e:
+    print(f"Sin espacio: {e}")
+    
+except DSKError as e:
+    print(f"Error general DSK: {e}")
+```
+
+### Captura General
+
+Para capturar cualquier error DSK:
+
+```python
+from cpcready.pydsk import DSK, DSKError
+
+try:
+    dsk = DSK("disco.dsk")
+    dsk.write_file("programa.bas")
+except DSKError as e:
+    print(f"Error: {e}")
+```
+
+### Verificación Preventiva
+
+Evita excepciones verificando condiciones antes:
+
+```python
+from cpcready.pydsk import DSK
+import os
+
+# Verificar archivo host existe
+if not os.path.exists("programa.bas"):
+    print("Archivo no existe")
+    exit(1)
+
+dsk = DSK("disco.dsk")
+
+# Verificar espacio libre
+file_size = os.path.getsize("programa.bas")
+if dsk.get_free_space() < file_size:
+    print("Sin espacio suficiente")
+    exit(1)
+
+# Verificar si archivo ya existe en DSK
+entries = dsk.get_directory_entries()
+if any(e.filename == "PROGRAMA.BAS" for e in entries):
+    print("Archivo ya existe")
+    exit(1)
+
+# Ahora es seguro escribir
+dsk.write_file("programa.bas")
+dsk.save()
+```
+
+---
+
+## Ver También
+
+- [DSK](/api/pydsk/dsk/) - Clase principal DSK
+- [Structures](/api/pydsk/structures/) - Estructuras de datos

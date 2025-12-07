@@ -1,0 +1,43 @@
+---
+title: Actualizar CPCReady
+description: Cómo actualizar CPCReady a la última versión
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+import { LinkCard } from '@astrojs/starlight/components';
+import { Badge } from '@astrojs/starlight/components';
+import { Aside } from '@astrojs/starlight/components';
+
+---
+## Notificaciones de Actualización
+
+CPCReady incluye un sistema automático de verificación de actualizaciones que funciona de forma transparente con todos los comandos.
+
+### ¿Cómo Funciona?
+
+Cuando ejecutes cualquier comando principal de CPCReady (como <Badge text="cpc" variant="note" />, <Badge text="disc" variant="note" />, <Badge text="cat" variant="note" />, <Badge text="drive" variant="note" />, etc.), la herramienta verificará automáticamente si hay una nueva versión disponible en PyPI.
+
+### Ejemplo de Notificación
+
+Si hay una actualización disponible, verás un mensaje como este antes de la salida normal del comando:
+
+```bash
+⚠ New version available: v3.1.0 (current: v3.0.1)
+⚠ Update with: pipx upgrade cpcready
+
+# Seguido de la salida normal del comando
+```
+
+### Características del Sistema
+
+- **Cache inteligente**: Las consultas se almacenan en caché durante 6 horas para evitar solicitudes excesivas
+- **No intrusivo**: Si no hay conexión a internet, falla silenciosamente sin afectar el comando
+- **Timeout rápido**: Máximo 3 segundos de espera para la verificación
+- **Automático**: No requiere configuración adicional
+
+<Aside type="tip">
+Las notificaciones solo aparecen cuando hay una versión más reciente disponible. Si estás ejecutando la última versión, no verás ningún mensaje.
+</Aside>
+
+---
+

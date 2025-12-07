@@ -10,7 +10,7 @@ import { Code } from '@astrojs/starlight/components';
 import { Aside } from '@astrojs/starlight/components';
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-<Card>Gestionar virtual floppy drives A and B: mount DSK files, check status, and eject disks.</Card>
+<Card>Gestiona unidades de disquete virtuales A y B: monta archivos DSK, comprueba el estado y expulsa discos.</Card>
 
 ## Uso
 
@@ -49,7 +49,7 @@ cpc drive                # Show drive status (default)
 
 ## drive a
 
-Select drive A as the active drive. The disc must be already inserted using `cpc disc insert`.
+ Selecciona la unidad A como la unidad activa. El disco debe estar ya insertado usando `cpc disc insert`.
 
 ### Uso
 
@@ -65,11 +65,11 @@ cpc drive a
 ```
 
 <Aside type="caution">
-If drive A has no disc inserted, the command will display an error.
+Si la unidad A no tiene un disco insertado, el comando mostrará un error.
 </Aside>
 
 <Aside type="tip">
-Use `cpc disc insert -A <file.dsk>` first to insert a disc into drive A.
+Usa `cpc disc insert -A <file.dsk>` primero para insertar un disco en la unidad A.
 </Aside>
 
 </TabItem>
@@ -78,7 +78,7 @@ Use `cpc disc insert -A <file.dsk>` first to insert a disc into drive A.
 
 ## drive b
 
-Select drive B as the active drive. The disc must be already inserted using `cpc disc insert`.
+Selecciona la unidad B como la unidad activa. El disco debe estar ya insertado usando `cpc disc insert`.
 
 ### Uso
 
@@ -94,20 +94,20 @@ cpc drive b
 ```
 
 <Aside type="caution">
-If drive B has no disc inserted, the command will display an error.
+Si la unidad B no tiene un disco insertado, el comando mostrará un error.
 </Aside>
 
 <Aside type="tip">
-Use `cpc disc insert -B <file.dsk>` first to insert a disc into drive B.
+Usa `cpc disc insert <file.dsk> -B ` primero para insertar un disco en la unidad B.
 </Aside>
 
 </TabItem>
 
-<TabItem label="drive status">
+<TabItem label="drive status"> 
 
 ## drive status
 
-Mostrar the current status of both floppy drives, showing which DSK files are mounted and their paths.
+Muestra el estado actual de ambas unidades de disquete, mostrando qué archivos DSK están montados y sus rutas.
 
 ### Uso
 
@@ -130,11 +130,11 @@ cpc drive
 ```
 
 <Aside type="tip">
-Shows which DSK files are currently mounted in drives A and B, along with their full paths and which drive is currently selected.
+Muestra qué archivos DSK están actualmente montados en las unidades A y B, junto con sus rutas completas y cuál unidad está seleccionada.
 </Aside>
 
 <Aside type="note">
-Drive configuration is stored in `~/.config/cpcready/cpcready.toml` under the `[drive]` section.
+La configuración de las unidades se almacena en `~/.config/cpcready/cpcready.toml` bajo la sección `[drive]`.
 </Aside>
 
 </TabItem>
@@ -143,7 +143,7 @@ Drive configuration is stored in `~/.config/cpcready/cpcready.toml` under the `[
 
 ## drive eject
 
-Expulsar (unmount) the currently inserted DSK disk from drive A or B, clearing the drive configuration.
+Expulsar el disco DSK actualmente insertado en la unidad A o B, limpiando la configuración de la unidad.
 
 ### Uso
 
@@ -171,11 +171,11 @@ cpc drive eject -B
 ```
 
 <Aside type="tip">
-Use `cpc drive status` after ejecting to verify the drive is empty.
+Usa `cpc drive status` después de expulsar para verificar que la unidad está vacía.
 </Aside>
 
 <Aside type="note">
-Ejecting removes the DSK path from `~/.config/cpcready/cpcready.toml` for the specified drive.
+La expulsión elimina la ruta DSK de `~/.config/cpcready/cpcready.toml` para la unidad especificada.
 </Aside>
 
 </TabItem>
@@ -183,12 +183,4 @@ Ejecting removes the DSK path from `~/.config/cpcready/cpcready.toml` for the sp
 
 ---
 
-## Video Demo
 
-<video controls width="800" autoplay loop muted>
-  <source src="/videos/cat.mp4" type="video/mp4" />
-</video>
-
-<Aside type="note">
-All drive operations update the configuration file at `~/.config/cpcready/cpcready.toml`.
-</Aside>

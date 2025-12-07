@@ -1,0 +1,393 @@
+---
+title: System
+description: Utilidades del sistema para procesamiento de archivos y ejecución de comandos
+---
+
+import { Code } from '@astrojs/starlight/components';
+import { Aside } from '@astrojs/starlight/components';
+
+## Módulo System
+
+Utilidades del sistema para procesamiento de rutas de archivos DSK y ejecución de comandos del sistema operativo.
+
+---
+
+## Funciones
+
+### process_dsk_name
+
+```python
+def process_dsk_name(disc_image: str) -> Path
+```
+
+Procesa y normaliza el nombre de un archivo DSK, asegurando extensión correcta y ruta absoluta.
+
+**Parámetros:**
+
+- **disc_image** (`str`) - Nombre o ruta del archivo DSK
+
+**Returns:** `Path` - Ruta absoluta al archivo DSK
+
+**Comportamiento:**
+
+1. Añade extensión `.dsk` si no está presente
+2. Convierte rutas relativas a absolutas
+3. Si solo es un nombre, usa el directorio actual
+4. Crea directorios padre si no existen
+
+**Ejemplo:**
+
+```python
+from cpcready.utils.system import process_dsk_name
+
+# Solo nombre - añade .dsk y usa directorio actual
+path = process_dsk_name("juego")
+# Resultado: /ruta/actual/juego.dsk
+
+# Nombre con extensión
+path = process_dsk_name("juego.dsk")
+# Resultado: /ruta/actual/juego.dsk
+
+# Ruta relativa
+path = process_dsk_name("discos/juego")
+# Resultado: /ruta/actual/discos/juego.dsk
+
+# Ruta absoluta
+path = process_dsk_name("/home/user/discos/juego.dsk")
+# Resultado: /home/user/discos/juego.dsk
+
+# Crea directorios si no existen
+path = process_dsk_name("nuevacarpeta/juego.dsk")
+# Crea 'nuevacarpeta' si no existe
+```
+
+<Aside type="note">
+Esta función crea automáticamente los directorios padre si no existen, evitando errores de "directorio no encontrado".
+</Aside>
+
+---
+
+### run_command
+
+```python
+def run_command(
+    cmd: Union[str, List[str]], 
+    show_output: bool = True, 
+    check: bool = True
+) -> subprocess.CompletedProcess
+```
+
+Ejecuta un comando del sistema y muestra su salida en tiempo real.
+
+**Parámetros:**
+
+- **cmd** (`str | List[str]`) - Comando a ejecutar
+  - `str`: Comando como cadena (usa shell, soporta pipes y redirecciones)
+  - `List[str]`: Comando como lista de argumentos (más seguro)
+- **show_output** (`bool`) - Si `True`, muestra salida en consola. Por defecto: `True`
+- **check** (`bool`) - Si `True`, lanza excepción si hay error. Por defecto: `True`
+
+**Returns:** `subprocess.CompletedProcess` - Resultado del comando
+
+**Raises:**
+
+- `subprocess.CalledProcessError` - Si `check=True` y el comando falla
+
+**Ejemplo:**
+
+```python
+from cpcready.utils.system import run_command
+
+# Ejecutar comando simple (string)
+run_command("ls -la")
+
+# Ejecutar con lista de argumentos (más seguro)
+run_command(["ls", "-la"])
+
+# Comando con pipe (requiere string)
+run_command("cat archivo.txt | grep 'error'")
+
+# Sin mostrar salida
+result = run_command("echo 'test'", show_output=False)
+print(result.stdout)
+
+# Sin verificar errores
+run_command("comando_que_puede_fallar", check=False)
+
+# Capturar resultado
+result = run_command(["python", "--version"])
+print(f"Código de salida: {result.returncode}")
+```
+
+<Aside type="caution">
+Al usar `cmd` como string, se ejecuta a través de shell, lo que puede tener implicaciones de seguridad con entrada no confiable. Prefiere usar lista cuando sea posible.
+</Aside>
+
+---
+
+## Ejemplos de Uso
+
+### Procesamiento de Rutas DSK
+
+```python
+from cpcready.utils.system import process_dsk_name
+from pathlib import Path
+
+def crear_disco(nombre):
+    """Crea un nuevo disco con nombre normalizado"""
+    ruta_dsk = process_dsk_name(nombre)
+    
+    print(f"Creando disco en: {ruta_dsk}")
+    print(f"Directorio: {ruta_dsk.parent}")
+    print(f"Nombre: {ruta_dsk.name}")
+    
+    # El directorio ya existe gracias a process_dsk_name
+    # Aquí iría la lógica de creación del DSK
+    
+    return ruta_dsk
+
+# Uso
+disco = crear_disco("mi_juego")
+# Creando disco en: /ruta/actual/mi_juego.dsk
+
+disco = crear_disco("proyectos/demo/demo1")
+# Crea proyectos/demo/ si no existe
+# Creando disco en: /ruta/actual/proyectos/demo/demo1.dsk
+```
+
+---
+
+### Ejecución de Comandos con Feedback
+
+```python
+from cpcready.utils.system import run_command
+from cpcready.utils.console import ok, error, info2
+
+def compilar_proyecto():
+    """Compila un proyecto mostrando progreso"""
+    try:
+        info2("Iniciando compilación...")
+        
+        # Ejecutar make con salida visible
+        result = run_command("make all")
+        
+        ok("Compilación exitosa")
+        return True
+        
+    except subprocess.CalledProcessError as e:
+        error(f"Error en compilación: código {e.returncode}")
+        return False
+
+# Uso
+if compilar_proyecto():
+    print("Proyecto listo")
+else:
+    print("Revisa los errores")
+```
+
+---
+
+### Procesamiento de Múltiples Archivos
+
+```python
+from cpcready.utils.system import run_command, process_dsk_name
+from pathlib import Path
+
+def convertir_imagenes_a_dsk(imagenes):
+    """Convierte múltiples imágenes a formato DSK"""
+    for imagen in imagenes:
+        try:
+            # Normalizar nombre de salida
+            nombre_base = Path(imagen).stem
+            dsk_salida = process_dsk_name(f"discos/{nombre_base}")
+            
+            # Ejecutar herramienta de conversión (ejemplo)
+            cmd = ["img2dsk", imagen, str(dsk_salida)]
+            run_command(cmd)
+            
+            print(f"✓ Convertido: {dsk_salida}")
+            
+        except Exception as e:
+            print(f"✗ Error con {imagen}: {e}")
+
+# Uso
+imagenes = ["game1.img", "game2.img", "game3.img"]
+convertir_imagenes_a_dsk(imagenes)
+```
+
+---
+
+### Validación de Archivos DSK
+
+```python
+from cpcready.utils.system import process_dsk_name
+from pathlib import Path
+
+def validar_dsk(nombre_archivo):
+    """Valida que un archivo DSK existe y es accesible"""
+    ruta = process_dsk_name(nombre_archivo)
+    
+    if not ruta.exists():
+        print(f"Advertencia: {ruta} no existe aún")
+        print(f"Se creará en: {ruta.parent}")
+        return False
+    
+    if not ruta.is_file():
+        print(f"Error: {ruta} no es un archivo")
+        return False
+    
+    # Verificar tamaño mínimo (180KB para disco estándar)
+    size = ruta.stat().st_size
+    if size < 180 * 1024:
+        print(f"Advertencia: Archivo muy pequeño ({size} bytes)")
+    
+    print(f"✓ DSK válido: {ruta.name} ({size:,} bytes)")
+    return True
+
+# Uso
+validar_dsk("juego.dsk")
+validar_dsk("proyectos/demo1")  # Añade .dsk automáticamente
+```
+
+---
+
+### Ejecución Silenciosa para Scripts
+
+```python
+from cpcready.utils.system import run_command
+import json
+
+def obtener_info_sistema():
+    """Obtiene información del sistema sin mostrar salida"""
+    info = {}
+    
+    # Python version (sin output)
+    result = run_command(
+        ["python", "--version"], 
+        show_output=False
+    )
+    info['python'] = result.stdout
+    
+    # Git branch (sin output)
+    result = run_command(
+        ["git", "branch", "--show-current"],
+        show_output=False,
+        check=False  # No fallar si no es repo git
+    )
+    info['git_branch'] = result.stdout if result.returncode == 0 else "N/A"
+    
+    return info
+
+# Uso
+info = obtener_info_sistema()
+print(json.dumps(info, indent=2))
+```
+
+---
+
+## Integración con Otros Módulos
+
+### Con Console
+
+```python
+from cpcready.utils.system import run_command
+from cpcready.utils.console import info2, ok, error
+
+def ejecutar_con_log(comando, descripcion):
+    """Ejecuta comando con logging mejorado"""
+    info2(f"Ejecutando: {descripcion}")
+    
+    try:
+        result = run_command(comando)
+        ok(f"Completado: {descripcion}")
+        return result
+    except subprocess.CalledProcessError:
+        error(f"Falló: {descripcion}")
+        raise
+
+# Uso
+ejecutar_con_log(["make", "clean"], "Limpieza del proyecto")
+ejecutar_con_log(["make", "build"], "Compilación")
+```
+
+---
+
+### Con Manager
+
+```python
+from cpcready.utils.system import process_dsk_name
+from cpcready.utils.manager import DriveManager
+
+def montar_disco_normalizado(nombre_disco, drive="A"):
+    """Normaliza nombre y monta en drive"""
+    # Normalizar ruta
+    ruta_dsk = process_dsk_name(nombre_disco)
+    
+    # Montar en drive
+    dm = DriveManager()
+    if drive.upper() == "A":
+        dm.insert_drive_a(str(ruta_dsk))
+    else:
+        dm.insert_drive_b(str(ruta_dsk))
+    
+    print(f"Disco montado: {ruta_dsk.name} en drive {drive}")
+    return ruta_dsk
+
+# Uso
+montar_disco_normalizado("mi_juego", "A")
+# Normaliza a /ruta/actual/mi_juego.dsk y lo monta
+```
+
+---
+
+## Casos de Uso Comunes
+
+### 1. Preparar Directorios para Proyectos
+
+```python
+from cpcready.utils.system import process_dsk_name
+
+# Estructura de proyecto
+discos = [
+    "proyecto/codigo/main.dsk",
+    "proyecto/graficos/sprites.dsk",
+    "proyecto/audio/music.dsk"
+]
+
+for disco in discos:
+    ruta = process_dsk_name(disco)
+    print(f"Preparado: {ruta}")
+    # Directorios creados automáticamente
+```
+
+### 2. Pipeline de Compilación
+
+```python
+from cpcready.utils.system import run_command
+from cpcready.utils.console import banner, ok
+
+def pipeline_completo():
+    banner("Iniciando Pipeline")
+    
+    run_command("make clean")
+    ok("Limpieza completada")
+    
+    run_command("make build")
+    ok("Compilación completada")
+    
+    run_command("make test")
+    ok("Tests completados")
+    
+    banner("Pipeline Exitoso")
+
+pipeline_completo()
+```
+
+---
+
+## Ver También
+
+- [Console](/api/utils/console/) - Utilidades de consola con Rich
+- [Manager](/api/utils/manager/) - Gestión de drives
+- [Python subprocess](https://docs.python.org/3/library/subprocess.html) - Documentación oficial
+- [Python pathlib](https://docs.python.org/3/library/pathlib.html) - Manipulación de rutas

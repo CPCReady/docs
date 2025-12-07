@@ -8,254 +8,175 @@ import { Aside } from '@astrojs/starlight/components';
 import { Code } from '@astrojs/starlight/components';
 import { Steps } from '@astrojs/starlight/components';
 import { Tabs, TabItem } from '@astrojs/starlight/components';
+import { Badge } from '@astrojs/starlight/components';
 
-## Descripción General
+## Requisitos del Sistema
 
-**CPCReady** es una herramienta basada en Python para gestionar imágenes de disco Amstrad CPC. Sigue esta guía para instalarla en tu sistema.
+<Card title="Python 3.10 o superior" icon="seti:python">
+  Descargar desde [python.org](https://www.python.org/downloads/)
+  
+  Verificar instalación:
+  ```bash
+  python3 --version
+  ```
+  o
+    ```bash
+  python --version
+  ```
+</Card>
 
-<Aside type="note">
-CPCReady funciona en **macOS**, **Linux** y **Windows**. Python 3.13+ requerido.
+<Card title="RetroVirtualMachine (Opcional)" icon="laptop">
+  Emulador Amstrad CPC
+  
+  Descargar desde [retrovirtualmachine.org](https://www.retrovirtualmachine.org/)
+
+  <Aside type="caution" title="Versión específica de RetroVirtualMachine requerida">
+CPCReady **solo funciona** con una versión específica de RetroVirtualMachine:
+Esto es asi, porque en versiones posteriores no estan activadas las funciones de desarrollo tal y como indica su desarrollador en la web (https://www.retrovirtualmachine.org/download/).
+
+**Versión requerida:** Retro Virtual Machine v2.0 BETA-1 r7 (Build 6783)
+
+**Información de la build:**
+- MacOS x64 Build: 6783
+- Fecha: Tue Jul 9 18:18:12 2019 UTC
+
+Otras versiones del emulador pueden no funcionar correctamente con CPCReady. Asegúrate de descargar y usar exactamente esta versión.
 </Aside>
+
+
+</Card>
 
 ---
 
 ## Instalación Rápida
 
 <Tabs>
-  <TabItem label="macOS / Linux">
-  
-  ### Homebrew (Recomendado)
-  
-  ```bash
-  # Agregar el tap de CPCReady
-  brew tap cpcready/cpcready https://github.com/cpcready/homebrew-cpcready
-  
-  # Instalar cpc
-  brew install cpcready/cpcready/cpc
-  
-  # Verificar instalación
-  cpc --version
-  ```
-  
-  <Aside type="tip">
-  Si no tienes Homebrew instalado, sigue las instrucciones en la sección "Instalar Gestores de Paquetes" más abajo.
-  </Aside>
-  
-  </TabItem>
-  
   <TabItem label="Windows">
   
-  ### Chocolatey (Recomendado)
+  ### Usando pipx (Recomendado)
   
-  ```powershell
-  # Instalar cpc
-  choco install cpc
+  <Steps>
   
-  # Verificar instalación
-  cpc --version
-  ```
+  1. Instalar Python
+     
+     Descarga e instala Python desde [python.org](https://www.python.org/downloads/) o usando winget:
+     
+     ```powershell
+     winget install --id Python.Python.3.11 -e
+     ```
   
-  <Aside type="tip">
-  Si no tienes Chocolatey instalado, sigue las instrucciones en la sección "Instalar Gestores de Paquetes" más abajo.
-  </Aside>
+  2. Instalar pipx
+     
+     ```powershell
+     pip install pipx
+     pipx ensurepath
+     ```
+  
+  3. Instalar CPCReady
+     
+     ```powershell
+     pipx install cpcready
+     ```
+  
+  4. Verificar instalación
+     
+     Cierra y vuelve a abrir la terminal, luego ejecuta:
+     
+     ```powershell
+     cpc --version
+     ```
+  
+  </Steps>
   
   </TabItem>
+
+  <TabItem label="macOS">
+  
+  ### Usando pipx (Recomendado)
+  
+  <Steps>
+  
+  1. Instalar Homebrew (si no lo tienes)
+     
+     ```bash
+     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+     ```
+  
+  2. Instalar pipx
+     
+     ```bash
+     brew install pipx
+     pipx ensurepath
+     ```
+  
+  3. Instalar CPCReady
+     
+     ```bash
+     pipx install cpcready
+     ```
+  
+  4. Verificar instalación
+     
+     ```bash
+     cpc --version
+     ```
+  
+  </Steps>
+  
+  </TabItem>
+  
+  <TabItem label="Linux">
+  
+  ### Usando pipx (Recomendado)
+  
+  <Steps>
+  
+  1. Instalar pipx
+     
+     Debian/Ubuntu:
+     ```bash
+     sudo apt update
+     sudo apt install pipx
+     pipx ensurepath
+     ```
+     
+     Fedora:
+     ```bash
+     sudo dnf install pipx
+     pipx ensurepath
+     ```
+     
+     Arch Linux:
+     ```bash
+     sudo pacman -S python-pipx
+     pipx ensurepath
+     ```
+  
+  2. Instalar CPCReady
+     
+     ```bash
+     pipx install cpcready
+     ```
+  
+  3. Verificar instalación
+     
+     ```bash
+     cpc --version
+     ```
+  
+  </Steps>
+  
+  </TabItem>
+
 </Tabs>
 
 ---
 
-## Instalar Gestores de Paquetes
 
-### Homebrew (macOS / Linux)
 
-Si aún no tienes Homebrew instalado:
+### Configurar Emulador (Opcional)
 
-```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-```
-
-**En Linux**, después de la instalación, agrega Homebrew a tu PATH:
-
-```bash
-echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> ~/.bashrc
-source ~/.bashrc
-```
-
-Más información: [brew.sh](https://brew.sh)
-
-### Chocolatey (Windows)
-
-Si aún no tienes Chocolatey instalado:
-
-1. Abre PowerShell como **Administrador**
-2. Ejecuta:
-
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
-```
-
-3. Cierra y vuelve a abrir PowerShell
-
-Más información: [chocolatey.org](https://chocolatey.org/install)
-
----
-
-## Requisitos del Sistema
-
-<CardGrid>
-  <Card title="Python 3.13+" icon="seti:python">
-    Descargar desde [python.org](https://www.python.org/downloads/)
-    
-    Verificar instalación:
-    ```bash
-    python3 --version
-    ```
-  </Card>
-  
-  <Card title="Poetry" icon="seti:config">
-    Gestor de paquetes para Python
-    
-    Instalar con:
-    ```bash
-    curl -sSL https://install.python-poetry.org | python3 -
-    ```
-  </Card>
-  
-  <Card title="Git" icon="github">
-    Sistema de control de versiones
-    
-    Verificar instalación:
-    ```bash
-    git --version
-    ```
-  </Card>
-  
-  <Card title="RetroVirtualMachine (Opcional)" icon="laptop">
-    Emulador Amstrad CPC
-    
-    Descargar desde [retrovirtualmachine.org](https://www.retrovirtualmachine.org/)
-  </Card>
-</CardGrid>
-
----
-
-## Métodos de Instalación Alternativos
-
-<Aside type="note">
-Si ya instalaste CPCReady con Homebrew o Chocolatey, puedes saltar esta sección.
-</Aside>
-
-<Tabs>
-  <TabItem label="Desde Código Fuente">
-
-### Instalar desde Repositorio GitHub
-
-<Aside type="caution">
-Este método requiere tener **Python 3.13+** y **Poetry** instalados previamente.
-</Aside>
-
-<Steps>
-
-1. **Clonar el repositorio**
-   
-   ```bash
-   git clone https://github.com/CPCReady/cpc.git
-   cd cpc
-   ```
-
-2. **Instalar con Poetry**
-   
-   ```bash
-   poetry install
-   ```
-
-3. **Verificar instalación**
-   
-   ```bash
-   poetry run cpc --version
-   ```
-
-4. **Opcional: Añadir al PATH**
-   
-   Para un acceso más fácil, puedes crear un alias en tu shell:
-   
-   ```bash
-   # Para bash/zsh, añadir a ~/.bashrc o ~/.zshrc
-   alias cpc='poetry run cpc'
-   ```
-
-</Steps>
-
-<Aside type="tip">
-Instalar desde código fuente te da las últimas características y te permite contribuir al desarrollo.
-</Aside>
-
-  </TabItem>
-  
-  <TabItem label="Con pip (Avanzado)">
-
-### Instalar con pip
-
-Si prefieres usar pip directamente:
-
-```bash
-# Clonar el repositorio
-git clone https://github.com/CPCReady/cpc.git
-cd cpc
-
-# Instalar con pip
-pip install .
-
-# Verificar instalación
-cpc --version
-```
-
-<Aside type="caution">
-Asegúrate de usar Python 3.13+ y tener pip actualizado: `pip install --upgrade pip`
-</Aside>
-
-  </TabItem>
-</Tabs>
-
----
-
-## Herramientas Requeridas para Instalación desde Código
-
-<Aside type="note">
-Solo necesario si instalas desde código fuente. Si usas Homebrew/Chocolatey, estos gestores manejan las dependencias automáticamente.
-</Aside>
-
-### 1. Configurar CPCReady
-
-Ejecutar el asistente de configuración:
-
-```bash
-poetry run cpc configweb
-```
-
-O editar manualmente el archivo de configuración:
-
-**Ubicación**: `~/.config/cpcready/cpcready.toml`
-
-```toml
-[drive]
-drive_a = ""
-drive_b = ""
-selected_drive = "A"
-
-[emulator]
-default = "RetroVirtualMachine"
-retro_virtual_machine_path = "/Applications/Retro Virtual Machine 2.app"
-
-[system]
-user = 0
-model = "6128"
-mode = 1
-```
-
-### 2. Configurar Emulador (Opcional)
-
-Si quieres usar el `cpc run` comando, configura la ruta de tu emulador:
+Si quieres usar el comando <Badge text="cpc-run" variant="note" /> o <Badge text="cpc run" variant="note" /> es necesario, configura la ruta de tu emulador:
 
 <Steps>
 
@@ -266,33 +187,13 @@ Si quieres usar el `cpc run` comando, configura la ruta de tu emulador:
 3. Configura la ruta en CPCReady:
    
    ```bash
-   poetry run cpc configweb
+   cpc rvm config
    ```
-   
-   O editar `~/.config/cpcready/cpcready.toml` directamente:
-   
-   <Tabs>
-     <TabItem label="macOS">
-     ```toml
-     [emulator]
-     retro_virtual_machine_path = "/Applications/Retro Virtual Machine 2.app"
-     ```
-     </TabItem>
-     
-     <TabItem label="Linux">
-     ```toml
-     [emulator]
-     retro_virtual_machine_path = "/usr/local/bin/RetroVirtualMachine"
-     ```
-     </TabItem>
-     
-     <TabItem label="Windows (WSL)">
-     ```toml
-     [emulator]
-     retro_virtual_machine_path = "/mnt/c/Program Files/RetroVirtualMachine/rvm.exe"
-     ```
-     </TabItem>
-   </Tabs>
+   O
+
+      ```bash
+   cpc-rvm config
+   ```
 
 </Steps>
 
@@ -302,8 +203,7 @@ Si quieres usar el `cpc run` comando, configura la ruta de tu emulador:
 
 Prueba tu instalación con estos comandos:
 
-<Tabs>
-  <TabItem label="Homebrew / Chocolatey">
+
   
   ```bash
   # Verificar versión
@@ -325,32 +225,6 @@ Prueba tu instalación con estos comandos:
   cpc cat
   ```
   
-  </TabItem>
-  
-  <TabItem label="Código Fuente">
-  
-  ```bash
-  # Verificar versión
-  poetry run cpc --version
-  
-  # Ver ayuda
-  poetry run cpc --help
-  
-  # Crear un disco de prueba
-  poetry run cpc disc new test.dsk
-  
-  # Montar el disco
-  poetry run cpc disc insert -A test.dsk
-  
-  # Seleccionar drive A
-  poetry run cpc drive a
-  
-  # Listar archivos (debería estar vacío)
-  poetry run cpc cat
-  ```
-  
-  </TabItem>
-</Tabs>
 
 <Aside type="tip" title="¡Éxito!">
 Si todos los comandos se ejecutan sin errores, CPCReady está correctamente instalado y listo para usar.
@@ -360,114 +234,28 @@ Si todos los comandos se ejecutan sin errores, CPCReady está correctamente inst
 
 ## Actualizar CPCReady
 
-<Tabs>
-  <TabItem label="Homebrew">
-  
+Cuando haya una nueva versión de CPCReady, en la terminal verás una notificación al ejecutar cualquier comando.
+Para actualizar ejecuta:
+
+### Usando pipx
   ```bash
-  brew update
-  brew upgrade cpcready/cpcready/cpc
+  pipx upgrade cpcready
   ```
   
-  </TabItem>
-  
-  <TabItem label="Chocolatey">
-  
-  ```powershell
-  choco upgrade cpc
-  ```
-  
-  </TabItem>
-  
-  <TabItem label="Código Fuente">
-  
-  ```bash
-  cd /path/to/cpc
-  git pull origin main
-  poetry install
-  ```
-  
-  </TabItem>
-</Tabs>
 
 ---
 
-## Solución de Problemas
+## Reportar Problemas
 
-### Homebrew: comando no encontrado
+¿Encontraste un bug en CPCReady Por favor, repórtalo en nuestro repositorio de GitHub:
 
-Después de instalar Homebrew, asegúrate de agregarlo a tu PATH:
+🐛 **[Reportar un problema](https://github.com/CPCReady/cpc/issues)**
 
-**macOS:**
-```bash
-echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zshrc
-source ~/.zshrc
-```
-
-**Linux:**
-```bash
-echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> ~/.bashrc
-source ~/.bashrc
-```
-
-### Chocolatey: comando no encontrado
-
-Después de instalar Chocolatey, reinicia PowerShell o tu terminal.
-
-Si persiste el problema, verifica que Chocolatey esté en tu PATH:
-
-```powershell
-$env:Path
-```
-
-### Python: versión incorrecta
-
-CPCReady requiere Python 3.13+. Verifica tu versión:
-
-```bash
-python3 --version
-```
-
-Si necesitas actualizar Python:
-- **macOS/Linux con Homebrew**: `brew install python@3.13`
-- **Windows con Chocolatey**: `choco install python --version=3.13.0`
-- **Descarga directa**: [python.org](https://www.python.org/downloads/)
-
-### Problemas de permisos (macOS/Linux)
-
-Si encuentras errores de permisos al instalar con Homebrew:
-
-```bash
-sudo chown -R $(whoami) $(brew --prefix)/*
-```
-
-## Problema común en Windows: scripts no están en el PATH
-
-<Aside type="caution" title="Advertencia de instalación con pip/Poetry">
-Al instalar CPCReady en Windows usando pip o Poetry, puedes ver este mensaje:
-
-```text
-WARNING: The scripts A.exe, B.exe, catcpc.exe, cpc.exe, disc.exe, drive.exe, era.exe, list.exe, save.exe and user.exe are installed in 'C:\Users\<usuario>\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\Scripts' which is not on PATH.
-Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
-```
-
-Esto significa que los ejecutables no están en una carpeta incluida en la variable de entorno `PATH`, por lo que no podrás ejecutarlos directamente desde la terminal.
-</Aside>
-
-### Solución: Añadir la carpeta al PATH
-
-1. Copia la ruta indicada en el mensaje de advertencia.
-2. Abre el Panel de Control → Sistema → Configuración avanzada del sistema → Variables de entorno.
-3. Busca la variable `PATH` en "Variables de usuario" y haz clic en "Editar".
-4. Añade la ruta copiada como un nuevo valor y guarda los cambios.
-5. Cierra y abre una nueva terminal para que los cambios tengan efecto.
-
-Ahora podrás ejecutar los comandos de CPCReady desde cualquier terminal en Windows.
-
-<Aside type="note">
-Consulta la [documentación oficial de Python](https://docs.python.org/3/using/windows.html#excursus-setting-environment-variables) para más detalles sobre variables de entorno.
-</Aside>
-
----
+Tu feedback nos ayuda a mejorar CPCReady para toda la comunidad. Incluye en tu reporte:
+- Descripción clara del problema
+- Pasos para reproducirlo
+- Versión de CPCReady que estás usando
+- Sistema operativo y versión de Python
 
 ## Próximos Pasos
 
@@ -482,11 +270,5 @@ Consulta la [documentación oficial de Python](https://docs.python.org/3/using/w
     Explora todos los comandos disponibles con ejemplos.
     
     [Ver Comandos →](../commands/)
-  </Card>
-  
-  <Card title="Configuración" icon="setting">
-    Personaliza CPCReady para tu flujo de trabajo.
-    
-    [Configurar →](/reference/commands/configweb/)
   </Card>
 </CardGrid>

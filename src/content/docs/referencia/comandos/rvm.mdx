@@ -1,0 +1,208 @@
+---
+title: rvm
+description: Gestionar RetroVirtualMachine emulator configuration and validation
+tags: [emulator, configuration, validation]
+---
+
+import { Badge } from '@astrojs/starlight/components';
+import { Card } from '@astrojs/starlight/components';
+import { Code } from '@astrojs/starlight/components';
+import { Aside } from '@astrojs/starlight/components';
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+<Card>Gestiona la configuración del emulador RetroVirtualMachine, valida la instalación y verifica la compatibilidad de la versión. 
+Asegura que estás usando la versión correcta de RetroVirtualMachine requerida por CPCReady.</Card>
+
+## Versión Requerida
+
+<Card title="RetroVirtualMachine (Opcional)" icon="laptop">
+  Emulador Amstrad CPC
+  
+  Descargar desde [retrovirtualmachine.org](https://www.retrovirtualmachine.org/)
+
+  <Aside type="caution" title="Versión específica de RetroVirtualMachine requerida">
+CPCReady **solo funciona** con una versión específica de RetroVirtualMachine:
+Esto es asi, porque en versiones posteriores no estan activadas las funciones de desarrollo tal y como indica su desarrollador en la web (https://www.retrovirtualmachine.org/download/).
+
+**Versión requerida:** Retro Virtual Machine v2.0 BETA-1 r7 (Build 6783)
+
+**Información de la build:**
+- MacOS x64 Build: 6783
+- Fecha: Tue Jul 9 18:18:12 2019 UTC
+
+Otras versiones del emulador pueden no funcionar correctamente con CPCReady. Asegúrate de descargar y usar exactamente esta versión.
+</Aside>
+</Card>
+
+## Uso
+
+```bash
+Uso: cpc rvm [OPTIONS] COMMAND [ARGS]...
+
+  Gestionar RetroVirtualMachine emulator configuration and validation.
+
+Comandos:
+  status  Check RetroVirtualMachine installation and version
+  config  Configurar RetroVirtualMachine executable path
+```
+
+---
+
+<Tabs>
+<TabItem label="rvm status">
+
+## rvm status
+
+Chequea la instalación de RetroVirtualMachine y la compatibilidad de la versión.
+
+### Uso
+
+```bash
+Uso: cpc rvm status [OPTIONS]
+
+  Check RetroVirtualMachine installation and version.
+
+  Verifies:
+  - RVM path is configured
+  - RVM executable exists at the configured path
+  - RVM version matches the required version
+
+Opciones:
+  --help  Mostrar this message and exit.
+```
+
+### Ejemplos
+
+#### Chequear estado de instalación de RVM
+```bash
+cpc rvm status
+```
+
+**Output (success):**
+```
+◉ Configured path: /Applications/Retro Virtual Machine 2.app
+◉ Executable found at configured path.
+◉ Version verified: Retro Virtual Machine v2.0 BETA-1 r7
+
+◉ RetroVirtualMachine is properly configured and ready to use.
+```
+
+**Output (version mismatch):**
+```
+◉ Configured path: /Applications/Retro Virtual Machine 2.app
+◉ Executable found at configured path.
+◉ Version mismatch!
+◉ Required: Retro Virtual Machine v2.0 BETA-1 r7
+◉ Found: Retro Virtual Machine v2.1 BETA-2 r8
+
+◉ RetroVirtualMachine version check failed.
+◉ Version mismatch. Required: Retro Virtual Machine v2.0 BETA-1 r7, Found: ...
+◉ 
+◉ Required version:
+◉   Retro Virtual Machine v2.0 BETA-1 r7
+◉   MacOs x64 Build: 6783 - (Tue Jul  9 18:18:12 2019 UTC)
+```
+
+<Aside type="tip">
+Ejecuta `cpc rvm status` después de la instalación o actualización para asegurar que RetroVirtualMachine está configurado correctamente.
+</Aside>
+
+</TabItem>
+<TabItem label="rvm config">
+
+## rvm config
+
+Configurar la ruta ejecutable de RetroVirtualMachine con un prompt interactivo y validación.
+
+### Uso
+
+```bash
+Uso: cpc rvm config [OPTIONS]
+
+  Configurar RetroVirtualMachine executable path.
+
+  Interactive prompt to set the path to RetroVirtualMachine.
+
+  Validates that:
+  - The path exists
+  - The executable is accessible
+  - The version matches the required version
+
+Opciones:
+  --help  Mostrar this message and exit.
+```
+
+### Ejemplos
+
+#### Configurar RVM ruta ejecutable interactivamente
+```bash
+cpc rvm config
+```
+
+**Interactive prompt:**
+```
+◉ Current path: /Applications/Retro Virtual Machine 2.app
+
+? Enter the path to RetroVirtualMachine (.app or executable): /Applications/Retro Virtual Machine 2.app
+
+◉ Validating: /Applications/Retro Virtual Machine 2.app
+◉ Version verified: Retro Virtual Machine v2.0 BETA-1 r7
+
+◉ RetroVirtualMachine path configured successfully.
+◉ Path: /Applications/Retro Virtual Machine 2.app
+```
+
+<Aside type="note">
+El comando `config` solo guarda la ruta en la configuración si la validación pasa. Versiones inválidas son rechazadas antes de ser guardadas.
+</Aside>
+
+</TabItem>
+</Tabs>
+
+---
+
+
+
+## Características
+
+<Card title="🔍 Validación de Versión">
+Valida automáticamente que el RetroVirtualMachine configurado coincide con la versión requerida exacta ejecutando el emulador con la opción `--help` y analizando la salida.
+</Card>
+
+<Card title="💾 Configuración Segura">
+El comando `config` solo guarda la ruta en la configuración si la validación pasa. Versiones inválidas son rechazadas antes de ser guardadas.
+</Card>
+
+<Card title="📍 Resolución de Rutas">
+Resuelve automáticamente rutas relativas a absolutas y maneja correctamente bundles `.app` de macOS.
+</Card>
+
+## Soporte de Plataformas
+
+### macOS
+- **Formato:** Bundle `.app` (ej., `/Applications/Retro Virtual Machine 2.app`)
+- **Validación:** Localiza el binario ejecutable dentro de `Contents/MacOS/`
+- **Ejecución:** Usa lanzamiento apropiado de aplicaciones macOS con `open -a`
+
+### Windows
+- **Formato:** Ejecutable `.exe`
+- **Validación:** Validación directa de ruta ejecutable
+- **Ejecución:** Spawning de proceso directo con flag DETACHED_PROCESS
+
+### Linux
+- **Formato:** Ejecutable binario
+- **Validación:** Validación directa de ruta ejecutable
+- **Ejecución:** Spawning de proceso con nueva sesión
+
+<Aside type="tip">
+Ejecuta siempre `cpc rvm status` después de la instalación o actualización para asegurar que RetroVirtualMachine está configurado correctamente.
+</Aside>
+
+<Aside type="note">
+La configuración se guarda en `~/.config/cpcready/cpcready.toml` bajo la sección `[emulator]`.
+</Aside>
+
+## Comandos Relacionados
+
+- [`run`](/reference/commands/run/) - Ejecuta RetroVirtualMachine con disco
+- [`emu`](/reference/commands/emu/) - Interfaz web para todos los ajustes

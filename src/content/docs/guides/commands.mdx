@@ -5,11 +5,17 @@ description: Lista completa de todos los comandos de CPCReady
 
 import { Card, CardGrid } from '@astrojs/starlight/components';
 import { LinkCard } from '@astrojs/starlight/components';
+import { Badge } from '@astrojs/starlight/components';
 import { Aside } from '@astrojs/starlight/components';
 
 ## Descripción General de Comandos
 
-CPCReady proporciona un conjunto completo de comandos para gestionar imágenes de disco Amstrad CPC, archivos e integración con emuladores. Todos los comandos son accesibles a través del CLI `cpc`.
+CPCReady proporciona un conjunto completo de comandos que ayundan a trabajar con imagenes de disco y cinta para programacion en BASIC. .
+
+  <Aside type="tip" title="Nota">
+  Se aceptan todos los comandos de CPCReady a través del CLI <Badge text="cpc" variant="note" />. Tambien puedes ejecutar comandos individuales directamente desde la terminal con el prefijo <Badge text="cpc-xxxx" variant="note" />
+</Aside>
+
 
 ---
 
@@ -23,7 +29,7 @@ CPCReady proporciona un conjunto completo de comandos para gestionar imágenes d
     - Insertar discos en unidades
     - Mostrar información del disco
     
-    [Ver Detalles →](../../reference/commands/disc/)
+    [Ver Detalles →](../../referencia/comandos/disc/)
   </Card>
   
   <Card title="drive" icon="setting">
@@ -33,7 +39,7 @@ CPCReady proporciona un conjunto completo de comandos para gestionar imágenes d
     - Verificar estado de unidades
     - Expulsar discos
     
-    [Ver Detalles →](../../reference/commands/drive/)
+    [Ver Detalles →](../../referencia/comandos/drive/)
   </Card>
 </CardGrid>
 
@@ -45,11 +51,11 @@ CPCReady proporciona un conjunto completo de comandos para gestionar imágenes d
   <Card title="cat" icon="list-format">
     Listar todos los archivos en disco
     
-    - Mostrar file catalog
-    - Mostrar file sizes and types
-    - Filter by user area
+    - Mostrar catalógo de archivos
+    - Mostrar tamaños y tipos de archivos
+    - Filtrar por área de usuario
     
-    [View Details →](../../reference/commands/cat/)
+    [Ver Detalles →](../../referencia/comandos/cat/)
   </Card>
   
   <Card title="save" icon="add-document">
@@ -60,37 +66,35 @@ CPCReady proporciona un conjunto completo de comandos para gestionar imágenes d
     - ASCII text files
     - Detección automática de tipo
     
-    [View Details →](../../reference/commands/save/)
+    [Ver Detalles →](../../referencia/comandos/save/)
   </Card>
   
   <Card title="filextr" icon="document">
     Extraer archivos del disco
     
-    - Single or multiple files
-    - Preserve AMSDOS headers
-    - Extraer to current directory
+    - Archivos individuales o múltiples
+    - Preserva cabezera AMSDOS
     
-    [View Details →](../../reference/commands/filextr/)
+    [Ver Detalles →](../../referencia/comandos/filextr/)
   </Card>
   
   <Card title="list" icon="open-book">
     Mostrar BASIC programs
     
-    - Detokenize BASIC files
     - Sintaxis highlighting
     - Soporte for ASCII BASIC
     
-    [View Details →](../../reference/commands/list/)
+    [Ver Detalles →](../../referencia/comandos/list/)
   </Card>
   
   <Card title="era" icon="trash">
-    Eliminar files from disk
+    Eliminar archivos del disco
     
-    - Single file deletion
+    - Eliminación de un solo archivo
     - Wildcard soporte (*.BAK)
-    - Permanent removal
+    - Eliminación permanente
     
-    [View Details →](../../reference/commands/era/)
+    [Ver Detalles →](../../referencia/comandos/era/)
   </Card>
   
   <Card title="ren" icon="pencil">
@@ -100,7 +104,7 @@ CPCReady proporciona un conjunto completo de comandos para gestionar imágenes d
     - AMSDOS 8.3 format
     - Preserve file attributes
     
-    [View Details →](../../reference/commands/ren/)
+    [Ver Detalles →](../../referencia/comandos/ren/)
   </Card>
 </CardGrid>
 
@@ -116,17 +120,16 @@ CPCReady proporciona un conjunto completo de comandos para gestionar imágenes d
     - Afecta comportamiento del emulador
     - Almacenado en configuración
     
-    [Ver Detalles →](../../reference/commands/model/)
+    [Ver Detalles →](../../referencia/comandos/model/)
   </Card>
   
   <Card title="mode" icon="star">
     Configurar modo de vídeo
-    
     - Modo 0: 160×200, 16 colores
     - Modo 1: 320×200, 4 colores
     - Modo 2: 640×200, 2 colores
     
-    [Ver Detalles →](../../reference/commands/mode/)
+    [Ver Detalles →](../../referencia/comandos/mode/)
   </Card>
   
   <Card title="user" icon="puzzle">
@@ -134,30 +137,20 @@ CPCReady proporciona un conjunto completo de comandos para gestionar imágenes d
     
     - Áreas de usuario 0-15
     - Organizar archivos por área
-    - Compatible con CP/M
     
-    [Ver Detalles →](../../reference/commands/user/)
+    [Ver Detalles →](../../referencia/comandos/user/)
   </Card>
   
   <Card title="settings" icon="information">
-    Mostrar configuración
+    Configuraciones
     
-    - Mostrar todas las configuraciones
-    - Mapeos de unidades
-    - Configuración del sistema
+    - Retro Virtual Machine
+    - M4Board (En progreso)
+    - CDT (En progreso)
     
-    [Ver Detalles →](../../reference/commands/settings/)
+    [Ver Detalles →](../../referencia/comandos/settings/)
   </Card>
   
-  <Card title="configweb" icon="setting">
-    Herramienta de configuración GUI
-    
-    - Interfaz visual (PySide6)
-    - Configurar unidades y emulador
-    - Editar todas las configuraciones
-    
-    [Ver Detalles →](../../reference/commands/configweb/)
-  </Card>
 </CardGrid>
 
 ---
@@ -172,7 +165,7 @@ CPCReady proporciona un conjunto completo de comandos para gestionar imágenes d
     - Carga automática de disco y archivo
     - Gestión de procesos
     
-    [Ver Detalles →](../../reference/commands/run/)
+    [Ver Detalles →](../../referencia/comandos/run/)
   </Card>
 </CardGrid>
 
@@ -210,28 +203,8 @@ CPCReady proporciona un conjunto completo de comandos para gestionar imágenes d
 | `cpc model <464\|664\|6128>` | Configurar modelo CPC | `cpc model 6128` |
 | `cpc mode <0\|1\|2>` | Configurar modo de vídeo | `cpc mode 1` |
 | `cpc user <0-15>` | Configurar usuario CP/M | `cpc user 0` |
-| `cpc settings` | Mostrar todas las configuraciones | `cpc settings` |
-| `cpc configweb` | Lanzar configuración GUI | `cpc configweb` |
 | `cpc run [file]` | Lanzar emulador | `cpc run GAME.BAS` |---
 
-## Nombres Alternativos de Comandos
-
-Muchos comandos tienen alias más cortos por conveniencia:
-
-| Comando Completo | Alias |
-|--------------|-------|
-| `cpc cat` | `cpccat` |
-| `cpc disc` | `cpcdisc` |
-| `cpc drive status` | `cpcdrivestatus` |
-| `cpc drive eject` | `cpcdriveeject` |
-| `cpc era` | `cpcera` |
-| `cpc filextr` | `cpcfilextr` |
-| `cpc list` | `cpclist` |
-| `cpc ren` | `cpcren` |
-| `cpc run` | `cpcrun` |
-| `cpc save` | `cpcsave` |
-| `cpc settings` | `cpcsettings` |
-| `cpc configweb` | `cpcconfigweb` |
 
 ---
 
@@ -261,7 +234,7 @@ Si hay una actualización disponible, verás un mensaje como este antes de la sa
 
 ```bash
 ⚠ New version available: v3.1.0 (current: v3.0.1)
-⚠ Update with: pip install --upgrade cpcready
+⚠ Update with: pipx upgrade cpcready
 
 # Seguido de la salida normal del comando
 ```
@@ -273,26 +246,9 @@ Si hay una actualización disponible, verás un mensaje como este antes de la sa
 - **Timeout rápido**: Máximo 3 segundos de espera para la verificación
 - **Automático**: No requiere configuración adicional
 
-### Desactivar Notificaciones
-
-Las notificaciones de actualización están habilitadas por defecto. Si prefieres desactivarlas temporalmente, puedes usar CPCReady sin conexión a internet o instalar desde el código fuente para desarrollo.
-
 <Aside type="tip">
 Las notificaciones solo aparecen cuando hay una versión más reciente disponible. Si estás ejecutando la última versión, no verás ningún mensaje.
 </Aside>
 
 ---
 
-## Próximos Pasos
-
-<LinkCard
-  title="Guía de Instalación"
-  description="Aprende cómo instalar CPCReady en tu sistema"
-  href="../install/"
-/>
-
-<LinkCard
-  title="Historial de Cambios"
-  description="Ver historial de versiones y cambios"
-  href="../changelog/"
-/>

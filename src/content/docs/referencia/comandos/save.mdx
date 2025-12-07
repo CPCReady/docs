@@ -1,0 +1,118 @@
+---
+title: save
+description: Guardar files to DSK disk with AMSDOS headers
+tags: [disk, file, save, amsdos]
+---
+
+import { Badge } from '@astrojs/starlight/components';
+import { Card } from '@astrojs/starlight/components';
+import { Code } from '@astrojs/starlight/components';
+import { Aside } from '@astrojs/starlight/components';
+
+
+<Card>
+Guarda archivos en la imagen de disco DSK con creación automática o manual de encabezados AMSDOS. Soporta tipos de archivo binarios, BASIC y ASCII con direcciones en hexadecimal o decimal. 
+Use <Badge text="-A" variant="note" /> or <Badge text="-B" variant="note" /> para especificar la unidad. Si no se especifica una unidad, se utiliza la unidad actualmente seleccionada.
+<Aside type="tip">
+La unidad seleccionada se configura con <Badge text="cpc drive A" variant="note" /> o <Badge text="cpc drive B" variant="note" />. Por defecto es la unidad A.
+</Aside>
+</Card>
+## Uso
+
+```bash
+Uso: cpc save [OPTIONS] FILE_NAME [TYPE] [LOAD_ADDR] [EXEC_ADDR]
+
+  Guardar file to virtual disc with AMSDOS header.
+
+Argumentos:
+  FILE_NAME   File to save (required)
+  TYPE        File type: 'b' (binary), 'p' (program), 'a' (ASCII), 'auto' (default)
+  LOAD_ADDR   Cargar address in hex (0x5BCC, &5BCC) or decimal (23500)
+  EXEC_ADDR   Execution address in hex or decimal
+
+Opciones:
+  -A, --drive-a  Guardar to drive A (default)
+  -B, --drive-b  Guardar to drive B
+  --help         Mostrar this message and exit.
+```
+
+## Tipo de Archivo
+
+- **auto** (default): Detecta el tipo a partir del contenido/extensión
+  - `.BIN` files → Binary with header
+  - `.BAS` files → BASIC ASCII
+  - Archivos con encabezado AMSDOS → Preserva el encabezado
+  - Otros archivos → ASCII sin encabezado
+
+- **b** (binary): Archivo binario con direcciones de carga/ejecución específicas
+  - Requiere LOAD_ADDR
+  - EXEC_ADDR optional (defaults to LOAD_ADDR)
+  - Adds AMSDOS header with type=2
+
+- **p** (program): Programa con encabezado AMSDOS
+  - Uses detected or specified addresses
+  - Sets read-only attribute
+
+- **a** (ASCII): Archivo ASCII plano/datos
+  - No AMSDOS header
+  - Suitable for text files
+
+## Formato de Direcciones
+
+Las direcciones se pueden especificar en tres formatos:
+
+- **Hexadecimal with 0x**: `0x5BCC`
+- **Hexadecimal with &**: `&5BCC`
+- **Decimal**: `23500`
+
+## Ejemplos
+
+###  Guardar archivo binario con detección automática
+```bash
+cpc save game.bin
+```
+
+### Guardar archivo binario con direcciones hexadecimales
+```bash
+cpc save 8bp.bin b 0x5BCC 0x4ABF
+```
+
+### Guardar archivo binario con direcciones decimales
+```bash
+cpc save screen.bin b 23500 19119
+```
+
+### Guardar archivo binario con notación &
+```bash
+cpc save loader.bin b &4000 &4000
+```
+
+### Guardar archivo BASIC ASCII
+```bash
+cpc save program.bas a
+```
+
+### Guardar en la unidad B
+```bash
+cpc save data.bin b 0x8000 -B
+```
+
+### Comando alternativo
+```bash
+cpc-save myfile.bin b 0x4000
+```
+
+<Aside type="tip">
+**Ejemplos de conversión de direcciones:**
+- `0x5BCC` = `&5BCC` = `23500` (decimal)
+- `0x4ABF` = `&4ABF` = `19119` (decimal)
+- `0x4000` = `&4000` = `16384` (decimal)
+</Aside>
+
+<Aside type="caution">
+El tipo binario 'b' requiere al menos la dirección de carga. Si se omite la dirección de ejecución, esta se establece por defecto en la dirección de carga.
+</Aside>
+
+<Aside type="note">
+Archivos se guardan en el user actual (ver <Badge text="cpc-user" variant="note" />`). El disco actualiza automáticamente su directorio después de guardar.
+</Aside>

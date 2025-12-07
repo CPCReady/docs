@@ -1,0 +1,325 @@
+---
+title: Console
+description: Utilidades de consola con Rich para salida formateada
+---
+
+import { Code } from '@astrojs/starlight/components';
+import { Aside } from '@astrojs/starlight/components';
+
+## Módulo Console
+
+Utilidades para salida formateada a consola usando Rich. Proporciona funciones para imprimir mensajes con diferentes niveles de severidad y estilos.
+
+### Niveles de Verbosidad
+
+El módulo soporta diferentes niveles de verbosidad:
+
+- **quiet** (0) - Solo errores
+- **normal** (1) - Mensajes normales
+- **verbose** (2) - Mensajes detallados
+- **debug** (3) - Información de depuración
+
+---
+
+## Funciones
+
+### set_level
+
+```python
+def set_level(level_name: str) -> None
+```
+
+Establece el nivel de verbosidad global.
+
+**Parámetros:**
+
+- **level_name** (`str`) - Uno de: "quiet", "normal", "verbose", "debug"
+
+**Ejemplo:**
+
+```python
+from cpcready.utils.console import set_level
+
+set_level("verbose")
+```
+
+---
+
+### info2
+
+```python
+def info2(msg: str, level: str = "normal") -> None
+```
+
+Imprime un mensaje informativo en cyan.
+
+**Parámetros:**
+
+- **msg** (`str`) - Mensaje a mostrar
+- **level** (`str`) - Nivel mínimo requerido. Por defecto: `"normal"`
+
+**Ejemplo:**
+
+```python
+from cpcready.utils.console import info2
+
+info2("Procesando archivo...")
+```
+
+**Salida:**
+```
+◉ Procesando archivo...
+```
+
+---
+
+### ok
+
+```python
+def ok(msg: str, level: str = "normal") -> None
+```
+
+Imprime un mensaje de éxito en verde.
+
+**Parámetros:**
+
+- **msg** (`str`) - Mensaje a mostrar
+- **level** (`str`) - Nivel mínimo requerido. Por defecto: `"normal"`
+
+**Ejemplo:**
+
+```python
+from cpcready.utils.console import ok
+
+ok("Archivo guardado exitosamente")
+```
+
+**Salida:**
+```
+◉ Archivo guardado exitosamente
+```
+
+---
+
+### warn
+
+```python
+def warn(msg: str, level: str = "normal") -> None
+```
+
+Imprime una advertencia en amarillo.
+
+**Parámetros:**
+
+- **msg** (`str`) - Mensaje a mostrar
+- **level** (`str`) - Nivel mínimo requerido. Por defecto: `"normal"`
+
+**Ejemplo:**
+
+```python
+from cpcready.utils.console import warn
+
+warn("El archivo ya existe")
+```
+
+**Salida:**
+```
+◉ El archivo ya existe
+```
+
+---
+
+### error
+
+```python
+def error(msg: str) -> None
+```
+
+Imprime un mensaje de error en rojo a stderr.
+
+**Parámetros:**
+
+- **msg** (`str`) - Mensaje de error
+
+**Ejemplo:**
+
+```python
+from cpcready.utils.console import error
+
+error("No se pudo abrir el archivo")
+```
+
+**Salida:**
+```
+◉ No se pudo abrir el archivo
+```
+
+<Aside type="note">
+Los errores siempre se muestran independientemente del nivel de verbosidad.
+</Aside>
+
+---
+
+### debug
+
+```python
+def debug(msg: str) -> None
+```
+
+Imprime un mensaje de depuración en magenta.
+
+**Parámetros:**
+
+- **msg** (`str`) - Mensaje de debug
+
+**Ejemplo:**
+
+```python
+from cpcready.utils.console import debug, set_level
+
+set_level("debug")
+debug("Variable x = 42")
+```
+
+**Salida:**
+```
+[DEBUG]  Variable x = 42
+```
+
+---
+
+### banner
+
+```python
+def banner(msg: str) -> None
+```
+
+Imprime un mensaje destacado en un panel.
+
+**Parámetros:**
+
+- **msg** (`str`) - Mensaje para el banner
+
+**Ejemplo:**
+
+```python
+from cpcready.utils.console import banner
+
+banner("Procesamiento completado")
+```
+
+**Salida:**
+```
+╭─────────────────────────────────╮
+│ ▶ Procesamiento completado      │
+╰─────────────────────────────────╯
+```
+
+---
+
+### message
+
+```python
+def message(msg: str) -> None
+```
+
+Imprime un mensaje simple sin formato especial.
+
+**Parámetros:**
+
+- **msg** (`str`) - Mensaje a mostrar
+
+**Ejemplo:**
+
+```python
+from cpcready.utils.console import message
+
+message("Procesando archivos...")
+```
+
+---
+
+### blank_line
+
+```python
+def blank_line(lines: int = 1) -> None
+```
+
+Imprime líneas en blanco.
+
+**Parámetros:**
+
+- **lines** (`int`) - Número de líneas en blanco. Por defecto: `1`
+
+**Ejemplo:**
+
+```python
+from cpcready.utils.console import blank_line
+
+blank_line(2)  # Imprime 2 líneas en blanco
+```
+
+---
+
+## Ejemplo Completo
+
+```python
+from cpcready.utils.console import (
+    set_level, info2, ok, warn, error, 
+    debug, banner, blank_line
+)
+
+# Configurar nivel de verbosidad
+set_level("verbose")
+
+# Mostrar banner
+banner("Iniciando proceso")
+blank_line()
+
+# Mensajes informativos
+info2("Cargando configuración...")
+ok("Configuración cargada")
+blank_line()
+
+# Advertencia
+warn("Modo experimental activado")
+
+# Debug (solo si level >= debug)
+set_level("debug")
+debug("Path: /tmp/file.dsk")
+
+# Error
+try:
+    raise FileNotFoundError("archivo.dsk")
+except FileNotFoundError as e:
+    error(f"Error: {e}")
+
+# Resultado final
+blank_line()
+banner("Proceso completado")
+```
+
+**Salida:**
+```
+╭─────────────────────────────╮
+│ ▶ Iniciando proceso          │
+╰─────────────────────────────╯
+
+◉ Cargando configuración...
+◉ Configuración cargada
+
+◉ Modo experimental activado
+[DEBUG]  Path: /tmp/file.dsk
+◉ Error: archivo.dsk
+
+╭─────────────────────────────╮
+│ ▶ Proceso completado         │
+╰─────────────────────────────╯
+```
+
+---
+
+## Ver También
+
+- [Click Custom](/api/utils/click-custom/) - Comandos Click personalizados
+- [Manager](/api/utils/manager/) - Gestión de discos

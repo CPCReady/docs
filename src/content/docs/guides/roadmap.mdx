@@ -1,5 +1,5 @@
 ---
-title: Hoja de Ruta
+title: Roadmap
 description: Future plans and development roadmap for CPCReady
 ---
 
@@ -9,297 +9,30 @@ import { Aside } from '@astrojs/starlight/components';
 import { Steps } from '@astrojs/starlight/components';
 
 <div style="text-align: center; margin: 2rem 0;">
-  <Badge text="Current: 1.0.0" variant="success" size="large" />
+  <Badge text="Current: 0.1.1" variant="success" size="large" />
 </div>
-
-## Project Vision
-
-CPCReady aims to be the **most comprehensive and user-friendly toolchain** for Amstrad CPC development, bringing modern development workflows to vintage computing enthusiasts.
-
-<Aside type="note">
-This roadmap is a living document and subject to change based on community feedback and development priorities.
-</Aside>
 
 ---
 
-## Version 1.x - Stabilization & Enhancement
+## Version 0.2.x 
 
 <Badge text="En Progreso" variant="tip" />
 
-### Version 1.1.0
-
-**Focus**: Package Distribution & Documentation
 
 <CardGrid>
-  <Card title="PyPI Distribution" icon="rocket">
-    Official Python package release
-    
-    - Publish to PyPI
-    - `pip install cpcready` soporte
-    - Automated release workflow
-    - Version management tools
-  </Card>
-  
-  <Card title="Documentation Expansion" icon="open-book">
-    Enhanced guides and tutorials
-    
-    - Step-by-step tutorials
-    - Video demonstrations
-    - Best practices guide
-    - Solución de Problemas FAQ
-  </Card>
-  
-  <Card title="Performance Improvements" icon="star">
-    Optimize core operations
-    
-    - Faster disk operations
-    - Improved file handling
-    - Memory optimization
-    - Caching mechanisms
-  </Card>
-</CardGrid>
+  <Card title="M4Board" icon="rocket">
+    Soporte para placa M4Board
 
-### Version 1.2.0
-
-**Focus**: Extended File Soporte
-
-<CardGrid>
-  <Card title="Enhanced BASIC Soporte" icon="puzzle">
-    Improved BASIC handling
-    
-    - Better detokenization
-    - Sintaxis highlighting improvements
-    - BASIC formatting tools
-    - ASCII ↔ Tokenized conversion
   </Card>
   
-  <Card title="Batch Operations" icon="add-document">
-    Multiple file handling
-    
-    - Batch save operations
-    - Multi-file extraction
-    - Wildcard expansion
-    - Recursive operations
+  <Card title="CDT" icon="open-book">
+    Soporte para archivos CDT
   </Card>
   
-  <Card title="Disk Tools" icon="document">
-    Advanced disk utilities
-    
-    - Disk defragmentation
-    - Disk repair tools
-    - Format conversion
-    - Disk analysis
+  <Card title="8BP" icon="star">
+    Compilacion 8BP sin necesidad de WinAPE
   </Card>
 </CardGrid>
 
 ---
 
-## Version 2.x - Extended Compatibility
-
-<Badge text="Planned" variant="note" />
-
-### Version 2.0.0
-
-**Focus**: Multi-Emulator & Format Soporte
-
-<CardGrid>
-  <Card title="Emulator Soporte" icon="laptop">
-    Additional emulator integration
-    
-    - WinAPE soporte
-    - JavaCPC soporte
-    - Arnold emulator
-    - MAME integration
-  </Card>
-  
-  <Card title="Format Conversion" icon="setting">
-    Multiple disk formats
-    
-    - DSK ↔ CDT conversion
-    - Extended DSK soporte
-    - FDI format soporte
-    - Raw sector dumps
-  </Card>
-  
-  <Card title="M4 Board Integration" icon="seti:config">
-    M4 Board file management
-    
-    - Direct M4 file operations
-    - SD card management
-    - ROM management
-    - Configuración tools
-  </Card>
-</CardGrid>
-
-### Version 2.1.0
-
-**Focus**: Cross-Platform GUI
-
-<CardGrid>
-  <Card title="Native GUI Application" icon="laptop">
-    Full desktop application
-    
-    - Multiplataforma (Qt6)
-    - Drag & drop interface
-    - Visual disk browser
-    - File preview
-  </Card>
-  
-  <Card title="Web Interface" icon="external">
-    Browser-based tools
-    
-    - Web-based disk browser
-    - Online file converter
-    - Remote disk management
-    - Cloud storage integration
-  </Card>
-</CardGrid>
-
----
-
-## Version 3.x - Development Tools
-
-<Badge text="Future" variant="caution" />
-
-### Version 3.0.0
-
-**Focus**: Integrated Development Environment
-
-<CardGrid>
-  <Card title="BASIC IDE" icon="seti:python">
-    Integrated BASIC editor
-    
-    - Sintaxis highlighting
-    - Auto-completion
-    - Real-time error checking
-    - Integrated debugger
-  </Card>
-  
-  <Card title="Project Management" icon="document">
-    Completo project soporte
-    
-    - Project templates
-    - Build systems
-    - Asset management
-    - Version control integration
-  </Card>
-  
-  <Card title="Testing Framework" icon="approve-check">
-    Automated testing tools
-    
-    - Unit testing for BASIC
-    - Emulator automation
-    - Screenshot comparison
-    - CI/CD integration
-  </Card>
-</CardGrid>
-
----
-
-## Community Requests
-
-<Aside type="tip" title="Have an Idea?">
-We welcome community feedback! Submit feature requests on [GitHub Issues](https://github.com/CPCReady/cpc/issues).
-</Aside>
-
-### Most Requested Características
-
-<Steps>
-
-1. **CDT/Tape Soporte**
-   - Full CDT file handling
-   - Tape to disk conversion
-   - Turbo loader soporte
-
-2. **Snapshot Soporte**
-   - SNA file handling
-   - Guardar states
-   - Quick load/save
-
-3. **Graphics Tools**
-   - Screen converter
-   - Sprite editor
-   - Tile map tools
-   - Color palette editor
-
-4. **Sound Tools**
-   - AY music converter
-   - Sound effect tools
-   - Music tracker integration
-
-</Steps>
-
----
-
-## Timeline
-
-| Version | Target Date | Status | Key Características |
-|---------|-------------|--------|--------------|
-| **1.0.0** | 2025-11-23 | ✅ Released | Core functionality |
-| **1.1.0** | 2025-12 | 🔄 En Progreso | PyPI, Documentation |
-| **1.2.0** | 2026-Q1 | 📋 Planned | BASIC tools, Batch ops |
-| **2.0.0** | 2026-Q2 | 📋 Planned | Multi-emulator, Formats |
-| **2.1.0** | 2026-Q3 | 📋 Planned | GUI, Web interface |
-| **3.0.0** | 2026-Q4+ | 💭 Future | IDE, Projects |
-
----
-
-## Contributing
-
-We welcome contributions! Here's how you can help:
-
-<CardGrid>
-  <Card title="Code Contributions" icon="github">
-    Submit pull requests
-    
-    - Bug fixes
-    - New features
-    - Performance improvements
-    - Code review
-  </Card>
-  
-  <Card title="Documentation" icon="open-book">
-    Improve docs
-    
-    - Fix typos
-    - Add examples
-    - Write tutorials
-    - Translate content
-  </Card>
-  
-  <Card title="Testing" icon="approve-check">
-    Ayuda test features
-    
-    - Report bugs
-    - Test beta releases
-    - Provide feedback
-    - Write test cases
-  </Card>
-  
-  <Card title="Community" icon="information">
-    Spread the word
-    
-    - Share your projects
-    - Write blog posts
-    - Crear videos
-    - Ayuda other users
-  </Card>
-</CardGrid>
-
----
-
-## Stay Updated
-
-<CardGrid>
-  <Card title="GitHub Releases" icon="github">
-    Follow official releases
-    
-    [View Releases →](https://github.com/CPCReady/cpc/releases)
-  </Card>
-  
-  <Card title="Historial de Cambios" icon="document">
-    Track all changes
-    
-    [View Historial de Cambios →](../changelog/)
-  </Card>
-</CardGrid>

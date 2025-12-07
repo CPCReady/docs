@@ -1,0 +1,48 @@
+---
+title: user
+description: Set or display current user number (0-15)
+tags: [config, system, user]
+---
+
+import { Badge } from '@astrojs/starlight/components';
+import { Card } from '@astrojs/starlight/components';
+import { Code } from '@astrojs/starlight/components';
+import { Aside } from '@astrojs/starlight/components';
+
+<Card>Configurar o mostrar el usuario de CP/M (0-15). Los usuarios permiten organizar los archivos en áreas separadas en el mismo disco.</Card>
+
+## Uso
+
+```bash
+Uso: cpc user [OPTIONS] [USER_NUMBER]
+
+  Set or display current user number.
+
+Argumentos:
+  USER_NUMBER  User number (0-15)
+
+Opciones:
+  --help  Mostrar this message and exit.
+```
+
+## Ejemplos
+
+### Mostrar user actual
+```bash
+cpc user
+```
+
+### Establecer user a 0 (predeterminado)
+```bash
+cpc user 0
+```
+
+### Establecer user a 5
+```bash
+cpc user 5
+```
+
+### Establecer user a 15 (máximo)
+```bash
+cpc user 15
+```

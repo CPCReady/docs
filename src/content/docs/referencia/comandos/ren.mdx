@@ -9,11 +9,15 @@ import { Card } from '@astrojs/starlight/components';
 import { Code } from '@astrojs/starlight/components';
 import { Aside } from '@astrojs/starlight/components';
 
-<Card>Renombrar a file on a DSK disk image. The file must exist on the selected disk and the new name must not already exist.
-Use <Badge text="-A" variant="note" /> or <Badge text="-B" variant="note" /> to specify the drive.</Card>
+<Card>
+Renombrar ficheros de un fichero en una imagen de disco DSK. El archivo debe existir en el disco seleccionado y el nuevo nombre no debe existir ya.
+Use <Badge text="-A" variant="note" /> or <Badge text="-B" variant="note" /> para especificar la unidad. Si no se especifica una unidad, se utiliza la unidad actualmente seleccionada.
+<Aside type="tip">
+La unidad seleccionada se configura con <Badge text="cpc drive A" variant="note" /> o <Badge text="cpc drive B" variant="note" />. Por defecto es la unidad A.
+</Aside>
+</Card>
 
 ## Uso
-
 ```bash
 Uso: cpc ren [OPTIONS] OLD_NAME NEW_NAME
 
@@ -31,29 +35,26 @@ Opciones:
 
 ## Ejemplos
 
-### Renombrar a file on default drive
+### Renombrar un fichero en la unidad por defecto
 ```bash
 cpc ren OLDGAME.BAS NEWGAME.BAS
 ```
 
-### Renombrar on drive A
+### Renombrar en la unidad A
 ```bash
 cpc ren MENU.BIN INTRO.BIN -A
 ```
 
-### Renombrar on drive B
+### Renombrar en la unidad B
 ```bash
 cpc ren DATA.TXT CONFIG.TXT -B
 ```
 
-<video controls width="800" autoplay loop muted>
-  <source src="/videos/cat.mp4" type="video/mp4" />
-</video>
 
 <Aside type="caution">
-File names must follow AMSDOS naming conventions (8.3 format).
+Los nombres de archivo deben seguir las convenciones de nomenclatura AMSDOS (formato 8.3).
 </Aside>
 
 <Aside type="note">
-The file keeps its AMSDOS header and all other attributes unchanged.
+  El archivo mantiene su encabezado AMSDOS y todos los demás atributos sin cambios.
 </Aside>

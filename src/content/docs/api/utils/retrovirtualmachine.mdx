@@ -1,0 +1,608 @@
+---
+title: RetroVirtualMachine
+description: Gestor del emulador RetroVirtualMachine para Amstrad CPC
+---
+
+import { Code } from '@astrojs/starlight/components';
+import { Aside, Tabs, TabItem } from '@astrojs/starlight/components';
+
+## Clase RVM
+
+Gestor completo para el emulador RetroVirtualMachine (RVM), permitiendo lanzamiento automático, gestión de instancias y verificación de versiones.
+
+---
+
+## Constructor
+
+```python
+class RVM:
+    def __init__(self, ruta_ejecutable: Optional[str] = None)
+```
+
+Inicializa el gestor de RetroVirtualMachine.
+
+**Parámetros:**
+
+- **ruta_ejecutable** (`Optional[str]`) - Ruta al ejecutable de RVM o archivo `.app` (macOS)
+  - Windows: `"C:/Program Files/RVM/RetroVirtualMachine.exe"`
+  - macOS: `"/Applications/Retro Virtual Machine.app"`
+  - Linux: `"/usr/bin/retrovirtualmachine"`
+
+**Ejemplo:**
+
+```python
+from cpcready.utils.retrovirtualmachine import RVM
+
+# Windows
+rvm = RVM("C:/Program Files/RVM/RetroVirtualMachine.exe")
+
+# macOS
+rvm = RVM("/Applications/Retro Virtual Machine.app")
+
+# Linux
+rvm = RVM("/usr/bin/retrovirtualmachine")
+
+# Sin ruta (configurar después)
+rvm = RVM()
+rvm.ruta_ejecutable = "/path/to/rvm"
+```
+
+---
+
+## Métodos Principales
+
+<Tabs>
+<TabItem label="Lanzamiento">
+
+### launch
+
+```python
+def launch(
+    self,
+    modelo: str,
+    archivo_dsk: Optional[str] = None,
+    archivo_ejecutar: Optional[str] = None,
+    wait_after_kill: float = 0.5
+) -> bool
+```
+
+Lanza RetroVirtualMachine con los parámetros especificados.
+
+**Parámetros:**
+
+- **modelo** (`str`) - Modelo de CPC: `"464"`, `"664"`, `"6128"`
+- **archivo_dsk** (`Optional[str]`) - Ruta al archivo DSK a cargar
+- **archivo_ejecutar** (`Optional[str]`) - Archivo a ejecutar automáticamente desde el disco
+- **wait_after_kill** (`float`) - Segundos a esperar después de cerrar instancias previas (default: 0.5)
+
+**Returns:** `bool` - `True` si se lanzó correctamente, `False` si hubo error
+
+**Ejemplo:**
+
+```python
+from cpcready.utils.retrovirtualmachine import RVM
+
+rvm = RVM("/Applications/Retro Virtual Machine.app")
+
+# Lanzar CPC 6128 con disco
+success = rvm.launch(
+    modelo="6128",
+    archivo_dsk="juego.dsk"
+)
+
+# Lanzar y ejecutar archivo automáticamente
+success = rvm.launch(
+    modelo="464",
+    archivo_dsk="demo.dsk",
+    archivo_ejecutar="DEMO.BAS"
+)
+
+if success:
+    print("Emulador lanzado")
+else:
+    print("Error al lanzar emulador")
+```
+
+<Aside type="caution">
+El método cierra automáticamente todas las instancias previas de RVM antes de lanzar una nueva.
+</Aside>
+
+</TabItem>
+
+<TabItem label="Gestión de Procesos">
+
+### kill_all_instances
+
+```python
+def kill_all_instances(self) -> int
+```
+
+Cierra todas las instancias de RetroVirtualMachine en ejecución.
+
+**Returns:** `int` - Número de instancias cerradas
+
+**Detección:**
+
+- Busca por nombre de proceso
+- Busca por ruta del ejecutable
+- Busca en argumentos de línea de comandos
+
+**Ejemplo:**
+
+```python
+from cpcready.utils.retrovirtualmachine import RVM
+
+rvm = RVM()
+
+# Cerrar todas las instancias
+count = rvm.kill_all_instances()
+
+print(f"Cerradas {count} instancia(s) de RVM")
+```
+
+<Aside type="note">
+Este método es llamado automáticamente por `launch()` antes de iniciar una nueva instancia.
+</Aside>
+
+</TabItem>
+
+<TabItem label="Verificación">
+
+### check_version
+
+```python
+def check_version(self) -> Tuple[bool, str]
+```
+
+Verifica que la versión de RetroVirtualMachine sea la requerida.
+
+**Returns:** `Tuple[bool, str]`
+- `(True, version_info)` - Versión correcta
+- `(False, error_message)` - Versión incorrecta o error
+
+**Versión Requerida:**
+
+- Versión: `Retro Virtual Machine v2.0 BETA-1 r7`
+- Build: `MacOs x64 Build: 6783 - (Tue Jul 9 18:18:12 2019 UTC)`
+
+**Ejemplo:**
+
+```python
+from cpcready.utils.retrovirtualmachine import RVM
+
+rvm = RVM("/Applications/Retro Virtual Machine.app")
+
+# Verificar versión
+is_valid, info = rvm.check_version()
+
+if is_valid:
+    print(f"✓ Versión correcta: {info}")
+else:
+    print(f"✗ Error: {info}")
+```
+
+<Aside type="tip">
+Esta verificación asegura compatibilidad con las características específicas requeridas por CPCReady.
+</Aside>
+
+</TabItem>
+</Tabs>
+
+---
+
+## Constantes
+
+### NOMBRES_RVM
+
+```python
+NOMBRES_RVM = [
+    "Retro Virtual Machine",
+    "retrovirtualmachine",
+    "RetroVirtualMachine.exe",
+    "retrovirtualmachine.exe"
+]
+```
+
+Lista de nombres posibles del ejecutable RVM para detección de procesos.
+
+---
+
+### REQUIRED_VERSION
+
+```python
+REQUIRED_VERSION = "Retro Virtual Machine v2.0 BETA-1 r7"
+```
+
+Versión exacta requerida de RetroVirtualMachine.
+
+---
+
+### REQUIRED_BUILD_PATTERN
+
+```python
+REQUIRED_BUILD_PATTERN = r"MacOs x64 Build: 6783 - \(Tue Jul\s+9 18:18:12 2019 UTC\)"
+```
+
+Patrón regex para verificar el build específico requerido.
+
+---
+
+## Ejemplos de Uso
+
+### Lanzamiento Básico
+
+```python
+from cpcready.utils.retrovirtualmachine import RVM
+from cpcready.utils.console import info2, ok, error
+
+def lanzar_juego(ruta_dsk, archivo_juego):
+    """Lanza un juego en RetroVirtualMachine"""
+    rvm = RVM("/Applications/Retro Virtual Machine.app")
+    
+    info2(f"Lanzando {archivo_juego}...")
+    
+    success = rvm.launch(
+        modelo="6128",
+        archivo_dsk=ruta_dsk,
+        archivo_ejecutar=archivo_juego
+    )
+    
+    if success:
+        ok("Emulador iniciado correctamente")
+    else:
+        error("No se pudo lanzar el emulador")
+    
+    return success
+
+# Uso
+lanzar_juego("juegos/arkanoid.dsk", "ARKANOID.BIN")
+```
+
+---
+
+### Verificación Completa
+
+```python
+from cpcready.utils.retrovirtualmachine import RVM
+from cpcready.utils.console import info2, ok, warn, error
+from pathlib import Path
+
+def verificar_y_lanzar(ruta_rvm, modelo, dsk):
+    """Verifica versión antes de lanzar"""
+    # Verificar que existe
+    if not Path(ruta_rvm).exists():
+        error(f"RVM no encontrado en: {ruta_rvm}")
+        return False
+    
+    rvm = RVM(ruta_rvm)
+    
+    # Verificar versión
+    info2("Verificando versión de RVM...")
+    is_valid, info = rvm.check_version()
+    
+    if not is_valid:
+        warn(f"Versión incorrecta: {info}")
+        warn("Continuando de todas formas...")
+    else:
+        ok(f"Versión verificada: {info}")
+    
+    # Lanzar
+    return rvm.launch(modelo=modelo, archivo_dsk=dsk)
+
+# Uso
+verificar_y_lanzar(
+    "/Applications/Retro Virtual Machine.app",
+    "6128",
+    "demo.dsk"
+)
+```
+
+---
+
+### Workflow de Desarrollo
+
+```python
+from cpcready.utils.retrovirtualmachine import RVM
+from cpcready.utils.system import process_dsk_name
+from cpcready.pydsk import DSK
+
+def desarrollo_completo(nombre_proyecto):
+    """Workflow completo de desarrollo y prueba"""
+    # 1. Preparar disco
+    ruta_dsk = process_dsk_name(f"proyectos/{nombre_proyecto}")
+    
+    # 2. Crear disco y añadir archivos
+    dsk = DSK.create(str(ruta_dsk), format="data")
+    dsk.write_file("main.bas")
+    dsk.write_file("sprites.bin")
+    dsk.save()
+    
+    print(f"✓ Disco creado: {ruta_dsk}")
+    
+    # 3. Lanzar en emulador
+    rvm = RVM("/Applications/Retro Virtual Machine.app")
+    
+    success = rvm.launch(
+        modelo="6128",
+        archivo_dsk=str(ruta_dsk),
+        archivo_ejecutar="MAIN.BAS"
+    )
+    
+    return success
+
+# Uso
+desarrollo_completo("mi_juego")
+```
+
+---
+
+### Gestión Múltiple de Instancias
+
+```python
+from cpcready.utils.retrovirtualmachine import RVM
+import time
+
+def reiniciar_emulador(ruta_dsk, pausa=2):
+    """Reinicia el emulador con nuevo disco"""
+    rvm = RVM("/Applications/Retro Virtual Machine.app")
+    
+    # Cerrar todas las instancias
+    count = rvm.kill_all_instances()
+    print(f"Cerradas {count} instancia(s)")
+    
+    # Esperar un poco más
+    time.sleep(pausa)
+    
+    # Lanzar nueva instancia
+    rvm.launch(modelo="6128", archivo_dsk=ruta_dsk)
+
+# Uso
+reiniciar_emulador("nuevo_juego.dsk", pausa=3)
+```
+
+---
+
+### Integración con ConfigManager
+
+```python
+from cpcready.utils.retrovirtualmachine import RVM
+from cpcready.utils.config import ConfigManager
+
+def lanzar_desde_config(archivo_dsk):
+    """Lanza RVM usando ruta desde configuración"""
+    config = ConfigManager()
+    
+    # Obtener ruta de RVM desde config
+    ruta_rvm = config.get("emulator.retrovirtualmachine")
+    
+    if not ruta_rvm:
+        print("Error: RVM no configurado")
+        print("Configura con: cpcready config set emulator.retrovirtualmachine /ruta/a/rvm")
+        return False
+    
+    rvm = RVM(ruta_rvm)
+    
+    return rvm.launch(
+        modelo="6128",
+        archivo_dsk=archivo_dsk
+    )
+
+# Uso
+lanzar_desde_config("juego.dsk")
+```
+
+---
+
+### Testing Automatizado
+
+```python
+from cpcready.utils.retrovirtualmachine import RVM
+from pathlib import Path
+import time
+
+def test_suite_completa(discos):
+    """Ejecuta suite de pruebas en RVM"""
+    rvm = RVM("/Applications/Retro Virtual Machine.app")
+    
+    resultados = []
+    
+    for dsk in discos:
+        if not Path(dsk).exists():
+            print(f"✗ Disco no encontrado: {dsk}")
+            resultados.append((dsk, False))
+            continue
+        
+        print(f"Testing: {dsk}")
+        
+        # Lanzar disco
+        success = rvm.launch(
+            modelo="6128",
+            archivo_dsk=dsk,
+            archivo_ejecutar="TEST.BAS"
+        )
+        
+        resultados.append((dsk, success))
+        
+        # Esperar antes del siguiente test
+        time.sleep(5)
+        rvm.kill_all_instances()
+        time.sleep(2)
+    
+    # Resumen
+    print("\n=== Resultados ===")
+    for dsk, success in resultados:
+        estado = "✓" if success else "✗"
+        print(f"{estado} {dsk}")
+    
+    return resultados
+
+# Uso
+test_suite_completa([
+    "tests/test1.dsk",
+    "tests/test2.dsk",
+    "tests/test3.dsk"
+])
+```
+
+---
+
+### Detección Automática de RVM
+
+```python
+from cpcready.utils.retrovirtualmachine import RVM
+from pathlib import Path
+import sys
+
+def encontrar_rvm():
+    """Busca RVM en ubicaciones comunes"""
+    rutas_comunes = []
+    
+    if sys.platform == "darwin":  # macOS
+        rutas_comunes = [
+            "/Applications/Retro Virtual Machine.app",
+            Path.home() / "Applications" / "Retro Virtual Machine.app"
+        ]
+    elif sys.platform.startswith("win"):  # Windows
+        rutas_comunes = [
+            "C:/Program Files/RetroVirtualMachine/RetroVirtualMachine.exe",
+            "C:/Program Files (x86)/RetroVirtualMachine/RetroVirtualMachine.exe"
+        ]
+    else:  # Linux
+        rutas_comunes = [
+            "/usr/bin/retrovirtualmachine",
+            "/usr/local/bin/retrovirtualmachine",
+            Path.home() / ".local/bin/retrovirtualmachine"
+        ]
+    
+    for ruta in rutas_comunes:
+        if Path(ruta).exists():
+            print(f"✓ RVM encontrado: {ruta}")
+            return str(ruta)
+    
+    print("✗ RVM no encontrado en ubicaciones comunes")
+    return None
+
+# Uso
+ruta = encontrar_rvm()
+if ruta:
+    rvm = RVM(ruta)
+    rvm.launch(modelo="6128", archivo_dsk="test.dsk")
+```
+
+---
+
+## Especificaciones de Plataforma
+
+### macOS
+
+```python
+# Usar ruta a .app
+rvm = RVM("/Applications/Retro Virtual Machine.app")
+
+# El launcher usa: open -a "path.app" --args parámetros
+```
+
+### Windows
+
+```python
+# Usar ruta a .exe
+rvm = RVM("C:/Program Files/RVM/RetroVirtualMachine.exe")
+
+# Usa DETACHED_PROCESS para desconectar completamente
+```
+
+### Linux
+
+```python
+# Usar ruta al binario
+rvm = RVM("/usr/bin/retrovirtualmachine")
+
+# Usa start_new_session=True para independencia
+```
+
+---
+
+## Parámetros de Línea de Comandos
+
+RetroVirtualMachine acepta los siguientes parámetros:
+
+```bash
+-b=cpc464     # Modelo CPC (464, 664, 6128)
+-i disk.dsk   # Cargar imagen de disco
+-c "cmd\n"    # Ejecutar comando automáticamente
+-nocolor      # Deshabilitar salida con colores (para --help)
+```
+
+**Ejemplo generado por `launch()`:**
+
+```bash
+# macOS
+open -a "/Applications/Retro Virtual Machine.app" --args \
+  -b=cpc6128 -i juego.dsk -c 'run"GAME.BAS"\n'
+
+# Windows/Linux
+/path/to/rvm -b=cpc6128 -i juego.dsk -c 'run"GAME.BAS"\n'
+```
+
+---
+
+## Manejo de Errores
+
+```python
+from cpcready.utils.retrovirtualmachine import RVM
+from cpcready.utils.console import error
+
+def lanzar_seguro(ruta_rvm, dsk):
+    """Lanza RVM con manejo robusto de errores"""
+    try:
+        rvm = RVM(ruta_rvm)
+        
+        # Verificar versión primero
+        is_valid, info = rvm.check_version()
+        if not is_valid:
+            error(f"Versión incorrecta: {info}")
+            return False
+        
+        # Lanzar emulador
+        success = rvm.launch(modelo="6128", archivo_dsk=dsk)
+        
+        if not success:
+            error("No se pudo lanzar el emulador")
+            return False
+        
+        return True
+        
+    except FileNotFoundError:
+        error(f"Ejecutable no encontrado: {ruta_rvm}")
+    except PermissionError:
+        error(f"Sin permisos para ejecutar: {ruta_rvm}")
+    except Exception as e:
+        error(f"Error inesperado: {e}")
+    
+    return False
+
+# Uso
+lanzar_seguro("/Applications/Retro Virtual Machine.app", "juego.dsk")
+```
+
+---
+
+## Dependencias
+
+```python
+import psutil              # Gestión de procesos del sistema
+import subprocess         # Lanzamiento de procesos
+import sys               # Detección de plataforma
+import time              # Delays entre operaciones
+import re                # Validación de versión con regex
+from pathlib import Path # Manipulación de rutas
+```
+
+---
+
+## Ver También
+
+- [System](/api/utils/system/) - Ejecución de comandos del sistema
+- [Config](/api/utils/config/) - Gestión de configuración
+- [Console](/api/utils/console/) - Salida formateada
+- [RetroVirtualMachine Official Site](https://www.retrovirtualmachine.org/) - Sitio oficial

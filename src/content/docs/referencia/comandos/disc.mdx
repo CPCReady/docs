@@ -1,0 +1,232 @@
+---
+title: disc
+description: Comandos de gestión de imágenes de disco
+tags: [disc, disk, dsk]
+---
+
+import { Badge } from '@astrojs/starlight/components';
+import { Card } from '@astrojs/starlight/components';
+import { Code } from '@astrojs/starlight/components';
+import { Aside } from '@astrojs/starlight/components';
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+<Card>Gestionar DSK disk images: crear nuevos discos, insertar existentes, y mostrar información detallada sobre la estructura y contenido del disco.</Card>
+
+## Uso
+
+```bash
+Uso: cpc disc [OPTIONS] COMMAND [ARGS]...
+
+  Comandos de gestión de imágenes de disco.
+
+Comandos:
+  new     Crear a new blank DSK disk image
+  insert  Insertar existing DSK into drive A o B
+  info    Mostrar detailed information about disk
+```
+
+---
+
+<Tabs>
+<TabItem label="disc new">
+
+## disc new
+
+Crear un nuevo archivo de imagen DSK en blanco con formato CPC estándar. Permite especificar el tipo de disco (DATA, VENDOR o SYSTEM) y opcionalmente montarlo directamente en una unidad.
+
+### Uso
+
+```bash
+Uso: cpc-disc new [OPTIONS] DISC_NAME [[DATA|VENDOR|SYSTEM]]
+
+  Crear un nuevo disco virtual o insertar disco existente en la unidad.
+
+Argumentos:
+  DISC_NAME          Nombre del archivo DSK a crear
+  [DATA|VENDOR|SYSTEM]  Tipo de disco (opcional, por defecto: DATA)
+
+Opciones:
+  -A, --drive-a  Insertar disco en la unidad A
+  -B, --drive-b  Insertar disco en la unidad B
+  --help         Mostrar este mensaje y salir
+```
+
+### Tipos de Disco
+
+<ul>
+  <li><strong>DATA</strong> (por defecto): Disco de datos estándar CPC - 40 pistas, 9 sectores, 512 bytes por sector (180KB)</li>
+  <li><strong>VENDOR</strong>: Formato de disco de vendedor con características especiales</li>
+  <li><strong>SYSTEM</strong>: Disco de sistema con área de arranque</li>
+</ul>
+
+### Ejemplos
+
+#### Crear disco en blanco en directorio actual
+```bash
+cpc-disc new mydisk.dsk
+```
+
+#### Crear disco de tipo DATA
+```bash
+cpc-disc new mydisk.dsk DATA
+```
+
+#### Crear disco SYSTEM
+```bash
+cpc-disc new system.dsk SYSTEM
+```
+
+#### Crear disco VENDOR
+```bash
+cpc-disc new vendor.dsk VENDOR
+```
+
+#### Crear disco y montarlo directamente en unidad A
+```bash
+cpc-disc new game.dsk DATA -A
+```
+
+#### Crear disco y montarlo en unidad B
+```bash
+cpc-disc new backup.dsk -B
+```
+
+#### Crear disco con ruta completa y montarlo
+```bash
+cpc-disc new /path/to/newdisk.dsk DATA -A
+```
+
+#### Comando alternativo
+```bash
+cpc disc new blank.dsk
+```
+
+<Aside type="caution">
+Si el archivo DSK ya existe, no se sobrescribirá. El comando mostrará un error.
+</Aside>
+
+<Aside type="note">
+Si no se especifica el tipo de disco, se creará por defecto un disco tipo **DATA** con formato CPC estándar: 40 pistas × 9 sectores × 512 bytes = 180KB de capacidad.
+</Aside>
+
+<Aside type="tip">
+Usar las opciones `-A` o `-B` te ahorra tener que ejecutar `cpc disc insert` después de crear el disco. El disco se crea y se monta automáticamente.
+</Aside>
+
+</TabItem>
+
+<TabItem label="disc insert">
+
+## disc insert
+
+Insertar an existing DSK file into virtual drive A o B. The command validates file existence and updates drive configuration.
+
+### Uso
+
+```bash
+Uso: cpc disc insert [OPTIONS] DSK_FILE
+
+  Insertar existing DSK into drive A o B.
+
+Argumentos:
+  DSK_FILE  Path to the DSK file to insert
+
+Opciones:
+  -A, --drive-a  Insertar into drive A
+  -B, --drive-b  Insertar into drive B
+  --help         Mostrar this message and exit.
+```
+
+### Ejemplos
+
+#### Insertar disco en unidad A
+```bash
+cpc disc insert game.dsk -A
+```
+
+#### Insertar disco en unidad B con ruta relativa
+```bash
+cpc disc insert ../disks/system.dsk -B
+```
+
+#### Comando alternativo
+```bash
+cpc-disc insert backup.dsk -A
+```
+
+<Aside type="caution">
+Si no se especifica una unidad, el archivo de disco se creara sin insertar en ninguna unidad.
+</Aside>
+
+<Aside type="tip">
+Use `cpc drive status`  para verificar después de insertar que el disco está montado correctamente.
+</Aside>
+
+</TabItem>
+
+<TabItem label="disc info">
+
+## disc info
+
+Mostrar información detallada sobre una imagen de disco incluyendo estructura, formato, capacidad, tipos de archivo y uso de bloques.
+
+### Uso
+
+```bash
+Uso: cpc disc info [OPTIONS] [DSK_FILE]
+
+  Mostrar detailed information about a disc file.
+
+Argumentos:
+  DSK_FILE  Path to DSK file (optional if using drive option)
+
+Opciones:
+  -A, --drive-a  Mostrar info for disc in drive A
+  -B, --drive-b  Mostrar info for disc in drive B
+  --help         Mostrar this message and exit.
+```
+
+### Información Mostrada
+
+<ul>
+  <li><strong>Structure</strong>: Tracks, size, sides</li>
+  <li><strong>Format</strong>: Disk type, sector information</li>
+  <li><strong>Capacity</strong>: Total, used, free space</li>
+  <li><strong>File Types</strong>: BASIC, Binary, ASCII counts</li>
+  <li><strong>Blocks</strong>: Used blocks, first allocated block</li>
+</ul>
+
+### Ejemplos
+
+#### Mostrar info para disco en la unidad A
+```bash
+cpc disc info -A
+```
+
+#### Mostrar info para archivo DSK específico
+```bash
+cpc disc info mydisk.dsk
+```
+
+#### Mostrar info para disco en la unidad B
+```bash
+cpc disc info -B
+```
+
+#### Comando alternativo
+```bash
+cpc-disc info -A
+```
+
+<Aside type="tip">
+Sin opciones, el comando usa la unidad por defecto (usualmente A).
+</Aside>
+
+</TabItem>
+</Tabs>
+
+---
+
+<Aside type="note">
+Todas las operaciones de disco actualizan el archivo de configuración en `~/.config/cpcready/cpcready.toml`.
+</Aside>

@@ -1,0 +1,125 @@
+---
+title: emu
+description: Configurar the default emulator to use
+tags: [emulator, configuration]
+---
+
+import { Badge } from '@astrojs/starlight/components';
+import { Card } from '@astrojs/starlight/components';
+import { Code } from '@astrojs/starlight/components';
+import { Aside } from '@astrojs/starlight/components';
+
+<Card>Selecciona el emulador predeterminado para ejecutar software CPC. Elige entre RetroVirtualMachine o M4Board (Funcionalidad en progreso) con un menú interactivo.</Card>
+
+## Uso
+
+```bash
+Uso: cpc emu [OPTIONS]
+
+  Configurar the emulator to use.
+
+  Select between M4Board or RetroVirtualMachine as the default emulator.
+
+Opciones:
+  --help  Mostrar this message and exit.
+```
+
+## Ejemplos
+
+### Seleccionar emulador interactivamente
+
+```bash
+cpc emu
+```
+
+**Interactive prompt:**
+```
+◉ Current emulator: RetroVirtualMachine
+
+? Select emulator to use: 
+❯ RetroVirtualMachine
+  M4Board
+```
+
+**After selection:**
+```
+◉ Emulator set to: M4Board
+```
+
+### Cancelar selección
+
+Press `ESC` or `Ctrl+C` to cancel:
+
+```
+◉ Current emulator: RetroVirtualMachine
+
+? Select emulator to use: 
+❯ RetroVirtualMachine
+  M4Board
+
+◉ Configuración cancelled.
+```
+
+
+## Emuladores Disponibles
+
+<Card title="RetroVirtualMachine">
+**RetroVirtualMachine** es un emulador multiplataforma que proporciona una emulación precisa del Amstrad CPC.
+
+- **Platform:** macOS, Windows, Linux
+- **Características:** High accuracy, full peripherals soporte
+- **Configuración:** Use [`cpc rvm config`](/reference/commands/rvm/) to set path
+- **Validation:** Requires specific version (v2.0 BETA-1 r7)
+</Card>
+
+<Card title="M4Board">
+<Aside type="caution">
+Actualmente, la funcionalidad de emulación de M4Board está en desarrollo y NO es funcional.
+</Aside>
+**M4Board** es un complemento de hardware físico para computadoras Amstrad CPC reales.
+
+- **Platform:** Real CPC hardware with M4 board
+- **Características:** Direct hardware execution, SD card soporte
+- **Configuración:** Requires M4Board connected to your CPC
+- **Speed:** Native CPC hardware speed
+</Card>
+
+## Configuracion
+
+El emulador seleccionado se guarda en el archivo de configuracion de CPCReady.
+
+**Ubicación:** `~/.config/cpcready/cpcready.toml`
+
+**Format:**
+```toml
+[emulator]
+selected = "RetroVirtualMachine"
+```
+
+O:
+```toml
+[emulator]
+selected = "M4Board"
+```
+
+## Navegación
+
+- **Flechas ↑/↓** - Navegar entre opciones
+- **Enter** - Confirmar selección
+- **ESC/Ctrl+C** - Cancelar sin cambios
+
+<Aside type="tip">
+El emulador seleccionado es usado por el comando [`run`](/reference/commands/run/) al ejecutar software.
+</Aside>
+
+<Aside type="note">
+Después de cambiar el emulador, asegúrate de que esté configurado correctamente:
+- Para RetroVirtualMachine: Usa `cpc rvm config` para establecer la ruta
+- Para M4Board: Asegúrate de que la placa esté conectada y configurada
+</Aside>
+
+## Comandos Relacionados
+
+- [`rvm`](/reference/commands/rvm/) - Configurar ajustes de RetroVirtualMachine
+- [`run`](/reference/commands/run/) - Ejecutar software con el emulador seleccionado
+

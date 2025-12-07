@@ -1,0 +1,83 @@
+---
+title: list
+description: Mostrar BASIC file content from DSK
+tags: [disk, file, basic, view]
+---
+
+import { Badge } from '@astrojs/starlight/components';
+import { Card } from '@astrojs/starlight/components';
+import { Code } from '@astrojs/starlight/components';
+import { Aside } from '@astrojs/starlight/components';
+
+
+<Card>
+Muestra el contenido de archivos BASIC almacenados en imágenes de disco DSK. Soporta formatos BASIC tokenizados y ASCII con resaltado de sintaxis. Use <Badge text="-A" variant="note" /> or <Badge text="-B" variant="note" /> para especificar la unidad. Si no se especifica una unidad, se utiliza la unidad actualmente seleccionada.
+<Aside type="tip">
+La unidad seleccionada se configura con <Badge text="cpc drive A" variant="note" /> o <Badge text="cpc drive B" variant="note" />. Por defecto es la unidad A.
+</Aside>
+</Card>
+
+## Uso
+
+```bash
+Uso: cpc list [OPTIONS] FILE_NAME
+
+  List BASIC file from virtual disc.
+
+Argumentos:
+  FILE_NAME  Name of BASIC file to display
+
+Opciones:
+  -A, --drive-a  Read from drive A (default)
+  -B, --drive-b  Read from drive B
+  --help         Mostrar this message and exit.
+```
+
+## Características
+
+- **Tokenized BASIC**: Des-tokeniza automáticamente archivos Locomotive BASIC
+- **ASCII BASIC**: Muestra archivos BASIC en texto plano
+- **Resaltado de sintaxis**: Salida enriquecida en consola con codificación de colores
+- **Detección de formato**: Detecta automáticamente el formato BASIC (tokenizado vs ASCII)
+- **Detección binaria**: Advierte si el archivo es binario (no BASIC)
+
+## Ejemplos
+
+### List BASIC file from drive A
+```bash
+cpc list GAME.BAS
+```
+
+### List BASIC file from drive B
+```bash
+cpc list MENU.BAS -B
+```
+
+### Comando Alternativo
+```bash
+cpc-list PROGRAM.BAS
+```
+
+### Mostrar tokenized BASIC
+```bash
+cpc list LOADER.BAS
+```
+
+
+<Aside type="tip">
+El comando detecta automáticamente el formato BASIC:
+- **Tokenized**: Formato binario con tokens BASIC (la mayoría de los programas CPC)
+- **ASCII**: Formato de texto plano creado con editores o `SAVE "FILE",A`
+</Aside>
+
+<Aside type="caution">
+Si intentas listar un archivo binario, el comando mostrará un mensaje de error:
+```
+Error: FILE.BIN is a BINARY file (type 2), not a BASIC program.
+Use 'cpc filextr' to extract binary files.
+```
+</Aside>
+
+<Aside type="note">
+El comando respeta el número de usuario actual (ver `cpc user`). Solo los archivos en el área de usuario activa serán accesibles.
+</Aside>

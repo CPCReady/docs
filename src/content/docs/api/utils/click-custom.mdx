@@ -1,0 +1,287 @@
+---
+title: Click Custom
+description: Comandos y grupos personalizados de Click
+---
+
+import { Code } from '@astrojs/starlight/components';
+import { Aside } from '@astrojs/starlight/components';
+
+## Módulo Click Custom
+
+Extensiones personalizadas de Click para mejorar la experiencia de línea de comandos en CPCReady. Proporciona clases personalizadas para comandos y grupos con funcionalidades adicionales.
+
+---
+
+## CustomCommand
+
+```python
+class CustomCommand(click.Command)
+```
+
+Comando Click personalizado con soporte para banner y formato mejorado de ayuda.
+
+### Constructor
+
+```python
+def __init__(self, *args, show_banner: bool = False, **kwargs)
+```
+
+**Parámetros:**
+
+- **show_banner** (`bool`) - Si `True`, muestra banner al mostrar ayuda. Por defecto: `False`
+- **\*args, \*\*kwargs** - Argumentos de `click.Command`
+
+### Métodos
+
+#### get_help
+
+```python
+def get_help(self, ctx) -> str
+```
+
+Obtiene el texto de ayuda formateado, opcionalmente con banner.
+
+**Parámetros:**
+
+- **ctx** - Contexto de Click
+
+**Returns:** `str` - Texto de ayuda formateado
+
+**Ejemplo:**
+
+```python
+import click
+from cpcready.utils.click_custom import CustomCommand
+
+@click.command(cls=CustomCommand, show_banner=True)
+def mi_comando():
+    """Mi comando personalizado"""
+    click.echo("Hola mundo")
+```
+
+---
+
+## CustomGroup
+
+```python
+class CustomGroup(click.Group)
+```
+
+Grupo Click personalizado con soporte para banner y uso automático de `CustomCommand`.
+
+### Constructor
+
+```python
+def __init__(self, *args, show_banner: bool = False, **kwargs)
+```
+
+**Parámetros:**
+
+- **show_banner** (`bool`) - Si `True`, muestra banner al mostrar ayuda. Por defecto: `False`
+- **\*args, \*\*kwargs** - Argumentos de `click.Group`
+
+### Métodos
+
+#### get_help
+
+```python
+def get_help(self, ctx) -> str
+```
+
+Obtiene el texto de ayuda formateado, opcionalmente con banner.
+
+#### command
+
+```python
+def command(self, *args, **kwargs)
+```
+
+Decorador para añadir comandos al grupo. Usa `CustomCommand` por defecto.
+
+**Ejemplo:**
+
+```python
+import click
+from cpcready.utils.click_custom import CustomGroup
+
+@click.group(cls=CustomGroup, show_banner=True)
+def cli():
+    """Grupo de comandos principal"""
+    pass
+
+@cli.command()  # Automáticamente usa CustomCommand
+def subcomando():
+    """Un subcomando"""
+    click.echo("Ejecutando subcomando")
+```
+
+---
+
+## FormattedStderr
+
+```python
+class FormattedStderr
+```
+
+Wrapper para stderr que añade formato mejorado a mensajes de error de Click.
+
+<Aside type="note">
+Esta clase se aplica automáticamente al importar el módulo y mejora el formato de errores de Click añadiendo líneas en blanco para mejor legibilidad.
+</Aside>
+
+### Características
+
+- Añade línea en blanco antes de mensajes de error
+- Añade línea en blanco después de mensajes de error
+- Mejora la legibilidad de mensajes de uso incorrecto
+
+**Ejemplo de salida mejorada:**
+
+```
+(línea en blanco)
+Usage: cpc-disc new [OPTIONS] DISC_NAME
+
+Error: Missing argument 'DISC_NAME'.
+(línea en blanco)
+```
+
+---
+
+## Uso en CPCReady
+
+### Comando Simple
+
+```python
+import click
+from cpcready.utils.click_custom import CustomCommand
+
+@click.command(cls=CustomCommand, show_banner=True)
+@click.argument('filename')
+def procesar(filename):
+    """Procesa un archivo"""
+    click.echo(f"Procesando {filename}")
+```
+
+### Grupo con Subcomandos
+
+```python
+import click
+from cpcready.utils.click_custom import CustomGroup, CustomCommand
+
+@click.group(cls=CustomGroup, show_banner=True, name='miapp')
+def cli():
+    """Mi aplicación CLI"""
+    pass
+
+@cli.command()  # Usa CustomCommand automáticamente
+@click.argument('archivo')
+def abrir(archivo):
+    """Abre un archivo"""
+    click.echo(f"Abriendo {archivo}")
+
+@cli.command()
+@click.option('--nombre', required=True)
+def crear(nombre):
+    """Crea un nuevo archivo"""
+    click.echo(f"Creando {nombre}")
+
+if __name__ == '__main__':
+    cli()
+```
+
+### Comando con Banner Personalizado
+
+```python
+import click
+from cpcready.utils.click_custom import CustomCommand
+from cpcready.utils.version import show_banner
+
+@click.command(cls=CustomCommand, show_banner=True)
+def mi_comando():
+    """
+    Mi comando con banner personalizado
+    
+    Este comando muestra un banner al ejecutar --help
+    """
+    click.echo("Ejecutando comando")
+```
+
+---
+
+## Ejemplo Completo: CLI Multi-Comando
+
+```python
+import click
+from cpcready.utils.click_custom import CustomGroup, CustomCommand
+from cpcready.utils.console import ok, error, info2
+
+@click.group(cls=CustomGroup, show_banner=True, name='myapp')
+@click.option('--verbose', is_flag=True, help='Modo verbose')
+@click.pass_context
+def cli(ctx, verbose):
+    """MyApp - Herramienta de línea de comandos"""
+    ctx.ensure_object(dict)
+    ctx.obj['VERBOSE'] = verbose
+
+@cli.group(cls=CustomGroup, name='disco')
+def disco_group():
+    """Comandos de gestión de disco"""
+    pass
+
+@disco_group.command(name='crear')
+@click.argument('nombre')
+@click.pass_context
+def disco_crear(ctx, nombre):
+    """Crea un nuevo disco"""
+    if ctx.obj['VERBOSE']:
+        info2(f"Creando disco: {nombre}")
+    
+    try:
+        # Lógica de creación
+        ok(f"Disco {nombre} creado exitosamente")
+    except Exception as e:
+        error(f"Error: {e}")
+        raise click.Abort()
+
+@disco_group.command(name='listar')
+@click.pass_context
+def disco_listar(ctx):
+    """Lista discos disponibles"""
+    if ctx.obj['VERBOSE']:
+        info2("Listando discos...")
+    
+    # Lógica de listado
+    click.echo("disco1.dsk")
+    click.echo("disco2.dsk")
+
+@cli.command()
+@click.argument('archivo')
+def procesar(archivo):
+    """Procesa un archivo"""
+    info2(f"Procesando {archivo}")
+    ok("Procesamiento completado")
+
+if __name__ == '__main__':
+    cli()
+```
+
+**Uso:**
+
+```bash
+# Mostrar ayuda con banner
+myapp --help
+
+# Ejecutar comando
+myapp procesar archivo.txt
+
+# Usar subcomandos
+myapp disco crear mi_disco
+myapp disco listar --verbose
+```
+
+---
+
+## Ver También
+
+- [Console](/api/utils/console/) - Utilidades de consola
+- [Click Documentation](https://click.palletsprojects.com/) - Documentación oficial de Click

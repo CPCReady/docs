@@ -1,0 +1,352 @@
+---
+title: Config
+description: Gestión de configuración TOML
+---
+
+import { Code } from '@astrojs/starlight/components';
+import { Aside } from '@astrojs/starlight/components';
+
+## ConfigManager
+
+```python
+class ConfigManager(config_file: str = "cpcready.toml")
+```
+
+Gestor de configuración basado en archivos TOML. Proporciona una interfaz simple para leer y escribir configuración persistente.
+
+### Ubicación de Archivos
+
+Los archivos de configuración se almacenan en:
+- **Linux/macOS**: `~/.config/cpcready/`
+- **Windows**: `%USERPROFILE%\.config\cpcready\`
+
+---
+
+## Constructor
+
+```python
+def __init__(self, config_file: str = "cpcready.toml")
+```
+
+**Parámetros:**
+
+- **config_file** (`str`) - Nombre del archivo de configuración. Por defecto: `"cpcready.toml"`
+
+**Ejemplo:**
+
+```python
+from cpcready.utils.toml_config import ConfigManager
+
+# Usar archivo por defecto
+config = ConfigManager()
+
+# Usar archivo personalizado
+config = ConfigManager("mi_config.toml")
+```
+
+---
+
+## Métodos
+
+### get
+
+```python
+def get(self, key: str, default: Any = None) -> Any
+```
+
+Obtiene un valor de la configuración.
+
+**Parámetros:**
+
+- **key** (`str`) - Clave a buscar (soporta notación punto para anidado)
+- **default** (`Any`) - Valor por defecto si no existe. Por defecto: `None`
+
+**Returns:** `Any` - Valor almacenado o default
+
+**Ejemplo:**
+
+```python
+config = ConfigManager()
+
+# Obtener valor simple
+emulator = config.get("emulator.selected", "RetroVirtualMachine")
+
+# Obtener valor anidado
+rvm_path = config.get("emulator.rvm.path", "/Applications/RVM.app")
+```
+
+---
+
+### set
+
+```python
+def set(self, key: str, value: Any) -> None
+```
+
+Establece un valor en la configuración y lo guarda.
+
+**Parámetros:**
+
+- **key** (`str`) - Clave a establecer (soporta notación punto para anidado)
+- **value** (`Any`) - Valor a guardar
+
+**Ejemplo:**
+
+```python
+config = ConfigManager()
+
+# Establecer valor simple
+config.set("emulator.selected", "M4Board")
+
+# Establecer valor anidado
+config.set("drives.A", "/path/to/disk.dsk")
+```
+
+---
+
+### get_all
+
+```python
+def get_all(self) -> Dict[str, Any]
+```
+
+Obtiene toda la configuración como diccionario.
+
+**Returns:** `Dict[str, Any]` - Configuración completa
+
+**Ejemplo:**
+
+```python
+config = ConfigManager()
+all_config = config.get_all()
+
+print(all_config)
+# {
+#     "emulator": {
+#         "selected": "RetroVirtualMachine",
+#         "rvm": {"path": "/Applications/RVM.app"}
+#     },
+#     "drives": {"A": "disk.dsk", "B": ""}
+# }
+```
+
+---
+
+### delete
+
+```python
+def delete(self, key: str) -> None
+```
+
+Elimina una clave de la configuración.
+
+**Parámetros:**
+
+- **key** (`str`) - Clave a eliminar
+
+**Ejemplo:**
+
+```python
+config = ConfigManager()
+config.delete("drives.B")
+```
+
+---
+
+### reset
+
+```python
+def reset(self) -> None
+```
+
+Resetea la configuración a valores por defecto.
+
+**Ejemplo:**
+
+```python
+config = ConfigManager()
+config.reset()
+```
+
+---
+
+### exists
+
+```python
+def exists(self, key: str) -> bool
+```
+
+Verifica si existe una clave en la configuración.
+
+**Parámetros:**
+
+- **key** (`str`) - Clave a verificar
+
+**Returns:** `bool` - `True` si existe
+
+**Ejemplo:**
+
+```python
+config = ConfigManager()
+
+if config.exists("emulator.selected"):
+    emulator = config.get("emulator.selected")
+else:
+    config.set("emulator.selected", "RetroVirtualMachine")
+```
+
+---
+
+## Estructura de Configuración
+
+### Formato TOML
+
+La configuración se almacena en formato TOML, que es legible y fácil de editar:
+
+```toml
+[emulator]
+selected = "RetroVirtualMachine"
+
+[emulator.rvm]
+path = "/Applications/Retro Virtual Machine 2.app"
+
+[drives]
+A = "game.dsk"
+B = ""
+selected = "A"
+
+[model]
+selected = "6128"
+
+[mode]
+selected = "1"
+```
+
+### Notación Punto
+
+Puedes acceder a valores anidados usando notación punto:
+
+```python
+# Leer
+path = config.get("emulator.rvm.path")
+
+# Escribir
+config.set("emulator.rvm.path", "/new/path")
+```
+
+---
+
+## Ejemplo Completo
+
+```python
+from cpcready.utils.toml_config import ConfigManager
+
+# Inicializar
+config = ConfigManager()
+
+# Verificar y establecer emulador
+if not config.exists("emulator.selected"):
+    config.set("emulator.selected", "RetroVirtualMachine")
+    config.set("emulator.rvm.path", "/Applications/RVM.app")
+
+# Leer configuración
+emulator = config.get("emulator.selected")
+print(f"Emulador actual: {emulator}")
+
+# Gestionar drives
+config.set("drives.A", "game.dsk")
+config.set("drives.B", "data.dsk")
+config.set("drives.selected", "A")
+
+# Leer drives
+drive_a = config.get("drives.A")
+drive_b = config.get("drives.B")
+active = config.get("drives.selected")
+
+print(f"Drive A: {drive_a}")
+print(f"Drive B: {drive_b}")
+print(f"Drive activo: {active}")
+
+# Ver toda la configuración
+all_config = config.get_all()
+for section, values in all_config.items():
+    print(f"\n[{section}]")
+    if isinstance(values, dict):
+        for key, val in values.items():
+            print(f"  {key} = {val}")
+    else:
+        print(f"  {values}")
+
+# Limpiar una entrada
+config.delete("drives.B")
+
+# Reset completo (cuidado!)
+# config.reset()
+```
+
+---
+
+## Uso con Contexto
+
+```python
+from cpcready.utils.toml_config import ConfigManager
+
+class MiAplicacion:
+    def __init__(self):
+        self.config = ConfigManager()
+        self._cargar_configuracion()
+    
+    def _cargar_configuracion(self):
+        """Carga configuración con valores por defecto"""
+        if not self.config.exists("app.version"):
+            self.config.set("app.version", "1.0.0")
+        
+        if not self.config.exists("app.theme"):
+            self.config.set("app.theme", "dark")
+    
+    def cambiar_tema(self, tema: str):
+        """Cambia el tema de la aplicación"""
+        self.config.set("app.theme", tema)
+    
+    def obtener_tema(self) -> str:
+        """Obtiene el tema actual"""
+        return self.config.get("app.theme", "dark")
+
+# Uso
+app = MiAplicacion()
+print(app.obtener_tema())  # "dark"
+app.cambiar_tema("light")
+print(app.obtener_tema())  # "light"
+```
+
+---
+
+## Migración desde Shelve
+
+Si estás migrando de shelve a TOML:
+
+```python
+import shelve
+from cpcready.utils.toml_config import ConfigManager
+
+# Leer datos antiguos de shelve
+old_db = shelve.open("old_config.db")
+old_data = dict(old_db)
+old_db.close()
+
+# Escribir a nueva configuración TOML
+config = ConfigManager()
+for key, value in old_data.items():
+    config.set(key, value)
+```
+
+<Aside type="tip">
+Los archivos TOML son legibles por humanos y pueden versionarse en Git, a diferencia de los archivos shelve binarios.
+</Aside>
+
+---
+
+## Ver También
+
+- [Manager](/api/utils/manager/) - Usa ConfigManager para drives
+- [TOML Specification](https://toml.io/) - Especificación del formato TOML

@@ -1,0 +1,151 @@
+---
+title: cat
+description: Mostrar el catálogo de archivos en disco
+tags: [cat, catalog, files]
+---
+
+import { Badge } from '@astrojs/starlight/components';
+import { Card } from '@astrojs/starlight/components';
+import { Code } from '@astrojs/starlight/components';
+import { Aside } from '@astrojs/starlight/components';
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+
+<Card>
+Listar todos los archivos almacenados en el disco virtual. Muestra información detallada de cada archivo incluyendo nombre, tipo, tamaño y ubicación en el disco. 
+Use <Badge text="-A" variant="note" /> or <Badge text="-B" variant="note" /> para especificar la unidad. Si no se especifica una unidad, se utiliza la unidad actualmente seleccionada.
+<Aside type="tip">
+La unidad seleccionada se configura con <Badge text="cpc drive A" variant="note" /> o <Badge text="cpc drive B" variant="note" />. Por defecto es la unidad A.
+</Aside>
+</Card>
+## Uso
+
+```bash
+Uso: cpc cat [OPTIONS]
+
+  Listar archivos en el disco virtual.
+
+Opciones:
+  -A, --drive-a  Listar archivos de la unidad A
+  -B, --drive-b  Listar archivos de la unidad B
+  --help         Mostrar este mensaje y salir
+```
+
+---
+
+<Tabs>
+<TabItem label="cat (Unidad seleccionada)">
+
+## cat
+
+Listar archivos del disco montado en la unidad actualmente seleccionada. Use <Badge text="-A" variant="note" /> or <Badge text="-B" variant="note" /> para especificar la unidad. Si no se especifica una unidad, se utiliza la unidad actualmente seleccionada.
+<Aside type="tip">
+La unidad seleccionada se configura con `cpc drive A` o `cpc drive B`. Por defecto es la unidad A.
+</Aside>
+### Uso
+
+```bash
+Uso: cpc cat [OPTIONS]
+
+  Listar archivos en el disco virtual.
+
+Opciones:
+  --help  Mostrar este mensaje y salir
+```
+
+### Ejemplos
+
+#### Listar archivos de la unidad actual
+```bash
+cpc cat
+```
+
+#### Comando alternativo
+```bash
+cpc-cat
+```
+
+
+
+
+</TabItem>
+
+<TabItem label="cat -A">
+
+## cat -A
+
+Listar todos los archivos almacenados en el disco montado en la unidad A, independientemente de cuál sea la unidad seleccionada actualmente.
+
+### Uso
+
+```bash
+Uso: cpc cat [OPTIONS]
+
+  Listar archivos del disco en la unidad A.
+
+Opciones:
+  -A, --drive-a  Listar archivos de la unidad A
+  --help         Mostrar este mensaje y salir
+```
+
+
+### Ejemplos
+
+#### Listar archivos de la unidad A
+```bash
+cpc cat -A
+```
+
+#### Comando alternativo
+```bash
+cpc-cat -A
+```
+
+</TabItem>
+
+<TabItem label="cat -B">
+
+## cat -B
+
+Listar todos los archivos almacenados en el disco montado en la unidad B, independientemente de cuál sea la unidad seleccionada actualmente.
+
+### Uso
+
+```bash
+Uso: cpc cat [OPTIONS]
+
+  Listar archivos del disco en la unidad B.
+
+Opciones:
+  -B, --drive-b  Listar archivos de la unidad B
+  --help         Mostrar este mensaje y salir
+```
+
+### Ejemplos
+
+#### Listar archivos de la unidad B
+```bash
+cpc cat -B
+```
+
+#### Comando alternativo
+```bash
+cpc-cat -B
+```
+
+</TabItem>
+</Tabs>
+
+### Información Mostrada
+
+<ul>
+  <li><strong>Nombre</strong>: Nombre del archivo en formato 8.3 (AMSDOS)</li>
+  <li><strong>Tipo</strong>: BASIC, Binary, ASCII, o desconocido</li>
+  <li><strong>Tamaño</strong>: Tamaño del archivo en bytes</li>
+  <li><strong>Usuario</strong>: Número de área de usuario CP/M (0-15)</li>
+  <li><strong>Extensión</strong>: Extensión del archivo (hasta 3 caracteres)</li>
+</ul>
+<Aside type="caution">
+Si no hay disco montado en la unidad A, el comando mostrará un error indicando que la unidad está vacía.
+</Aside>
+---

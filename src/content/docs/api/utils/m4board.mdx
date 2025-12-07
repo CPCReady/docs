@@ -1,0 +1,547 @@
+---
+title: M4Board
+description: Comunicación con hardware M4Board para Amstrad CPC
+---
+
+import { Code } from '@astrojs/starlight/components';
+import { Aside } from '@astrojs/starlight/components';
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+## M4Board
+<Aside type="note">
+Este software se basa en el proyecto original https://github.com/M4Duke/cpcxfer/blob/master/pyxfer.py Creado por M4Duke/Romain Giot (giot.romain@gmail.com) Bajo licencia GPL
+</Aside>
+
+```python
+class M4Board(ip=None)
+```
+
+Gestor de comunicación con M4Board. Proporciona métodos para interactuar con el hardware M4Board conectado a un Amstrad CPC real.
+
+### Constructor
+
+```python
+def __init__(self, ip: Optional[str] = None)
+```
+
+Inicializa el gestor de M4Board.
+
+**Parámetros:**
+
+- **ip** (`Optional[str]`) - Dirección IP del M4Board. Si es `None`, lee de la configuración
+
+**Raises:**
+
+- `ValueError` - Si no se proporciona IP y no está configurada
+
+**Ejemplo:**
+
+```python
+from cpcready.utils.m4board import M4Board
+
+# Usar IP configurada
+m4 = M4Board()
+
+# Especificar IP manualmente
+m4 = M4Board("192.168.1.100")
+```
+
+---
+
+## Métodos de Conexión
+
+<Tabs>
+<TabItem label="check_connection">
+
+### check_connection
+
+```python
+def check_connection(self, timeout: int = 2) -> bool
+```
+
+Verifica si el M4Board es alcanzable.
+
+**Parámetros:**
+
+- **timeout** (`int`) - Timeout de conexión en segundos. Por defecto: `2`
+
+**Returns:** `bool` - `True` si la conexión es exitosa, `False` en caso contrario
+
+**Ejemplo:**
+
+```python
+m4 = M4Board("192.168.1.100")
+
+if m4.check_connection():
+    print("M4Board conectado")
+else:
+    print("M4Board no disponible")
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+## Métodos de Reset
+
+<Tabs>
+<TabItem label="reset_m4">
+
+### reset_m4
+
+```python
+def reset_m4(self) -> bool
+```
+
+Resetea el M4Board.
+
+**Returns:** `bool` - `True` si el reset fue exitoso
+
+**Ejemplo:**
+
+```python
+m4 = M4Board()
+
+if m4.reset_m4():
+    print("M4Board reseteado")
+```
+
+</TabItem>
+<TabItem label="reset_cpc">
+
+### reset_cpc
+
+```python
+def reset_cpc(self) -> bool
+```
+
+Resetea el CPC conectado.
+
+**Returns:** `bool` - `True` si el reset fue exitoso
+
+**Ejemplo:**
+
+```python
+m4 = M4Board()
+
+if m4.reset_cpc():
+    print("CPC reseteado")
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+## Transferencia de Archivos
+
+<Tabs>
+<TabItem label="upload_file">
+
+### upload_file
+
+```python
+def upload_file(
+    self, 
+    file_path: str, 
+    destination: str = "/", 
+    with_header: bool = False
+) -> bool
+```
+
+Sube un archivo a la tarjeta SD del M4Board.
+
+**Parámetros:**
+
+- **file_path** (`str`) - Ruta local del archivo a subir
+- **destination** (`str`) - Directorio de destino en la SD. Por defecto: `"/"`
+- **with_header** (`bool`) - Añadir cabecera AMSDOS si es `True`. Por defecto: `False`
+
+**Returns:** `bool` - `True` si la subida fue exitosa
+
+**Ejemplo:**
+
+```python
+m4 = M4Board()
+
+# Subir archivo a raíz
+m4.upload_file("juego.bas")
+
+# Subir a directorio específico con cabecera AMSDOS
+m4.upload_file("loader.bin", destination="/GAMES", with_header=True)
+```
+
+<Aside type="tip">
+Usa `with_header=True` para archivos binarios que necesitan cabecera AMSDOS.
+</Aside>
+
+</TabItem>
+<TabItem label="download_file">
+
+### download_file
+
+```python
+def download_file(
+    self, 
+    cpc_path: str, 
+    local_path: Optional[str] = None
+) -> bool
+```
+
+Descarga un archivo de la tarjeta SD del M4Board.
+
+**Parámetros:**
+
+- **cpc_path** (`str`) - Ruta del archivo en la tarjeta SD
+- **local_path** (`Optional[str]`) - Ruta de destino local (por defecto: directorio actual)
+
+**Returns:** `bool` - `True` si la descarga fue exitosa
+
+**Ejemplo:**
+
+```python
+m4 = M4Board()
+
+# Descargar a directorio actual
+m4.download_file("GAME.BAS")
+
+# Descargar con nombre específico
+m4.download_file("GAME.BAS", "mi_juego.bas")
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+## Ejecución y Control
+
+<Tabs>
+<TabItem label="execute">
+
+### execute
+
+```python
+def execute(self, cpc_file: str) -> bool
+```
+
+Ejecuta un archivo en el CPC.
+
+**Parámetros:**
+
+- **cpc_file** (`str`) - Ruta del archivo en la tarjeta SD del CPC
+
+**Returns:** `bool` - `True` si el comando se envió exitosamente
+
+**Ejemplo:**
+
+```python
+m4 = M4Board()
+
+# Ejecutar juego BASIC
+m4.execute("GAME.BAS")
+
+# Ejecutar binario
+m4.execute("LOADER.BIN")
+```
+
+</TabItem>
+<TabItem label="pause">
+
+### pause
+
+```python
+def pause(self) -> bool
+```
+
+Pausa/reanuda la ejecución del CPC.
+
+**Returns:** `bool` - `True` si el comando fue exitoso
+
+**Ejemplo:**
+
+```python
+m4 = M4Board()
+
+# Pausar ejecución
+m4.pause()
+
+# Reanudar (llamar de nuevo)
+m4.pause()
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+## Gestión de Archivos
+
+<Tabs>
+<TabItem label="ls">
+
+### ls
+
+```python
+def ls(self, folder: str = "") -> Optional[List[str]]
+```
+
+Lista archivos en un directorio de la SD.
+
+**Parámetros:**
+
+- **folder** (`str`) - Directorio a listar (por defecto: raíz)
+
+**Returns:** `Optional[List[str]]` - Lista de archivos o `None` si hay error
+
+**Ejemplo:**
+
+```python
+m4 = M4Board()
+
+# Listar raíz
+files = m4.ls()
+if files:
+    for f in files:
+        print(f)
+
+# Listar directorio específico
+games = m4.ls("/GAMES")
+```
+
+</TabItem>
+<TabItem label="mkdir">
+
+### mkdir
+
+```python
+def mkdir(self, folder: str) -> bool
+```
+
+Crea un directorio en la SD.
+
+**Parámetros:**
+
+- **folder** (`str`) - Nombre del directorio a crear
+
+**Returns:** `bool` - `True` si se creó exitosamente
+
+**Ejemplo:**
+
+```python
+m4 = M4Board()
+
+# Crear directorio
+m4.mkdir("DEMOS")
+m4.mkdir("GAMES/ACTION")
+```
+
+</TabItem>
+<TabItem label="cd">
+
+### cd
+
+```python
+def cd(self, folder: str) -> bool
+```
+
+Cambia el directorio actual en la SD.
+
+**Parámetros:**
+
+- **folder** (`str`) - Directorio destino
+
+**Returns:** `bool` - `True` si el cambio fue exitoso
+
+**Ejemplo:**
+
+```python
+m4 = M4Board()
+
+# Cambiar a directorio
+m4.cd("/GAMES")
+
+# Volver a raíz
+m4.cd("/")
+```
+
+</TabItem>
+<TabItem label="rm">
+
+### rm
+
+```python
+def rm(self, cpc_file: str) -> bool
+```
+
+Elimina un archivo de la SD.
+
+**Parámetros:**
+
+- **cpc_file** (`str`) - Archivo a eliminar
+
+**Returns:** `bool` - `True` si se eliminó exitosamente
+
+**Ejemplo:**
+
+```python
+m4 = M4Board()
+
+# Eliminar archivo
+m4.rm("OLD_GAME.BAS")
+```
+
+<Aside type="caution">
+La eliminación es permanente y no se puede deshacer.
+</Aside>
+
+</TabItem>
+</Tabs>
+
+---
+
+## Ejemplo Completo
+
+```python
+from cpcready.utils.m4board import M4Board
+
+# Inicializar con IP
+m4 = M4Board("192.168.1.100")
+
+# Verificar conexión
+if not m4.check_connection():
+    print("M4Board no disponible")
+    exit(1)
+
+# Crear directorio para el juego
+m4.mkdir("MYGAME")
+m4.cd("/MYGAME")
+
+# Subir archivos del juego
+m4.upload_file("game.bas")
+m4.upload_file("loader.bin", with_header=True)
+m4.upload_file("sprites.bin", with_header=True)
+
+# Listar archivos
+files = m4.ls("/MYGAME")
+print("Archivos en /MYGAME:")
+for f in files:
+    print(f"  - {f}")
+
+# Resetear CPC
+m4.reset_cpc()
+
+# Ejecutar juego
+m4.execute("/MYGAME/GAME.BAS")
+
+# Después de jugar, descargar savegame
+m4.download_file("/MYGAME/SAVE.DAT", "mi_savegame.dat")
+
+# Limpiar
+m4.rm("/MYGAME/TEMP.DAT")
+```
+
+---
+
+## Flujo de Trabajo Típico
+
+### 1. Desarrollo y Prueba
+
+```python
+m4 = M4Board()
+
+# Subir versión actualizada
+m4.upload_file("game_v2.bas", destination="/DEV")
+
+# Resetear y ejecutar
+m4.reset_cpc()
+m4.execute("/DEV/game_v2.bas")
+```
+
+### 2. Distribución
+
+```python
+m4 = M4Board()
+
+# Organizar archivos
+m4.mkdir("RELEASE")
+m4.cd("/RELEASE")
+
+# Subir todos los archivos
+for file in ["game.bas", "loader.bin", "data.bin"]:
+    m4.upload_file(file, destination="/RELEASE", with_header=True)
+
+# Verificar
+files = m4.ls("/RELEASE")
+print(f"Archivos publicados: {len(files)}")
+```
+
+### 3. Backup
+
+```python
+m4 = M4Board()
+
+# Descargar todos los archivos de un directorio
+import os
+
+files = m4.ls("/SAVES")
+os.makedirs("backup", exist_ok=True)
+
+for file in files:
+    m4.download_file(f"/SAVES/{file}", f"backup/{file}")
+
+print("Backup completado")
+```
+
+---
+
+## Configuración
+
+El M4Board requiere configuración de IP. Usa `DriveManager` para establecerla:
+
+```python
+from cpcready.utils.manager import DriveManager
+
+dm = DriveManager()
+dm.set_m4board_ip("192.168.1.100")
+
+# Ahora M4Board() usará esta IP automáticamente
+from cpcready.utils.m4board import M4Board
+m4 = M4Board()
+```
+
+---
+
+## Solución de Problemas
+
+### Conexión Fallida
+
+```python
+m4 = M4Board("192.168.1.100")
+
+if not m4.check_connection(timeout=5):
+    print("Verificar:")
+    print("  1. IP correcta")
+    print("  2. M4Board encendido")
+    print("  3. Conexión de red")
+    print("  4. Firewall")
+```
+
+### Timeout en Operaciones
+
+```python
+# Aumentar timeout para archivos grandes
+import requests
+
+m4 = M4Board()
+# Las operaciones usan timeout interno de 30s para transferencias
+```
+
+---
+
+## Ver También
+
+- [DriveManager](/api/utils/manager/) - Configuración de M4Board IP
+- [Comando m4](/docs/referencia/comandos/m4/) - Uso desde CLI
+- [M4Board Hardware](https://github.com/M4Duke/cpcxfer) - Proyecto original

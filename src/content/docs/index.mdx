@@ -35,13 +35,9 @@ import { Code } from '@astrojs/starlight/components';
 
 ## ¿Qué es CPCReady?
 
-**CPCReady** es una herramienta integral de línea de comandos diseñada para entusiastas del Amstrad CPC y desarrolladores de computación retro. Proporciona herramientas modernas para gestionar imágenes de disco, archivos e integración con emuladores desde tu entorno de desarrollo actual.
+**CPCReady** es una toolchain para trabajar con discos y archivos BAS teniendo todo en una misma herramienta. Proporciona una interfaz de línea de comandos (CLI) intuitiva y potente para gestionar imágenes de disco Amstrad CPC (.DSK), manipular archivos dentro de estas imágenes, y lanzar emuladores como RetroVirtualMachine con configuraciones automáticas.
 
-Construido con **Python 3.13+** y potenciado por **Poetry**, CPCReady trae flujos de trabajo de desarrollo profesional a la computación vintage.
 
-<Aside type="tip" title="Perfecto para">
-Entusiastas de la computación retro, desarrolladores de juegos, programadores BASIC y cualquiera que trabaje con imágenes de disco Amstrad CPC y emuladores.
-</Aside>
 
 ---
 
@@ -57,7 +53,7 @@ Entusiastas de la computación retro, desarrolladores de juegos, programadores B
   </Card>
   
   <Card title="Operaciones de Archivos" icon="add-document">
-    Guarda, extrae, renombra, elimina y lista archivos en imágenes de disco. Soporte completo para cabeceras AMSDOS y tipos de archivo (BASIC, Binario, ASCII).
+    Guarda, extrae, renombra, elimina y lista archivos en imágenes de disco DSK. Soporte completo para cabeceras AMSDOS y tipos de archivo (BASIC, Binario, ASCII).
   </Card>
   
   <Card title="Integración con Emulador" icon="rocket">
@@ -77,10 +73,12 @@ Entusiastas de la computación retro, desarrolladores de juegos, programadores B
 
 ## Inicio Rápido
 
+Se aceptan todos los comandos de CPCReady a través del CLI <Badge text="cpc" variant="note" />. y puedes ejecutar comandos individuales directamente desde la terminal con el prefijo <Badge text="cpc-xxxx" variant="note" />
+
 <Tabs>
   <TabItem label="Uso Básico">
 
-### Comandos Esenciales
+### Comandos con CLI
 
 ```bash
 # Estado de unidades
@@ -99,14 +97,24 @@ cpc filextr GAME.BAS
 cpc run "loader.bas"
 ```
 
-### Consejoos de Archivo
+### Comandos con prefix `cpc-`
 
-<ul>
-  <li><strong><code>b</code></strong> - Archivo binario (requiere direcciones de carga/ejecución)</li>
-  <li><strong><code>p</code></strong> - Archivo de programa (preserva cabecera AMSDOS)</li>
-  <li><strong><code>a</code></strong> - Archivo ASCII/texto (sin cabecera)</li>
-  <li><strong><code>auto</code></strong> - Detección automática (por defecto)</li>
-</ul>
+```bash
+# Estado de unidades
+cpc-drive status
+
+# Listar archivos en disco actual
+cpc-cat
+
+# Guardar archivo binario con direcciones
+cpc-save loader.bin b 0x4000 0x4000
+
+# Extraer archivo del disco
+cpc-filextr GAME.BAS
+
+# Lanzar emulador con disco actual
+cpc-run "loader.bas"
+```
 
   </TabItem>
   
@@ -132,14 +140,6 @@ retro_virtual_machine_path = "/Applications/Retro Virtual Machine 2.app"
 user = 0        # CP/M user area (0-15)
 model = "6128"  # CPC model: 464, 664, or 6128
 mode = 1        # Video mode: 0, 1, or 2
-```
-
-### Configuración GUI
-
-Lanza la herramienta de configuración gráfica:
-
-```bash
-cpc configweb
 ```
 
   </TabItem>
@@ -179,30 +179,14 @@ cpc configweb
   
   <Card title="Sistema y Emulador" icon="rocket">
     **Configuración y ejecución**
-    
+
+    - `rvm` - Configura RetroVirtualMachine
     - `run` - Lanzar emulador
     - `model` - Configurar modelo CPC
     - `mode` - Configurar modo de vídeo
     - `user` - Configurar área de usuario CP/M
   </Card>
 </CardGrid>
-
----
-
-## ¿Por qué CPCReady?
-
-<Aside type="note" title="Herramientas Modernooas para Computación Vintage">
-CPCReady cierra la brecha entre entornos de desarrollo modernos y sistemas clásicos Amstrad CPC. Ya sea que estés preservando software antiguo, creando nuevos juegos retro o explorando computación vintage, CPCReady proporciona las herramientas profesionales que necesitas.
-</Aside>
-
-### Ventajas Clave
-
-- **🚀 Rápido y Eficiente**: Interfaz de línea de comandos para flujos de trabajo rápidos
-- **🔧 Flexible**: Funciona con archivos DSK y emuladores existentes
-- **📦 Completo**: Todas las herramientas en un solo paquete
-- **🎯 Preciso**: Manejo adecuado de cabeceras AMSDOS y compatibilidad CP/M
-- **🌐 Multiplataforma**: Basado en Python, funciona en macOS, Linux y Windows
-- **⚡ Modernooo**: Construido con Python 3.13+, type hints y mejores prácticas
 
 ---
 
@@ -234,7 +218,7 @@ cpc run MENU.BAS
 
 ## Código Abierto
 
-CPCReady es software de código abierto licenciado bajo **Apache License 2.0**.
+CPCReady es software de código abierto licenciado bajo **GPL 3.0**.
 
 <div style="text-align: center; margin: 2rem 0;">
   <a href="https://github.com/CPCReady/cpc" target="_blank" rel="noopener noreferrer">

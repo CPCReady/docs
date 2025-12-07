@@ -1,0 +1,521 @@
+---
+title: Manager
+description: Gestión de drives virtuales y configuración del sistema
+---
+
+import { Code } from '@astrojs/starlight/components';
+import { Aside } from '@astrojs/starlight/components';
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+## DriveManager
+
+```python
+class DriveManager(drive_file="cpcready.toml")
+```
+
+Clase para gestionar la configuración de drives virtuales (A: y B:) en CPCReady. Proporciona métodos para insertar, expulsar y seleccionar discos en los drives virtuales.
+
+<Aside type="note">
+Esta clase usa `ConfigManager` internamente para persistir la configuración en formato TOML.
+</Aside>
+
+### Constructor
+
+```python
+def __init__(self, drive_file="cpcready.toml")
+```
+
+**Parámetros:**
+
+- **drive_file** (`str`) - Nombre del archivo de configuración. Por defecto: `"cpcready.toml"`
+
+**Ejemplo:**
+
+```python
+from cpcready.utils.manager import DriveManager
+
+# Usar archivo de configuración por defecto
+dm = DriveManager()
+
+# Usar archivo personalizado
+dm = DriveManager("mi_config.toml")
+```
+
+---
+
+## Métodos de Gestión de Drives
+
+<Tabs>
+<TabItem label="insert">
+
+### insert_drive_a / insert_drive_b
+
+```python
+def insert_drive_a(self, valor: str) -> bool
+def insert_drive_b(self, valor: str) -> bool
+```
+
+Inserta un disco en el drive A o B.
+
+**Parámetros:**
+
+- **valor** (`str`) - Ruta al archivo DSK
+
+**Returns:** `bool` - `True` si se insertó correctamente, `False` si ya estaba insertado
+
+**Ejemplo:**
+
+```python
+from cpcready.utils.manager import DriveManager
+
+dm = DriveManager()
+
+# Insertar disco en drive A
+dm.insert_drive_a("juego.dsk")
+
+# Insertar disco en drive B
+dm.insert_drive_b("datos.dsk")
+```
+
+<Aside type="caution">
+Si intentas insertar el mismo disco en ambos drives, se eliminará automáticamente del drive anterior.
+</Aside>
+
+</TabItem>
+<TabItem label="read">
+
+### read_drive_a / read_drive_b
+
+```python
+def read_drive_a(self) -> str
+def read_drive_b(self) -> str
+```
+
+Lee el disco insertado en el drive A o B.
+
+**Returns:** `str` - Ruta al DSK insertado o cadena vacía si no hay disco
+
+**Ejemplo:**
+
+```python
+dm = DriveManager()
+
+current_a = dm.read_drive_a()
+current_b = dm.read_drive_b()
+
+print(f"Drive A: {current_a}")
+print(f"Drive B: {current_b}")
+```
+
+</TabItem>
+<TabItem label="eject">
+
+### eject
+
+```python
+def eject(self, drive: str) -> bool
+```
+
+Expulsa el disco del drive especificado.
+
+**Parámetros:**
+
+- **drive** (`str`) - "A" o "B" (case-insensitive)
+
+**Returns:** `bool` - `True` si se expulsó, `False` si no había disco
+
+**Ejemplo:**
+
+```python
+dm = DriveManager()
+
+# Expulsar disco del drive A
+dm.eject("A")
+
+# Expulsar disco del drive B
+dm.eject("b")
+```
+
+</TabItem>
+<TabItem label="select">
+
+### select_drive / read_drive_select
+
+```python
+def select_drive(self, valor: str) -> None
+def read_drive_select(self) -> str
+```
+
+Selecciona o lee el drive activo actual.
+
+**Parámetros (select_drive):**
+
+- **valor** (`str`) - "A" o "B" (case-insensitive)
+
+**Returns (read_drive_select):** `str` - Drive seleccionado ("A" o "B")
+
+**Ejemplo:**
+
+```python
+dm = DriveManager()
+
+# Seleccionar drive A como activo
+dm.select_drive("A")
+
+# Leer drive seleccionado
+active = dm.read_drive_select()
+print(f"Drive activo: {active}")
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+## Métodos de Información
+
+### get_disc_name
+
+```python
+def get_disc_name(self, drive_a: bool = False, drive_b: bool = False) -> Optional[str]
+```
+
+Obtiene el nombre del disco según las opciones de drive.
+
+**Parámetros:**
+
+- **drive_a** (`bool`) - Si `True`, obtiene el disco del drive A
+- **drive_b** (`bool`) - Si `True`, obtiene el disco del drive B
+
+**Returns:** `Optional[str]` - Ruta al disco o `None` si hay error
+
+**Ejemplo:**
+
+```python
+dm = DriveManager()
+
+# Obtener disco del drive seleccionado
+disc = dm.get_disc_name()
+
+# Obtener disco específico del drive A
+disc_a = dm.get_disc_name(drive_a=True)
+
+# Obtener disco específico del drive B
+disc_b = dm.get_disc_name(drive_b=True)
+```
+
+<Aside type="caution">
+No se puede especificar `drive_a=True` y `drive_b=True` simultáneamente.
+</Aside>
+
+---
+
+## Visualización
+
+<Tabs>
+<TabItem label="drive_table">
+
+### drive_table
+
+```python
+def drive_table(self, estilo: str = "fancy_grid", devolver: bool = False) -> Optional[str]
+```
+
+Imprime una tabla profesional con información de los drives usando Rich.
+
+**Parámetros:**
+
+- **estilo** (`str`) - Estilo de tabla (no usado con Rich). Por defecto: `"fancy_grid"`
+- **devolver** (`bool`) - Si `True`, devuelve tabla como texto plano. Por defecto: `False`
+
+**Returns:** `Optional[str]` - Tabla en texto plano si `devolver=True`
+
+**Ejemplo:**
+
+```python
+dm = DriveManager()
+
+# Mostrar tabla en consola
+dm.drive_table()
+
+# Obtener tabla como string
+tabla_texto = dm.drive_table(devolver=True)
+print(tabla_texto)
+```
+
+**Salida:**
+
+```
+╭────────┬───────┬─────────────────┬──────────────────────╮
+│ Select │ Drive │ disc            │ Path                 │
+├────────┼───────┼─────────────────┼──────────────────────┤
+│   ◉    │   A   │ juego.dsk       │ /home/user/discs     │
+│   ◎    │   B   │ No disc inserted│                      │
+╰────────┴───────┴─────────────────┴──────────────────────╯
+```
+
+</TabItem>
+<TabItem label="render_drive_panel">
+
+### render_drive_panel
+
+```python
+def render_drive_panel(self, drive: str) -> None
+```
+
+Renderiza un panel con información del drive y disco usando Rich.
+
+**Parámetros:**
+
+- **drive** (`str`) - Letra del drive ("A" o "B")
+
+**Ejemplo:**
+
+```python
+dm = DriveManager()
+
+# Mostrar panel del drive A
+dm.render_drive_panel("A")
+
+# Mostrar panel del drive B
+dm.render_drive_panel("B")
+```
+
+</TabItem>
+<TabItem label="show_drive_info">
+
+### show_drive_info
+
+```python
+def show_drive_info(self, drive: Optional[str] = None) -> None
+```
+
+Renderiza un panel completo con información de ambos drives.
+
+**Parámetros:**
+
+- **drive** (`Optional[str]`) - Drive a resaltar ("A" o "B"). Si es `None`, usa el seleccionado
+
+**Ejemplo:**
+
+```python
+dm = DriveManager()
+
+# Mostrar información del drive seleccionado
+dm.show_drive_info()
+
+# Mostrar información del drive A específicamente
+dm.show_drive_info("A")
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+## Configuración del Emulador
+
+### read_emulator / set_emulator
+
+```python
+def read_emulator(self) -> str
+def set_emulator(self, emulator: str) -> bool
+```
+
+Lee o establece el emulador configurado.
+
+**Parámetros (set_emulator):**
+
+- **emulator** (`str`) - Uno de: "RetroVirtualMachine", "CPCEmu", "M4Board"
+
+**Returns (set_emulator):** `bool` - `True` si se configuró correctamente
+
+**Ejemplo:**
+
+```python
+dm = DriveManager()
+
+# Leer emulador actual
+emu = dm.read_emulator()
+print(f"Emulador: {emu}")
+
+# Cambiar a M4Board
+dm.set_emulator("M4Board")
+```
+
+---
+
+### read_m4board_ip / set_m4board_ip
+
+```python
+def read_m4board_ip(self) -> str
+def set_m4board_ip(self, ip: str) -> bool
+```
+
+Lee o establece la IP del M4Board.
+
+**Parámetros (set_m4board_ip):**
+
+- **ip** (`str`) - Dirección IP del M4Board
+
+**Ejemplo:**
+
+```python
+dm = DriveManager()
+
+# Configurar IP del M4Board
+dm.set_m4board_ip("192.168.1.100")
+
+# Leer IP configurada
+ip = dm.read_m4board_ip()
+print(f"M4Board IP: {ip}")
+```
+
+---
+
+## SystemCPM
+
+```python
+class SystemCPM(config_file="cpcready.toml")
+```
+
+Clase para gestionar configuraciones del sistema CP/M (modelo CPC, modo de pantalla, etc.).
+
+### Métodos
+
+<Tabs>
+<TabItem label="model">
+
+### get_model / set_model
+
+```python
+def get_model(self) -> str
+def set_model(self, model: str) -> bool
+```
+
+Obtiene o establece el modelo CPC.
+
+**Parámetros (set_model):**
+
+- **model** (`str`) - Uno de: "464", "664", "6128"
+
+**Returns (get_model):** `str` - Modelo configurado
+
+**Ejemplo:**
+
+```python
+from cpcready.utils.manager import SystemCPM
+
+sys_cpm = SystemCPM()
+
+# Leer modelo actual
+model = sys_cpm.get_model()  # "6128"
+
+# Cambiar modelo
+sys_cpm.set_model("464")
+```
+
+</TabItem>
+<TabItem label="mode">
+
+### get_mode / set_mode
+
+```python
+def get_mode(self) -> str
+def set_mode(self, mode: str) -> bool
+```
+
+Obtiene o establece el modo de pantalla CPC.
+
+**Parámetros (set_mode):**
+
+- **mode** (`str`) - Uno de: "0", "1", "2"
+
+**Returns (get_mode):** `str` - Modo configurado
+
+**Ejemplo:**
+
+```python
+sys_cpm = SystemCPM()
+
+# Leer modo actual
+mode = sys_cpm.get_mode()  # "1"
+
+# Cambiar modo
+sys_cpm.set_mode("0")
+```
+
+</TabItem>
+<TabItem label="user">
+
+### get_user_number
+
+```python
+def get_user_number(self) -> int
+```
+
+Obtiene el user number guardado (CP/M).
+
+**Returns:** `int` - User number (0-15)
+
+**Ejemplo:**
+
+```python
+sys_cpm = SystemCPM()
+user = sys_cpm.get_user_number()
+print(f"User area: {user}")
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+## Ejemplo Completo
+
+```python
+from cpcready.utils.manager import DriveManager, SystemCPM
+
+# Inicializar gestores
+dm = DriveManager()
+sys_cpm = SystemCPM()
+
+# Configurar modelo y modo
+sys_cpm.set_model("6128")
+sys_cpm.set_mode("1")
+
+# Insertar discos
+dm.insert_drive_a("/ruta/a/juego.dsk")
+dm.insert_drive_b("/ruta/a/datos.dsk")
+
+# Seleccionar drive activo
+dm.select_drive("A")
+
+# Mostrar información
+dm.drive_table()
+dm.show_drive_info()
+
+# Leer configuración actual
+print(f"Drive A: {dm.read_drive_a()}")
+print(f"Drive B: {dm.read_drive_b()}")
+print(f"Drive activo: {dm.read_drive_select()}")
+print(f"Modelo: {sys_cpm.get_model()}")
+print(f"Modo: {sys_cpm.get_mode()}")
+
+# Configurar emulador
+dm.set_emulator("M4Board")
+dm.set_m4board_ip("192.168.1.100")
+
+# Expulsar discos
+dm.eject("A")
+dm.eject("B")
+```
+
+---
+
+## Ver También
+
+- [M4Board](/api/utils/m4board/) - Comunicación con hardware M4Board
+- [Config](/api/utils/config/) - ConfigManager (TOML)
+- [Console](/api/utils/console/) - Utilidades de consola
+- [Comando drive](/docs/referencia/comandos/drive/) - Uso desde CLI

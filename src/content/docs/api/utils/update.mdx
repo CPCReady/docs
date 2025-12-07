@@ -1,0 +1,459 @@
+---
+title: Update
+description: Sistema de verificación y notificación de actualizaciones desde PyPI
+---
+
+import { Code } from '@astrojs/starlight/components';
+import { Aside } from '@astrojs/starlight/components';
+
+## Módulo Update
+
+Sistema inteligente para verificar actualizaciones de CPCReady desde PyPI con caché local para optimizar consultas.
+
+---
+
+## Funciones
+
+### check_for_updates
+
+```python
+def check_for_updates() -> Tuple[bool, Optional[str]]
+```
+
+Verifica si hay una nueva versión disponible en PyPI usando sistema de caché.
+
+**Returns:** `Tuple[bool, Optional[str]]` 
+- `(True, "1.2.3")` - Hay actualización disponible con versión
+- `(False, None)` - Versión actual es la última o error en consulta
+
+**Comportamiento:**
+
+1. Verifica si el caché es válido (< 6 horas)
+2. Si el caché es válido, usa la versión cacheada
+3. Si no, consulta PyPI y actualiza el caché
+4. Compara versión actual con la última disponible
+
+**Ejemplo:**
+
+```python
+from cpcready.utils.update import check_for_updates
+
+# Verificar actualizaciones
+has_update, latest = check_for_updates()
+
+if has_update:
+    print(f"Nueva versión disponible: {latest}")
+    print("Actualiza con: pipx upgrade cpcready")
+else:
+    print("Tienes la última versión")
+```
+
+<Aside type="tip">
+El caché tiene una duración de 6 horas para evitar consultas excesivas a PyPI y mejorar el rendimiento de inicio de la aplicación.
+</Aside>
+
+---
+
+### show_update_notification
+
+```python
+def show_update_notification() -> None
+```
+
+Muestra notificación visual si hay actualizaciones disponibles.
+
+**Comportamiento:**
+
+- Llama a `check_for_updates()` internamente
+- Si hay actualización, muestra mensaje con Rich
+- Incluye versión actual y última disponible
+- Sugiere comando de actualización
+- No interrumpe la ejecución si hay errores
+
+**Ejemplo:**
+
+```python
+from cpcready.utils.update import show_update_notification
+
+# Mostrar notificación al inicio de la aplicación
+show_update_notification()
+
+# Salida si hay actualización:
+# New version available: v1.2.3 (current: v1.2.0)
+# Update with: pipx upgrade cpcready
+```
+
+<Aside type="note">
+Esta función captura silenciosamente cualquier error para no interrumpir el flujo normal de la aplicación.
+</Aside>
+
+---
+
+### get_latest_version_from_pypi
+
+```python
+def get_latest_version_from_pypi() -> Optional[str]
+```
+
+Consulta la API de PyPI para obtener la última versión publicada.
+
+**Returns:** `Optional[str]` - Versión (ej: "1.2.3") o `None` si falla
+
+**Timeout:** 3 segundos máximo
+
+**Ejemplo:**
+
+```python
+from cpcready.utils.update import get_latest_version_from_pypi
+
+# Consultar PyPI directamente
+version = get_latest_version_from_pypi()
+
+if version:
+    print(f"Última versión en PyPI: {version}")
+else:
+    print("No se pudo consultar PyPI")
+```
+
+---
+
+### Sistema de Caché
+
+#### is_cache_valid
+
+```python
+def is_cache_valid() -> bool
+```
+
+Verifica si el archivo de caché existe y no ha expirado.
+
+**Returns:** `bool` - `True` si el caché es válido (< 6 horas)
+
+**Cache Location:** `~/.config/cpcready/update_cache`
+
+**Ejemplo:**
+
+```python
+from cpcready.utils.update import is_cache_valid
+
+if is_cache_valid():
+    print("Usando versión cacheada")
+else:
+    print("Cache expirado, consultando PyPI")
+```
+
+---
+
+#### read_cached_version
+
+```python
+def read_cached_version() -> Optional[str]
+```
+
+Lee la versión almacenada en el archivo de caché.
+
+**Returns:** `Optional[str]` - Versión cacheada o `None`
+
+**Ejemplo:**
+
+```python
+from cpcready.utils.update import read_cached_version
+
+cached = read_cached_version()
+print(f"Versión en cache: {cached}")
+```
+
+---
+
+#### write_cached_version
+
+```python
+def write_cached_version(version: str) -> None
+```
+
+Escribe una versión al archivo de caché.
+
+**Parámetros:**
+
+- **version** (`str`) - Versión a cachear (ej: "1.2.3")
+
+**Comportamiento:**
+
+- Crea el directorio `~/.config/cpcready/` si no existe
+- Escribe la versión en el archivo de caché
+- Actualiza el timestamp del archivo
+
+**Ejemplo:**
+
+```python
+from cpcready.utils.update import write_cached_version
+
+# Cachear manualmente una versión
+write_cached_version("1.2.3")
+```
+
+---
+
+## Configuración
+
+### Cache Settings
+
+```python
+# Ubicación del archivo de caché
+CACHE_FILE = Path.home() / ".config" / "cpcready" / "update_cache"
+
+# Duración del caché (6 horas)
+CACHE_DURATION = 3600 * 6  # 21600 segundos
+```
+
+### PyPI Endpoint
+
+```python
+# URL de la API de PyPI
+PYPI_URL = "https://pypi.org/pypi/cpcready/json"
+```
+
+---
+
+## Ejemplos de Uso
+
+### Verificación Manual
+
+```python
+from cpcready.utils.update import check_for_updates
+from cpcready.utils.console import info2, ok, warn
+
+def verificar_actualizaciones():
+    """Verifica actualizaciones con mensajes personalizados"""
+    info2("Verificando actualizaciones...")
+    
+    has_update, latest = check_for_updates()
+    
+    if has_update:
+        warn(f"¡Nueva versión disponible! v{latest}")
+        warn("Ejecuta: pipx upgrade cpcready")
+    else:
+        ok("Tienes la última versión instalada")
+
+# Uso
+verificar_actualizaciones()
+```
+
+---
+
+### Integración en CLI
+
+```python
+from cpcready.utils.update import show_update_notification
+from cpcready.utils.console import banner
+
+def main():
+    """Punto de entrada de la aplicación"""
+    banner("CPCReady - Amstrad CPC Development Tools")
+    
+    # Verificar actualizaciones al inicio
+    show_update_notification()
+    
+    # Resto de la lógica de la aplicación
+    # ...
+
+if __name__ == "__main__":
+    main()
+```
+
+**Salida:**
+
+```
+╭─────────────────────────────────────────────╮
+│ CPCReady - Amstrad CPC Development Tools    │
+╰─────────────────────────────────────────────╯
+
+New version available: v1.3.0 (current: v1.2.5)
+Update with: pipx upgrade cpcready
+```
+
+---
+
+### Verificación Programática
+
+```python
+from cpcready.utils.update import check_for_updates
+from cpcready.utils.version import __version__
+
+def mostrar_info_version():
+    """Muestra información detallada de versiones"""
+    has_update, latest = check_for_updates()
+    
+    print(f"Versión instalada: {__version__}")
+    
+    if has_update:
+        print(f"Última versión: {latest}")
+        print("Estado: Desactualizada ⚠️")
+    else:
+        print("Estado: Actualizada ✓")
+
+# Uso
+mostrar_info_version()
+```
+
+---
+
+### Forzar Actualización de Caché
+
+```python
+from cpcready.utils.update import (
+    get_latest_version_from_pypi,
+    write_cached_version
+)
+
+def actualizar_cache_manual():
+    """Fuerza la actualización del caché"""
+    print("Consultando PyPI...")
+    
+    version = get_latest_version_from_pypi()
+    
+    if version:
+        write_cached_version(version)
+        print(f"Cache actualizado: v{version}")
+    else:
+        print("Error al consultar PyPI")
+
+# Uso
+actualizar_cache_manual()
+```
+
+---
+
+### Limpiar Caché
+
+```python
+from cpcready.utils.update import CACHE_FILE
+
+def limpiar_cache():
+    """Elimina el archivo de caché"""
+    if CACHE_FILE.exists():
+        CACHE_FILE.unlink()
+        print("Cache eliminado")
+    else:
+        print("No hay cache para eliminar")
+
+# Uso
+limpiar_cache()
+```
+
+---
+
+### Verificación con Timeout Personalizado
+
+```python
+import requests
+from packaging import version
+from cpcready.utils.version import __version__
+
+def check_update_custom_timeout(timeout=5):
+    """Verifica actualizaciones con timeout personalizado"""
+    try:
+        response = requests.get(
+            "https://pypi.org/pypi/cpcready/json",
+            timeout=timeout
+        )
+        
+        if response.status_code == 200:
+            latest = response.json()["info"]["version"]
+            current = version.parse(__version__)
+            latest_parsed = version.parse(latest)
+            
+            return latest_parsed > current, latest
+    except Exception as e:
+        print(f"Error: {e}")
+    
+    return False, None
+
+# Uso con timeout de 10 segundos
+has_update, latest = check_update_custom_timeout(timeout=10)
+```
+
+---
+
+## Casos de Uso
+
+### 1. Notificación en Comandos Largos
+
+```python
+from cpcready.utils.update import show_update_notification
+
+def comando_largo():
+    """Comando que tarda mucho tiempo"""
+    # Notificar al inicio
+    show_update_notification()
+    
+    # Proceso largo...
+    import time
+    time.sleep(60)
+    
+    print("Proceso completado")
+
+comando_largo()
+```
+
+### 2. Verificación Condicional
+
+```python
+from cpcready.utils.update import check_for_updates
+import os
+
+def verificar_si_no_ci():
+    """Solo verifica actualizaciones si no es CI/CD"""
+    if not os.getenv("CI"):
+        has_update, latest = check_for_updates()
+        if has_update:
+            print(f"Actualización disponible: {latest}")
+
+verificar_si_no_ci()
+```
+
+### 3. Dashboard de Estado
+
+```python
+from cpcready.utils.update import check_for_updates, is_cache_valid
+from cpcready.utils.version import __version__
+from datetime import datetime
+
+def dashboard_actualizaciones():
+    """Muestra dashboard completo de actualizaciones"""
+    print("=== Estado de Actualizaciones ===")
+    print(f"Versión actual: {__version__}")
+    
+    cache_valid = is_cache_valid()
+    print(f"Cache válido: {'Sí' if cache_valid else 'No'}")
+    
+    has_update, latest = check_for_updates()
+    
+    if has_update:
+        print(f"Nueva versión: {latest}")
+        print("Comando: pipx upgrade cpcready")
+    else:
+        print("Estado: Actualizado ✓")
+
+dashboard_actualizaciones()
+```
+
+---
+
+## Dependencias
+
+```python
+import requests          # Consultas HTTP a PyPI
+import packaging.version # Comparación de versiones semánticas
+import time             # Gestión de timestamps
+from pathlib import Path # Manejo de rutas de archivos
+```
+
+---
+
+## Ver También
+
+- [Version](/api/utils/version/) - Información de versión actual
+- [Console](/api/utils/console/) - Salida formateada con Rich
+- [PyPI JSON API](https://warehouse.pypa.io/api-reference/json.html) - Documentación oficial
+- [PEP 440](https://peps.python.org/pep-0440/) - Version Identification

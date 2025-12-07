@@ -1,0 +1,66 @@
+---
+title: model
+description: Set or display CPC model configuration
+tags: [config, system]
+---
+
+import { Badge } from '@astrojs/starlight/components';
+import { Card } from '@astrojs/starlight/components';
+import { Code } from '@astrojs/starlight/components';
+import { Aside } from '@astrojs/starlight/components';
+
+<Card>Configura el modelo CPC. 
+Soporta <Badge text="464" variant="note" />, <Badge text="664" variant="note" />, y <Badge text="6128" variant="note" />.</Card>
+
+  <Aside type="tip" title="Nota">
+  La configuración del modelo afecta el comportamiento del lanzamiento del emulador con el comando <Badge text="cpc run" variant="note" /> o <Badge text="cpc-run" variant="note" />.
+Dependiendo del modelo seleccionado el comando lanzará RetroVirtualMachine con el modelo de Amstrad CPC seleccionado.
+</Aside>
+
+## Uso
+
+```bash
+Uso: cpc model [OPTIONS] [MODEL_TYPE]
+
+  Set or display CPC model configuration.
+
+Argumentos:
+  MODEL_TYPE  CPC model: 464, 664, or 6128
+
+Opciones:
+  --help  Mostrar this message and exit.
+```
+O
+
+```bash
+Uso: cpc-model [OPTIONS] [MODEL_TYPE]
+
+  Set or display CPC model configuration.
+
+Argumentos:
+  MODEL_TYPE  CPC model: 464, 664, or 6128
+
+Opciones:
+  --help  Mostrar this message and exit.
+```
+## Ejemplos
+
+### Mostrar modelo seleccionado
+```bash
+cpc model
+```
+
+### Configurar modelo a CPC 464
+```bash
+cpc model 464
+```
+
+### Configurar modelo a CPC 664
+```bash
+cpc model 664
+```
+
+### Configurar modelo a CPC 6128
+```bash
+cpc model 6128
+```

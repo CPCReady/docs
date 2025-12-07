@@ -1,0 +1,489 @@
+---
+title: DSK
+description: Clase principal para manipulación de imágenes DSK de Amstrad CPC
+---
+
+import { Code } from '@astrojs/starlight/components';
+import { Aside } from '@astrojs/starlight/components';
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+## DSK
+
+```python
+class DSK(filename: Optional[str] = None)
+```
+
+Clase para manipular imágenes DSK de Amstrad CPC. Compatible con formato CPCEMU (estándar y extendido).
+
+### Atributos
+
+- **filename** (`str`) - Ruta al archivo DSK
+- **data** (`bytearray`) - Bytes de la imagen DSK completa
+- **header** (`CPCEMUHeader`) - Cabecera CPCEMU parseada
+
+### Constantes
+
+- **FORMAT_DATA** (`0xC1`) - Formato DATA (sectores comienzan en 0xC1)
+- **FORMAT_SYSTEM** (`0x41`) - Formato SYSTEM (sectores comienzan en 0x41)  
+- **FORMAT_VENDOR** (`0x01`) - Formato VENDOR (sectores comienzan en 0x01)
+
+---
+
+## Constructor
+
+### \_\_init\_\_
+
+```python
+def __init__(self, filename: Optional[str] = None)
+```
+
+Inicializa una imagen DSK.
+
+**Parámetros:**
+
+- **filename** (`Optional[str]`) - Ruta al archivo DSK a cargar (opcional)
+
+**Raises:**
+
+- `DSKFileNotFoundError` - Si el archivo especificado no existe
+
+**Ejemplo:**
+
+```python
+# Crear instancia vacía
+dsk = DSK()
+
+# Cargar archivo existente
+dsk = DSK("mi_disco.dsk")
+```
+
+---
+
+## Métodos de Creación y Carga
+
+<Tabs>
+<TabItem label="create">
+
+### create
+
+```python
+def create(
+    nb_tracks: int = 40, 
+    nb_sectors: int = 9, 
+    format_type: int = FORMAT_DATA
+) -> None
+```
+
+Crea una nueva imagen DSK vacía formateada.
+
+**Parámetros:**
+
+- **nb_tracks** (`int`) - Número de pistas (típicamente 40 o 42). Por defecto: `40`
+- **nb_sectors** (`int`) - Número de sectores por pista (típicamente 9). Por defecto: `9`
+- **format_type** (`int`) - Tipo de formato. Por defecto: `FORMAT_DATA`
+  - `DSK.FORMAT_DATA` (0xC1) - Formato estándar
+  - `DSK.FORMAT_SYSTEM` (0x41) - Formato de sistema
+  - `DSK.FORMAT_VENDOR` (0x01) - Formato vendor
+
+**Raises:**
+
+- `DSKError` - Si los parámetros son inválidos
+
+**Ejemplo:**
+
+```python
+from cpcready.pydsk import DSK
+
+# Crear disco DATA de 40 pistas
+dsk = DSK()
+dsk.create(nb_tracks=40, nb_sectors=9)
+dsk.save("disco_data.dsk")
+
+# Crear disco SYSTEM
+dsk = DSK()
+dsk.create(nb_tracks=40, nb_sectors=9, format_type=DSK.FORMAT_SYSTEM)
+dsk.save("disco_system.dsk")
+```
+
+<Aside type="note">
+Un disco estándar de 40 pistas con 9 sectores tiene una capacidad de aproximadamente 180 KB.
+</Aside>
+
+</TabItem>
+<TabItem label="load">
+
+### load
+
+```python
+def load(filename: str) -> None
+```
+
+Carga una imagen DSK desde archivo.
+
+**Parámetros:**
+
+- **filename** (`str`) - Ruta al archivo DSK
+
+**Raises:**
+
+- `DSKError` - Si el archivo no existe
+- `DSKFormatError` - Si el formato del DSK es inválido
+
+**Ejemplo:**
+
+```python
+from cpcready.pydsk import DSK
+
+dsk = DSK()
+dsk.load("disco_existente.dsk")
+```
+
+</TabItem>
+<TabItem label="save">
+
+### save
+
+```python
+def save(filename: Optional[str] = None) -> None
+```
+
+Guarda la imagen DSK a archivo.
+
+**Parámetros:**
+
+- **filename** (`Optional[str]`) - Ruta donde guardar. Si es `None`, usa `self.filename`
+
+**Raises:**
+
+- `DSKError` - Si no hay nombre de archivo especificado
+
+**Ejemplo:**
+
+```python
+from cpcready.pydsk import DSK
+
+# Guardar con el nombre original
+dsk = DSK("disco.dsk")
+dsk.save()
+
+# Guardar con nuevo nombre
+dsk.save("disco_copia.dsk")
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+## Métodos de Información
+
+<Tabs>
+<TabItem label="get_info">
+
+### get_info
+
+```python
+def get_info() -> dict
+```
+
+Obtiene información detallada del DSK.
+
+**Returns:**
+
+`dict` con las siguientes claves:
+- `filename` - Nombre del archivo
+- `format` - Tipo de formato (DATA, SYSTEM, VENDOR)
+- `tracks` - Número de pistas
+- `heads` - Número de caras
+- `track_size` - Tamaño de cada pista
+- `total_size` - Tamaño total en bytes
+- `capacity_kb` - Capacidad en KB
+
+**Ejemplo:**
+
+```python
+dsk = DSK("disco.dsk")
+info = dsk.get_info()
+print(f"Capacidad: {info['capacity_kb']} KB")
+print(f"Formato: {info['format']}")
+```
+
+</TabItem>
+<TabItem label="get_format_type">
+
+### get_format_type
+
+```python
+def get_format_type() -> str
+```
+
+Obtiene el tipo de formato del disco.
+
+**Returns:**
+
+`str` - Uno de: "DATA", "SYSTEM", "VENDOR", o "UNKNOWN"
+
+**Ejemplo:**
+
+```python
+dsk = DSK("disco.dsk")
+print(dsk.get_format_type())  # "DATA"
+```
+
+</TabItem>
+<TabItem label="get_free_space">
+
+### get_free_space
+
+```python
+def get_free_space() -> int
+```
+
+Calcula el espacio libre en el disco.
+
+**Returns:**
+
+`int` - Espacio libre en bytes
+
+**Ejemplo:**
+
+```python
+dsk = DSK("disco.dsk")
+free = dsk.get_free_space()
+print(f"Espacio libre: {free // 1024} KB")
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+## Métodos de Gestión de Archivos
+
+<Tabs>
+<TabItem label="list_files">
+
+### list_files
+
+```python
+def list_files(
+    simple: bool = False, 
+    use_rich: bool = True, 
+    show_title: bool = True
+) -> str
+```
+
+Lista los archivos en el disco.
+
+**Parámetros:**
+
+- **simple** (`bool`) - Si `True`, muestra lista simple. Por defecto: `False`
+- **use_rich** (`bool`) - Si `True`, usa Rich para formateo. Por defecto: `True`
+- **show_title** (`bool`) - Si `True`, muestra título. Por defecto: `True`
+
+**Returns:**
+
+`str` - Listado formateado de archivos
+
+**Ejemplo:**
+
+```python
+dsk = DSK("disco.dsk")
+
+# Listado completo con Rich
+print(dsk.list_files())
+
+# Listado simple
+print(dsk.list_files(simple=True))
+```
+
+</TabItem>
+<TabItem label="write_file">
+
+### write_file
+
+```python
+def write_file(
+    host_filename: str, 
+    dsk_filename: Optional[str] = None,
+    user: int = 0, 
+    force: bool = False
+) -> None
+```
+
+Escribe un archivo del sistema host al DSK.
+
+**Parámetros:**
+
+- **host_filename** (`str`) - Ruta del archivo en el sistema host
+- **dsk_filename** (`Optional[str]`) - Nombre en el DSK (opcional, usa nombre del archivo)
+- **user** (`int`) - Área de usuario (0-15). Por defecto: `0`
+- **force** (`bool`) - Si `True`, sobrescribe si existe. Por defecto: `False`
+
+**Raises:**
+
+- `DSKFileNotFoundError` - Si el archivo host no existe
+- `DSKFileExistsError` - Si el archivo ya existe y `force=False`
+- `DSKNoSpaceError` - Si no hay espacio suficiente
+
+**Ejemplo:**
+
+```python
+dsk = DSK("disco.dsk")
+
+# Añadir archivo con nombre original
+dsk.write_file("programa.bas")
+
+# Añadir con nombre diferente
+dsk.write_file("programa.bas", "game.bas")
+
+# Sobrescribir si existe
+dsk.write_file("programa.bas", force=True)
+
+dsk.save()
+```
+
+</TabItem>
+<TabItem label="read_file">
+
+### read_file
+
+```python
+def read_file(
+    dsk_filename: str, 
+    user: int = 0,
+    include_header: bool = False
+) -> bytes
+```
+
+Lee un archivo del DSK.
+
+**Parámetros:**
+
+- **dsk_filename** (`str`) - Nombre del archivo en el DSK
+- **user** (`int`) - Área de usuario (0-15). Por defecto: `0`
+- **include_header** (`bool`) - Si `True`, incluye cabecera AMSDOS. Por defecto: `False`
+
+**Returns:**
+
+`bytes` - Contenido del archivo
+
+**Raises:**
+
+- `DSKFileNotFoundError` - Si el archivo no existe
+
+**Ejemplo:**
+
+```python
+dsk = DSK("disco.dsk")
+
+# Leer archivo
+data = dsk.read_file("programa.bas")
+
+# Guardar a archivo host
+with open("programa_extraido.bas", "wb") as f:
+    f.write(data)
+```
+
+</TabItem>
+<TabItem label="delete_file">
+
+### delete_file
+
+```python
+def delete_file(filename: str, user: int = 0) -> int
+```
+
+Elimina un archivo del DSK.
+
+**Parámetros:**
+
+- **filename** (`str`) - Nombre del archivo a eliminar
+- **user** (`int`) - Área de usuario (0-15). Por defecto: `0`
+
+**Returns:**
+
+`int` - Número de entradas eliminadas
+
+**Raises:**
+
+- `DSKFileNotFoundError` - Si el archivo no existe
+
+**Ejemplo:**
+
+```python
+dsk = DSK("disco.dsk")
+dsk.delete_file("programa.bas")
+dsk.save()
+```
+
+</TabItem>
+<TabItem label="rename_file">
+
+### rename_file
+
+```python
+def rename_file(old_name: str, new_name: str, user: int = 0) -> None
+```
+
+Renombra un archivo en el DSK.
+
+**Parámetros:**
+
+- **old_name** (`str`) - Nombre actual del archivo
+- **new_name** (`str`) - Nuevo nombre
+- **user** (`int`) - Área de usuario (0-15). Por defecto: `0`
+
+**Raises:**
+
+- `DSKFileNotFoundError` - Si el archivo no existe
+- `DSKFileExistsError` - Si el nuevo nombre ya existe
+
+**Ejemplo:**
+
+```python
+dsk = DSK("disco.dsk")
+dsk.rename_file("old.bas", "new.bas")
+dsk.save()
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+## Ejemplo Completo
+
+```python
+from cpcready.pydsk import DSK, DSKError
+
+try:
+    # Crear nuevo disco
+    dsk = DSK()
+    dsk.create(nb_tracks=40, nb_sectors=9, format_type=DSK.FORMAT_DATA)
+    
+    # Añadir archivos
+    dsk.write_file("game.bas")
+    dsk.write_file("loader.bin")
+    
+    # Listar contenido
+    print(dsk.list_files())
+    
+    # Información del disco
+    info = dsk.get_info()
+    print(f"Espacio libre: {dsk.get_free_space() // 1024} KB")
+    
+    # Guardar
+    dsk.save("mi_juego.dsk")
+    
+except DSKError as e:
+    print(f"Error: {e}")
+```
+
+---
+
+## Ver También
+
+- [Exceptions](/api/pydsk/exceptions/) - Excepciones de PyDSK
+- [Structures](/api/pydsk/structures/) - Estructuras de datos DSK
+- [Comando disc](/docs/referencia/comandos/disc/) - Uso desde CLI

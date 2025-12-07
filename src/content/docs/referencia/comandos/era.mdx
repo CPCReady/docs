@@ -1,0 +1,73 @@
+---
+title: era
+description: Eliminar file from DSK disk
+tags: [disk, file, delete]
+---
+
+import { Badge } from '@astrojs/starlight/components';
+import { Card } from '@astrojs/starlight/components';
+import { Code } from '@astrojs/starlight/components';
+import { Aside } from '@astrojs/starlight/components';
+
+<Card>
+Elimina un archivo del disco DSK actualmente montado. Soporta comodines para eliminación en lote. Use <Badge text="-A" variant="note" /> or <Badge text="-B" variant="note" /> para especificar la unidad. Si no se especifica una unidad, se utiliza la unidad actualmente seleccionada.
+<Aside type="tip">
+La unidad seleccionada se configura con <Badge text="cpc drive A" variant="note" /> o <Badge text="cpc drive B" variant="note" />. Por defecto es la unidad A.
+</Aside>
+</Card>
+
+## Uso
+
+```bash
+Uso: cpc era [OPTIONS] PATTERN
+
+  Eliminar file(s) from DSK disk.
+
+Argumentos:
+  PATTERN  File pattern to delete (soportes wildcards: *, ?)
+
+Opciones:
+  -A, --drive-a  Eliminar from drive A (default)
+  -B, --drive-b  Eliminar from drive B
+  --help         Mostrar this message and exit.
+```
+
+## Ejemplos
+
+### Eliminar un fichero especifico
+```bash
+cpc era GAME.BAS
+```
+
+### Eliminar todos los archivos .BAK
+```bash
+cpc era *.BAK
+```
+
+### Eliminar del drive B
+```bash
+cpc era OLDFILE.BIN -B
+```
+
+### Eliminar todos los archivos que comienzan con TEST
+```bash
+cpc era TEST*.*
+```
+
+### Comando alternativo
+```bash
+cpc-era MYFILE.TXT
+```
+
+
+
+<Aside type="caution">
+**¡La eliminación es permanente!** Los archivos se eliminan del DSK sin confirmación. Haz copias de seguridad antes de usar comodines.
+</Aside>
+
+<Aside type="tip">
+Wildcards:  
+**\*** buscar cualquier secuencia de caracteres 
+**?** buscar un solo carácter  
+Ejemplo: `DATA?.BIN` coincide con DATA1.BIN, DATA2.BIN, etc.
+</Aside>

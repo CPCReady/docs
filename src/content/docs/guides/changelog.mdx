@@ -11,24 +11,43 @@ import { Aside } from '@astrojs/starlight/components';
   <Badge text="Versión Actual: 1.0.0" variant="success" size="large" />
 </div>
 
-Todos los cambios notables de **CPCReady** are documented on this page.
+---
+## Historial de Versiones
 
-El formato está basado en [Keep a Historial de Cambios](https://keepachangelog.com/en/1.0.0/), y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+| Version | Date | Descripción |
+|---------|------|-------------|
+| **0.1.1** | 2025-12-06 | Correcciones y mejoras |
+| **0.1.0** | 2025-11-23 | Release inicial |
 
 ---
+## [0.1.1] - 2025-12-06
 
-## [No Publicado]
+<Badge text="Correcciones y mejoras" variant="tip" />
 
-<Aside type="note">
-Características and changes currently in development. Not yet released.
-</Aside>
+### Añadido
 
-### Planificado para 1.1.0
+<CardGrid>
+  <Card title="Chore" icon="document">
+  - Cambios de comando para ser mas funcionalidades. Añadimos 'cpc-' como prefix
+  - Añadimos que version muestro urls del proyecto: doc,issue y repo
+  - Cambiamos mostrar como actualizar
+  - Desactivamos comando m4 hasta que este funcional 100%
+  - Cambios en documentacion
+  </Card>
+  
+  <Card title="test" icon="bars">
+  - Activamos test para astro
+  </Card>
+  
+  <Card title="Bugs" icon="error">
+    
+    - Se soluciona error en comando rvm a la hora de configurar
+    - Desactivamos comando m4 hasta que este funcional 100%
+  </Card>
+  
+</CardGrid>
 
-- PyPI package distribution
-- Extended documentation with video tutorials
-- Performance optimizations for disk operations
-- Batch file operations soporte
+
 
 ---
 
@@ -126,29 +145,6 @@ Características and changes currently in development. Not yet released.
 **Emulador:**
 - `cpc run` - Lanza RetroVirtualMachine with disk
 
-### Detalles Técnicos
-
-**Tecnologías Principales:**
-- Python 3.13+
-- Poetry para gestión de dependencias
-- Click 8.3.0 para framework CLI
-- PySide6 6.10.0 para GUI
-- TOML formato de configuración
-- Biblioteca personalizada de formato DSK (pydsk)
-
-**Soporte de Tipos de Archivo:**
-- Archivos binarios con cabeceras AMSDOS (type 'b')
-- BASIC programs (tokenized and ASCII)
-- Archivos ASCII/texto (type 'a')
-- Detección automática de tipo
-- Hex (0x/&) and decimal address soporte
-
-**Configuración System:**
-- Ubicación: `~/.config/cpcready/cpcready.toml`
-- Secciones: `[drive]`, `[emulator]`, `[system]`
-- Creación automática en primera ejecución
-- Editor GUI con PySide6
-
 ### Documentation
 
 - Completo command reference with examples
@@ -159,13 +155,7 @@ Características and changes currently in development. Not yet released.
 
 ---
 
-## Version History
 
-| Version | Date | Descripción |
-|---------|------|-------------|
-| **1.0.0** | 2025-11-23 | Initial release with core functionality |
-
----
 
 ## Links
 
@@ -175,23 +165,3 @@ Características and changes currently in development. Not yet released.
 - **License**: [Apache 2.0](https://github.com/CPCReady/cpc/blob/main/LICENSE.md)
 
 ---
-
-<CardGrid>
-  <Card title="Instalación Guide" icon="rocket">
-    Get started with CPCReady
-    
-    [Install Now →](../install/)
-  </Card>
-  
-  <Card title="Referencia de Comandos" icon="open-book">
-    Explore all commands
-    
-    [View Comandos →](../commands/)
-  </Card>
-  
-  <Card title="Hoja de Ruta" icon="star">
-    See what's coming next
-    
-    [View Hoja de Ruta →](../roadmap/)
-  </Card>
-</CardGrid>

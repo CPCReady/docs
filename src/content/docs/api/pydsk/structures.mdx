@@ -1,0 +1,265 @@
+---
+title: Structures
+description: Estructuras de datos para el formato DSK de Amstrad CPC
+---
+
+import { Code } from '@astrojs/starlight/components';
+import { Aside } from '@astrojs/starlight/components';
+
+## Estructuras de Datos DSK
+
+PyDSK define varias estructuras de datos que representan el formato interno de archivos DSK de Amstrad CPC.
+
+### Constantes
+
+```python
+SECTSIZE = 512              # Tamaño de sector en bytes
+USER_DELETED = 0xE5         # Marca de entrada borrada
+MAX_TRACKS = 84             # Máximo de pistas
+MAX_SECTORS = 29            # Máximo de sectores por pista
+AMSDOS_HEADER_SIZE = 128    # Tamaño cabecera AMSDOS
+```
+
+---
+
+## CPCEMUHeader
+
+```python
+class CPCEMUHeader(NamedTuple)
+```
+
+Cabecera del archivo DSK (256 bytes). Contiene metadatos sobre la estructura del disco.
+
+**Atributos:**
+
+- **magic** (`bytes`) - Identificador "MV - CPCEMU Disk-File\r\nDisk-Info\r\n"
+- **nb_tracks** (`int`) - Número de pistas (típicamente 40 o 42)
+- **nb_heads** (`int`) - Número de caras (1 o 2)
+- **data_size** (`int`) - Tamaño de cada pista (0x1300 = 256 + 512×9)
+
+### Métodos
+
+#### from_bytes
+
+```python
+@classmethod
+def from_bytes(cls, data: bytes) -> CPCEMUHeader
+```
+
+Construye la cabecera desde bytes.
+
+**Parámetros:**
+- **data** (`bytes`) - Datos del DSK (mínimo 256 bytes)
+
+**Returns:** `CPCEMUHeader`
+
+**Ejemplo:**
+
+```python
+from cpcready.pydsk.structures import CPCEMUHeader
+
+with open("disco.dsk", "rb") as f:
+    data = f.read()
+    header = CPCEMUHeader.from_bytes(data)
+    print(f"Pistas: {header.nb_tracks}")
+```
+
+#### to_bytes
+
+```python
+def to_bytes(self) -> bytes
+```
+
+Convierte la cabecera a bytes (256 bytes).
+
+**Returns:** `bytes`
+
+---
+
+## CPCEMUSector
+
+```python
+class CPCEMUSector(NamedTuple)
+```
+
+Información de un sector individual.
+
+**Atributos:**
+
+- **C** (`int`) - Número de pista (track)
+- **H** (`int`) - Número de cara (head)
+- **R** (`int`) - ID del sector
+- **N** (`int`) - Código de tamaño (2 = 512 bytes)
+- **size_bytes** (`int`) - Tamaño real en bytes
+
+### Métodos
+
+#### from_bytes
+
+```python
+@classmethod
+def from_bytes(cls, data: bytes, offset: int = 0) -> CPCEMUSector
+```
+
+Construye información de sector desde bytes.
+
+**Parámetros:**
+- **data** (`bytes`) - Datos fuente
+- **offset** (`int`) - Desplazamiento en bytes. Por defecto: `0`
+
+**Returns:** `CPCEMUSector`
+
+#### to_bytes
+
+```python
+def to_bytes(self) -> bytes
+```
+
+Convierte información de sector a bytes (8 bytes).
+
+**Returns:** `bytes`
+
+---
+
+## CPCEMUTrack
+
+```python
+class CPCEMUTrack(NamedTuple)
+```
+
+Información de una pista completa.
+
+**Atributos:**
+
+- **track** (`int`) - Número de pista
+- **head** (`int`) - Número de cara
+- **sect_size** (`int`) - Código de tamaño de sector (2 = 512 bytes)
+- **nb_sect** (`int`) - Número de sectores en la pista
+- **gap3** (`int`) - Valor GAP#3 (típicamente 0x4E)
+- **filler** (`int`) - Byte de relleno (típicamente 0xE5)
+- **sectors** (`List[CPCEMUSector]`) - Lista de sectores
+
+### Métodos
+
+#### from_bytes
+
+```python
+@classmethod
+def from_bytes(cls, data: bytes, offset: int = 0) -> CPCEMUTrack
+```
+
+Construye información de pista desde bytes.
+
+**Parámetros:**
+- **data** (`bytes`) - Datos fuente
+- **offset** (`int`) - Desplazamiento en bytes. Por defecto: `0`
+
+**Returns:** `CPCEMUTrack`
+
+**Ejemplo:**
+
+```python
+from cpcready.pydsk.structures import CPCEMUTrack
+
+with open("disco.dsk", "rb") as f:
+    data = f.read()
+    # Leer primera pista (después de cabecera de 256 bytes)
+    track = CPCEMUTrack.from_bytes(data, offset=0x100)
+    print(f"Sectores: {track.nb_sect}")
+```
+
+#### to_bytes
+
+```python
+def to_bytes(self) -> bytes
+```
+
+Convierte información de pista a bytes (256 bytes).
+
+**Returns:** `bytes`
+
+---
+
+## DirEntry
+
+```python
+class DirEntry(NamedTuple)
+```
+
+Entrada de directorio AMSDOS (32 bytes).
+
+**Atributos:**
+
+- **user** (`int`) - Número de usuario (0-15, 0xE5=borrado)
+- **filename** (`str`) - Nombre del archivo (formato 8.3)
+- **extension** (`str`) - Extensión del archivo
+- **extents** (`List[int]`) - Lista de extents del archivo
+- **blocks** (`List[int]`) - Lista de bloques asignados
+- **record_count** (`int`) - Contador de registros
+- **size_bytes** (`int`) - Tamaño del archivo en bytes
+
+### Métodos
+
+#### from_bytes
+
+```python
+@classmethod
+def from_bytes(cls, data: bytes, offset: int = 0) -> DirEntry
+```
+
+Construye entrada de directorio desde bytes.
+
+**Parámetros:**
+- **data** (`bytes`) - Datos del directorio
+- **offset** (`int`) - Desplazamiento. Por defecto: `0`
+
+**Returns:** `DirEntry`
+
+#### is_deleted
+
+```python
+def is_deleted(self) -> bool
+```
+
+Verifica si la entrada está marcada como borrada.
+
+**Returns:** `bool` - `True` si está borrada
+
+---
+
+## Ejemplo Completo
+
+```python
+from cpcready.pydsk.structures import (
+    CPCEMUHeader, 
+    CPCEMUTrack, 
+    DirEntry,
+    SECTSIZE
+)
+
+# Leer cabecera
+with open("disco.dsk", "rb") as f:
+    data = f.read()
+
+header = CPCEMUHeader.from_bytes(data)
+print(f"Disco: {header.nb_tracks} pistas")
+
+# Leer primera pista
+track = CPCEMUTrack.from_bytes(data, offset=0x100)
+print(f"Pista 0: {track.nb_sect} sectores")
+
+# Acceder a sectores
+for i, sector in enumerate(track.sectors):
+    print(f"Sector {i}: ID={sector.R}, Tamaño={sector.size_bytes}")
+```
+
+<Aside type="note">
+Estas estructuras son principalmente para uso interno de la clase `DSK`. La mayoría de usuarios no necesitarán trabajar directamente con ellas.
+</Aside>
+
+---
+
+## Ver También
+
+- [DSK](/api/pydsk/dsk/) - Clase principal que usa estas estructuras
+- [Exceptions](/api/pydsk/exceptions/) - Excepciones de PyDSK

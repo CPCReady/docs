@@ -17,17 +17,22 @@ export default defineConfig({
 			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/CPCReady/cpc' }],
 			sidebar: [
 				{
-					label: 'Guides',
+					label: 'Guias',
 					items: [
-						{ label: 'Installation', slug: 'guides/install' },
-						{ label: 'Command Reference', slug: 'guides/commands' },
+						{ label: 'Instalacion', slug: 'guides/install' },
+						{ label: 'Actualizacion', slug: 'guides/update' },
+						{ label: 'Comandos', slug: 'guides/commands' },
 						{ label: 'Changelog', slug: 'guides/changelog' },
 						{ label: 'Roadmap', slug: 'guides/roadmap' },
 					],
 				},
 				{
-					label: 'Reference',
-					autogenerate: { directory: 'reference' },
+					label: 'Referencia',
+					autogenerate: { directory: 'referencia' },
+				},
+				{
+					label: 'API Reference',
+					autogenerate: { directory: 'api' },
 				},
 				],
 		}),

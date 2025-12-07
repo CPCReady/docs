@@ -1,0 +1,176 @@
+---
+title: API Reference
+description: Documentación técnica de módulos y clases de CPCReady
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+<Card>
+Documentación técnica completa de los módulos Python de CPCReady. Esta sección proporciona referencia detallada de las clases, métodos y funciones disponibles para desarrollo avanzado.
+</Card>
+
+## Módulos Disponibles
+
+<CardGrid>
+  <Card title="pydsk" icon="document">
+    Módulo para gestión de imágenes DSK de Amstrad CPC. Proporciona clases para crear, leer, modificar y manipular archivos de disco DSK.
+    
+    [Ver documentación →](/api/pydsk/dsk/)
+  </Card>
+  
+  <Card title="utils" icon="setting">
+    Utilidades y herramientas auxiliares usadas por CPCReady. Incluye gestión de configuración, consola, drives virtuales y comunicación con M4Board.
+    
+    [Ver documentación →](/api/utils/click-custom/)
+  </Card>
+</CardGrid>
+
+## Convenciones de Documentación
+
+Esta documentación sigue las convenciones de documentación de Python y está estructurada de forma similar a [Rich Documentation](https://rich.readthedocs.io/en/stable/reference/style.html).
+
+### Símbolos Usados
+
+- **Parámetros**: Argumentos de entrada para métodos y funciones
+- **Returns**: Valor de retorno de la función
+- **Raises**: Excepciones que puede lanzar el método
+- **Example**: Ejemplos de uso del código
+
+### Tipos de Datos
+
+Los tipos de datos se documentan usando type hints de Python:
+- `str`: Cadena de texto
+- `int`: Número entero
+- `bool`: Booleano (True/False)
+- `Optional[T]`: Valor opcional del tipo T
+- `List[T]`: Lista de elementos del tipo T
+- `Tuple[T1, T2]`: Tupla con tipos específicos
+
+## Uso Básico
+
+### Instalación
+
+Para usar estos módulos, instala CPCReady:
+
+```bash
+pipx install cpcready
+```
+
+### Importación
+
+```python
+# Importar el módulo DSK
+from cpcready.pydsk import DSK
+
+# Importar excepciones
+from cpcready.pydsk import DSKError, DSKFormatError
+
+# Importar utilidades
+from cpcready.utils.manager import DriveManager
+from cpcready.utils.m4board import M4Board
+```
+
+## Ejemplos Rápidos
+
+### Crear una imagen DSK
+
+```python
+from cpcready.pydsk import DSK
+
+# Crear una nueva imagen DSK
+dsk = DSK()
+dsk.create(nb_tracks=40, nb_sectors=9)
+dsk.save("mi_disco.dsk")
+```
+
+### Listar archivos en DSK
+
+```python
+from cpcready.pydsk import DSK
+
+# Cargar imagen DSK existente
+dsk = DSK("mi_disco.dsk")
+
+# Listar archivos
+print(dsk.list_files())
+```
+
+### Añadir archivo a DSK
+
+```python
+from cpcready.pydsk import DSK
+
+# Cargar DSK
+dsk = DSK("mi_disco.dsk")
+
+# Añadir archivo
+dsk.write_file("programa.bas")
+dsk.save()
+```
+
+### Gestionar Drives Virtuales
+
+```python
+from cpcready.utils.manager import DriveManager
+
+# Inicializar gestor de drives
+dm = DriveManager()
+
+# Insertar discos
+dm.insert_drive_a("juego.dsk")
+dm.insert_drive_b("datos.dsk")
+
+# Seleccionar drive activo
+dm.select_drive("A")
+
+# Mostrar información
+dm.drive_table()
+```
+
+### Comunicación con M4Board
+
+```python
+from cpcready.utils.m4board import M4Board
+
+# Conectar a M4Board
+m4 = M4Board("192.168.1.100")
+
+# Verificar conexión
+if m4.check_connection():
+    # Subir archivo
+    m4.upload_file("game.bas")
+    
+    # Ejecutar en CPC
+    m4.execute("game.bas")
+```
+
+## Índice de Módulos
+
+### pydsk
+
+- [DSK](/api/pydsk/dsk/) - Clase principal para manipulación de imágenes DSK
+- [Exceptions](/api/pydsk/exceptions/) - Excepciones personalizadas para errores DSK
+- [Structures](/api/pydsk/structures/) - Estructuras de datos para formato DSK
+
+### utils
+
+- [DriveManager](/api/utils/manager/) - Gestión de drives virtuales A/B
+- [M4Board](/api/utils/m4board/) - Comunicación con hardware M4Board
+- [Console](/api/utils/console/) - Utilidades de consola con Rich
+- [Config](/api/utils/config/) - Gestión de configuración TOML
+- [Click Custom](/api/utils/click-custom/) - Comandos y grupos personalizados de Click
+- [System](/api/utils/system/) - Procesamiento de archivos y ejecución de comandos
+- [Update](/api/utils/update/) - Verificación de actualizaciones desde PyPI
+- [RetroVirtualMachine](/api/utils/retrovirtualmachine/) - Gestor del emulador RVM
+
+## Reportar Problemas
+
+¿Encontraste un bug en la documentación o en la API? Por favor, repórtalo en nuestro repositorio de GitHub:
+
+🐛 **[Reportar un problema](https://github.com/CPCReady/cpc/issues)**
+
+Tu feedback nos ayuda a mejorar CPCReady para toda la comunidad. Incluye en tu reporte:
+- Descripción clara del problema
+- Pasos para reproducirlo
+- Versión de CPCReady que estás usando
+- Sistema operativo y versión de Python
