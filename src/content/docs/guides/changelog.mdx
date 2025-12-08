@@ -8,7 +8,7 @@ import { Badge } from '@astrojs/starlight/components';
 import { Aside } from '@astrojs/starlight/components';
 
 <div style="text-align: center; margin: 2rem 0;">
-  <Badge text="Versión Actual: 1.0.0" variant="success" size="large" />
+  <Badge text="Versión Actual: 0.1.2" variant="success" size="large" />
 </div>
 
 ---
@@ -16,10 +16,26 @@ import { Aside } from '@astrojs/starlight/components';
 
 | Version | Date | Descripción |
 |---------|------|-------------|
+| **0.1.2** | 2025-12-06 | Fix unix2dos |
 | **0.1.1** | 2025-12-06 | Correcciones y mejoras |
 | **0.1.0** | 2025-11-23 | Release inicial |
 
 ---
+## [0.1.2] - 2025-12-08
+
+<Badge text="Fix unix2dos" variant="tip" />
+
+### Añadido
+
+<CardGrid>
+  
+  <Card title="Bugs" icon="error">
+    
+    - Se soluciona error en comando save al guardar archivos BASIC en formato UNIX en vez de DOS. Ahora los archivos se guardan correctamente con terminaciones CRLF para compatibilidad con emuladores CPC.
+  </Card>
+  
+</CardGrid>
+
 ## [0.1.1] - 2025-12-06
 
 <Badge text="Correcciones y mejoras" variant="tip" />
