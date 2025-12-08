@@ -12,6 +12,9 @@ import { Aside } from '@astrojs/starlight/components';
 
 <Card>
 Guarda archivos en la imagen de disco DSK con creación automática o manual de encabezados AMSDOS. Soporta tipos de archivo binarios, BASIC y ASCII con direcciones en hexadecimal o decimal. 
+
+**Conversión automática a formato DOS:** Los archivos se convierten automáticamente a formato DOS (líneas terminadas en CRLF) antes de guardarlos, asegurando compatibilidad total con emuladores CPC.
+
 Use <Badge text="-A" variant="note" /> or <Badge text="-B" variant="note" /> para especificar la unidad. Si no se especifica una unidad, se utiliza la unidad actualmente seleccionada.
 <Aside type="tip">
 La unidad seleccionada se configura con <Badge text="cpc drive A" variant="note" /> o <Badge text="cpc drive B" variant="note" />. Por defecto es la unidad A.
@@ -56,6 +59,20 @@ Opciones:
 - **a** (ASCII): Archivo ASCII plano/datos
   - No AMSDOS header
   - Suitable for text files
+  - Convertido automáticamente a formato DOS (CRLF)
+
+## Conversión de Formato de Línea
+
+CPCReady convierte automáticamente todos los archivos a formato DOS antes de guardarlos en el disco DSK. Esto garantiza:
+
+- **Compatibilidad con CPC**: Los archivos BASIC ASCII y de texto se pueden cargar correctamente en emuladores
+- **Comportamiento idéntico a iDSK**: Los archivos guardados son byte por byte idénticos a los generados por iDSK
+- **Terminaciones de línea CRLF**: Los archivos Unix (LF) se convierten automáticamente a DOS (CRLF)
+- **Proceso transparente**: La conversión ocurre automáticamente sin intervención del usuario
+
+<Aside type="note">
+La conversión de formato se aplica a todos los archivos, independientemente del tipo especificado. Los archivos temporales creados durante la conversión se eliminan automáticamente después del guardado.
+</Aside>
 
 ## Formato de Direcciones
 
